@@ -276,6 +276,47 @@ body {
 }
 @keyframes spin { to { transform:rotate(360deg); } }
 
+/* ------ V5 : PROFIL / LIGUES / CLASSEMENTS ------ */
+.home-mini-row { display:flex; gap:10px; margin-top:12px; }
+.mini-btn {
+  flex:1; background:#151228; border:1px solid #2c2750; color:#cfd2ea; border-radius:14px;
+  padding:12px 6px; font-weight:800; font-size:0.78rem;
+}
+.mini-btn .mini-emoji { display:block; font-size:1.3rem; margin-bottom:3px; }
+.select-input {
+  width:100%; background:#0a0817; border:1px solid #2c2750; color:#fff; border-radius:12px;
+  padding:12px; font-size:0.95rem; font-weight:700; -webkit-appearance:none; appearance:none;
+}
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.stat-cell { background:#151228; border:1px solid #2c2750; border-radius:14px; padding:10px; text-align:center; }
+.stat-emoji { font-size:1.2rem; margin-bottom:2px; }
+.stat-label { color:#8b8fa8; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.5px; font-weight:800; }
+.stat-value { color:#f5b31c; font-weight:900; font-size:1rem; margin-top:2px; word-break:break-word; }
+.pf-head { text-align:center; margin-bottom:12px; }
+.pf-pseudo { font-size:1.5rem; font-weight:900; font-style:italic; color:#27c3f5; }
+.pf-note { color:#8b8fa8; font-size:0.75rem; text-align:center; margin-top:10px; line-height:1.4; }
+.tab-row { display:flex; gap:6px; justify-content:center; margin-bottom:12px; flex-wrap:wrap; }
+.tab-chip {
+  background:#151228; border:1px solid #2c2750; color:#cfd2ea; border-radius:12px;
+  padding:8px 12px; font-size:0.82rem; font-weight:800;
+}
+.tab-active { border-color:#f5b31c; color:#f5b31c; background:#241c10; }
+.rk-empty { text-align:center; color:#8b8fa8; padding:16px 8px; font-weight:700; font-size:0.9rem; }
+.lg-card {
+  width:100%; text-align:left; background:#151228; border:1px solid #2c2750; border-radius:14px;
+  padding:12px; margin-bottom:8px; color:#eef0ff;
+}
+.lg-card-top { display:flex; justify-content:space-between; align-items:baseline; }
+.lg-card-name { font-weight:900; font-style:italic; font-size:1rem; color:#27c3f5; }
+.lg-card-season { color:#f5b31c; font-size:0.75rem; font-weight:800; }
+.lg-card-sub { color:#8b8fa8; font-size:0.78rem; margin-top:3px; letter-spacing:1px; }
+.ld-code-box { background:#151228; border:1px solid #2c2750; border-radius:16px; padding:14px; text-align:center; margin-bottom:6px; }
+.ld-code { font-size:1.7rem; letter-spacing:5px; margin:6px 0; }
+.ld-close { width:100%; margin-top:14px; }
+.online-acc-line { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.online-acc-name { font-weight:800; font-size:0.88rem; color:#cfd2ea; }
+.game-league-row { margin-top:10px; }
+
 /* ------ ANIMATIONS VICTOIRE ------ */
 #victory-animation { position:fixed; inset:0; pointer-events:none; z-index:100; overflow:hidden; }
 .money { position:fixed; top:-8vh; font-size:1.9rem; animation:fall 2.6s linear forwards; }
@@ -356,6 +397,11 @@ body {
     <button id="btn-online" class="big-btn pink" data-i18n="btn_online"></button>
     <button id="btn-shop" class="big-btn gold" data-i18n="btn_shop"></button>
     <button id="btn-rules" class="big-btn ghost" data-i18n="btn_rules"></button>
+    <div class="home-mini-row">
+      <button id="btn-profile" class="mini-btn"><span class="mini-emoji">👑</span><span data-i18n="pf_title"></span></button>
+      <button id="btn-ranks" class="mini-btn"><span class="mini-emoji">🏆</span><span data-i18n="rk_title"></span></button>
+      <button id="btn-leagues" class="mini-btn"><span class="mini-emoji">👥</span><span data-i18n="lg_title"></span></button>
+    </div>
   </div>
 </div>
 
@@ -475,8 +521,7 @@ body {
   <div class="brush shop-title" style="text-align:center; margin-bottom:14px;" data-i18n="online_title"></div>
 
   <div class="online-block">
-    <div class="online-label" data-i18n="pseudo_label"></div>
-    <input id="pseudo-input" class="text-input" type="text" maxlength="14" data-i18n-ph="pseudo_ph">
+    <div id="online-acc"></div>
   </div>
 
   <div class="online-block">
@@ -488,6 +533,10 @@ body {
       <button class="np-chip" data-np="4">4</button>
     </div>
     <div id="league-note" class="league-note hidden" data-i18n="league_note"></div>
+    <div id="game-league-row" class="game-league-row hidden">
+      <div class="online-label" data-i18n="lg_pick"></div>
+      <select id="game-league" class="select-input"></select>
+    </div>
     <button id="btn-create-private" class="mid-btn full" data-i18n="create_btn"></button>
     <div class="join-row">
       <input id="join-code-input" class="text-input" type="text" maxlength="5" autocapitalize="characters" autocomplete="off" data-i18n-ph="code_ph">
@@ -516,6 +565,95 @@ body {
     <div class="wait-spinner"></div>
     <div id="wait-msg" class="wait-msg"></div>
     <button id="btn-wait-cancel" class="big-btn ghost" data-i18n="cancel"></button>
+  </div>
+</div>
+
+<!-- ================= PROFIL ================= -->
+<div id="screen-profile" class="screen hidden">
+  <div class="brush shop-title" style="text-align:center; margin-bottom:14px;" data-i18n="pf_title"></div>
+
+  <div id="acc-box" class="online-block">
+    <div class="online-label" data-i18n="acc_title"></div>
+    <input id="acc-pseudo" class="text-input" type="text" maxlength="14" data-i18n-ph="acc_pseudo" style="margin-bottom:8px;">
+    <input id="acc-code" class="text-input" type="text" maxlength="20" autocapitalize="off" autocomplete="off" data-i18n-ph="acc_code" style="margin-bottom:8px;">
+    <div class="online-label" data-i18n="acc_country"></div>
+    <select id="acc-country" class="select-input" style="margin-bottom:10px;"></select>
+    <button id="btn-register" class="mid-btn gold full" data-i18n="acc_register"></button>
+    <div class="online-status" data-i18n="acc_or"></div>
+    <button id="btn-login" class="mid-btn full" data-i18n="acc_login"></button>
+    <div id="acc-status" class="online-status"></div>
+  </div>
+
+  <div id="profile-box" class="hidden">
+    <div class="pf-head">
+      <div id="pf-pseudo" class="pf-pseudo"></div>
+    </div>
+    <div id="pf-loading" class="rk-empty hidden" data-i18n="rk_loading"></div>
+    <div id="pf-grid" class="stat-grid"></div>
+    <div class="pf-note" data-i18n="pf_note"></div>
+    <div class="online-block" style="margin-top:12px;">
+      <div class="online-label" data-i18n="country_label"></div>
+      <select id="pf-country" class="select-input"></select>
+    </div>
+    <button id="btn-logout" class="big-btn ghost" style="width:100%; margin-top:6px;" data-i18n="acc_logout"></button>
+  </div>
+
+  <div class="end-btns">
+    <button id="btn-profile-back" class="big-btn ghost" data-i18n="back"></button>
+  </div>
+</div>
+
+<!-- ================= CLASSEMENTS ================= -->
+<div id="screen-ranks" class="screen hidden">
+  <div class="brush shop-title" style="text-align:center; margin-bottom:14px;" data-i18n="rk_title"></div>
+  <div class="tab-row">
+    <button class="tab-chip tab-active" data-tab="world" data-i18n="rk_world"></button>
+    <button class="tab-chip" data-tab="country" data-i18n="rk_country"></button>
+    <button class="tab-chip" data-tab="friends" data-i18n="rk_friends"></button>
+  </div>
+  <div id="ranks-list"></div>
+  <div class="end-btns">
+    <button id="btn-ranks-back" class="big-btn ghost" data-i18n="back"></button>
+  </div>
+</div>
+
+<!-- ================= LIGUES ================= -->
+<div id="screen-leagues" class="screen hidden">
+  <div class="brush shop-title" style="text-align:center; margin-bottom:14px;" data-i18n="lg_title"></div>
+
+  <div class="online-block">
+    <div class="online-label" data-i18n="lg_mine"></div>
+    <div id="lg-mine-list"></div>
+  </div>
+
+  <div class="online-block">
+    <div class="online-label" data-i18n="lg_create"></div>
+    <input id="lg-name-input" class="text-input" type="text" maxlength="20" data-i18n-ph="lg_name" style="margin-bottom:8px;">
+    <input id="lg-pass-input" class="text-input" type="text" maxlength="20" autocapitalize="off" data-i18n-ph="lg_pass" style="margin-bottom:8px;">
+    <div class="online-label" data-i18n="lg_max"></div>
+    <input id="lg-max-input" class="text-input" type="number" inputmode="numeric" min="4" max="100" value="10" style="margin-bottom:10px;">
+    <button id="btn-lg-create" class="mid-btn gold full" data-i18n="lg_create"></button>
+  </div>
+
+  <div class="online-block">
+    <div class="online-label" data-i18n="lg_join"></div>
+    <input id="lg-code-input" class="text-input" type="text" maxlength="6" autocapitalize="characters" autocomplete="off" data-i18n-ph="lg_code" style="margin-bottom:8px; text-transform:uppercase; letter-spacing:2px; text-align:center;">
+    <input id="lg-joinpass-input" class="text-input" type="text" maxlength="20" autocapitalize="off" data-i18n-ph="lg_pass" style="margin-bottom:10px;">
+    <button id="btn-lg-join" class="mid-btn full" data-i18n="lg_join"></button>
+  </div>
+
+  <div id="lg-status" class="online-status"></div>
+  <div class="end-btns">
+    <button id="btn-leagues-back" class="big-btn ghost" data-i18n="back"></button>
+  </div>
+</div>
+
+<!-- ================= DETAIL LIGUE ================= -->
+<div id="screen-league-detail" class="screen hidden">
+  <div id="ld-name" class="brush shop-title" style="text-align:center; margin-bottom:14px;"></div>
+  <div id="ld-body"></div>
+  <div class="end-btns">
+    <button id="btn-ld-back" class="big-btn ghost" data-i18n="back"></button>
   </div>
 </div>
 
@@ -595,7 +733,33 @@ fr: {
   st_lost:"Connexion perdue.", confirm_abandon:"Abandonner le duel ? Les autres continueront sans toi.",
   anim_confetti:"Confettis dorés", anim_money:"Pluie de billets", anim_fireworks:"Feu d'artifice",
   anim_phone:"Notif transfert", anim_dragon:"Dragon de feu", anim_king:"Mercato King",
-  phone_l1:"📱 Offre acceptée !", phone_l2:"+1 star recrutée ✅"
+  phone_l1:"📱 Offre acceptée !", phone_l2:"+1 star recrutée ✅",
+  acc_title:"Compte joueur", acc_pseudo:"Pseudo (3-14 car.)", acc_code:"Code secret (4 car. min)", acc_country:"Pays",
+  acc_register:"Créer mon compte", acc_login:"Se connecter", acc_or:"— ou —",
+  acc_logged:"Connecté : {p}", acc_logout:"Se déconnecter",
+  acc_taken:"Pseudo déjà pris.", acc_bad:"Pseudo ou code incorrect.", acc_short:"Code trop court (4 min).",
+  acc_badpseudo:"Pseudo invalide (3-14 caractères).", acc_need:"Crée ton compte pour jouer en ligne 👇",
+  acc_ok:"Compte créé !", acc_hello:"Bienvenue {p} !", acc_keep:"Note bien ton code secret : il permet de récupérer ton compte sur un autre appareil.",
+  pf_title:"Profil", pf_games:"Duels joués", pf_wins:"Victoires", pf_rate:"Taux de victoire",
+  pf_streak:"Série en cours", pf_best:"Meilleure série", pf_most:"Joueur le plus acheté",
+  pf_fav:"Joueur préféré", pf_spent:"Total dépensé", pf_bid:"Plus grosse enchère",
+  pf_troph:"Trophées", pf_note:"Seules les parties en ligne (adversaire aléatoire) comptent dans ces stats.",
+  rk_title:"Classements", rk_world:"🌍 Mondial", rk_country:"Pays", rk_friends:"Amis",
+  rk_empty:"Personne ici pour l’instant…", rk_loading:"Chargement…", rk_me:"toi",
+  rk_v:"V", rk_j:"J",
+  lg_title:"Ligues privées", lg_mine:"Mes ligues", lg_none:"Aucune ligue pour l’instant. Crées-en une !",
+  lg_create:"Créer une ligue", lg_join:"Rejoindre une ligue", lg_name:"Nom de la ligue",
+  lg_pass:"Mot de passe (optionnel)", lg_max:"Joueurs max (4-100)", lg_code:"Code d’invitation",
+  lg_members:"{n} membres", lg_full:"Ligue complète.", lg_wrongpass:"Mot de passe incorrect.",
+  lg_notfound:"Aucune ligue avec ce code.", lg_already:"Tu es déjà membre.",
+  lg_created:"Ligue créée !", lg_joined:"Ligue rejointe !", lg_badname:"Nom invalide (3-20 caractères).",
+  lg_badmax:"Nombre de joueurs entre 4 et 100.", lg_season:"Saison {n}", lg_standings:"Classement — saison {n}",
+  lg_hist:"Saisons passées", lg_champ:"🏆 {p}", lg_close:"Clôturer la saison",
+  lg_close_confirm:"Clôturer la saison ? Le 1er remporte un trophée 🏆 et le classement repart à zéro.",
+  lg_closed:"Saison clôturée ! Champion : {p} 🏆", lg_nogames:"Aucun duel joué cette saison.",
+  lg_pick:"Compter la partie pour une ligue :", lg_free:"Aucune (partie libre)",
+  lg_share:"Partage ce code pour inviter tes amis !",
+  country_label:"Pays"
 },
 en: {
   tagline:"Blind auctions. 250M budget. 11 players to sign. Best team wins.",
@@ -658,7 +822,33 @@ en: {
   st_lost:"Connection lost.", confirm_abandon:"Forfeit the duel? The others will continue without you.",
   anim_confetti:"Golden confetti", anim_money:"Money rain", anim_fireworks:"Fireworks",
   anim_phone:"Transfer alert", anim_dragon:"Fire dragon", anim_king:"Mercato King",
-  phone_l1:"📱 Offer accepted!", phone_l2:"+1 star signed ✅"
+  phone_l1:"📱 Offer accepted!", phone_l2:"+1 star signed ✅",
+  acc_title:"Player account", acc_pseudo:"Nickname (3-14 char.)", acc_code:"Secret code (4 char. min)", acc_country:"Country",
+  acc_register:"Create my account", acc_login:"Log in", acc_or:"— or —",
+  acc_logged:"Logged in: {p}", acc_logout:"Log out",
+  acc_taken:"Nickname already taken.", acc_bad:"Wrong nickname or code.", acc_short:"Code too short (4 min).",
+  acc_badpseudo:"Invalid nickname (3-14 characters).", acc_need:"Create your account to play online 👇",
+  acc_ok:"Account created!", acc_hello:"Welcome {p}!", acc_keep:"Write down your secret code: it lets you recover your account on another device.",
+  pf_title:"Profile", pf_games:"Duels played", pf_wins:"Wins", pf_rate:"Win rate",
+  pf_streak:"Current streak", pf_best:"Best streak", pf_most:"Most bought player",
+  pf_fav:"Favourite player", pf_spent:"Total spent", pf_bid:"Biggest bid",
+  pf_troph:"Trophies", pf_note:"Only online games (random opponent) count in these stats.",
+  rk_title:"Rankings", rk_world:"🌍 World", rk_country:"Country", rk_friends:"Friends",
+  rk_empty:"Nobody here yet…", rk_loading:"Loading…", rk_me:"you",
+  rk_v:"W", rk_j:"G",
+  lg_title:"Private leagues", lg_mine:"My leagues", lg_none:"No league yet. Create one!",
+  lg_create:"Create a league", lg_join:"Join a league", lg_name:"League name",
+  lg_pass:"Password (optional)", lg_max:"Max players (4-100)", lg_code:"Invite code",
+  lg_members:"{n} members", lg_full:"League is full.", lg_wrongpass:"Wrong password.",
+  lg_notfound:"No league with this code.", lg_already:"You are already a member.",
+  lg_created:"League created!", lg_joined:"League joined!", lg_badname:"Invalid name (3-20 characters).",
+  lg_badmax:"Players between 4 and 100.", lg_season:"Season {n}", lg_standings:"Standings — season {n}",
+  lg_hist:"Past seasons", lg_champ:"🏆 {p}", lg_close:"Close the season",
+  lg_close_confirm:"Close the season? #1 wins a trophy 🏆 and standings reset.",
+  lg_closed:"Season closed! Champion: {p} 🏆", lg_nogames:"No duel played this season.",
+  lg_pick:"Count this game for a league:", lg_free:"None (casual game)",
+  lg_share:"Share this code to invite your friends!",
+  country_label:"Country"
 },
 es: {
   tagline:"Subastas a ciegas. 250M de presupuesto. 11 jugadores por fichar. Gana el mejor equipo.",
@@ -721,7 +911,33 @@ es: {
   st_lost:"Conexión perdida.", confirm_abandon:"¿Abandonar el duelo? Los demás seguirán sin ti.",
   anim_confetti:"Confeti dorado", anim_money:"Lluvia de billetes", anim_fireworks:"Fuegos artificiales",
   anim_phone:"Alerta de fichaje", anim_dragon:"Dragón de fuego", anim_king:"Mercato King",
-  phone_l1:"📱 ¡Oferta aceptada!", phone_l2:"+1 estrella fichada ✅"
+  phone_l1:"📱 ¡Oferta aceptada!", phone_l2:"+1 estrella fichada ✅",
+  acc_title:"Cuenta de jugador", acc_pseudo:"Apodo (3-14 car.)", acc_code:"Código secreto (4 car. mín)", acc_country:"País",
+  acc_register:"Crear mi cuenta", acc_login:"Iniciar sesión", acc_or:"— o —",
+  acc_logged:"Conectado: {p}", acc_logout:"Cerrar sesión",
+  acc_taken:"Apodo ya en uso.", acc_bad:"Apodo o código incorrecto.", acc_short:"Código demasiado corto (4 mín).",
+  acc_badpseudo:"Apodo inválido (3-14 caracteres).", acc_need:"Crea tu cuenta para jugar online 👇",
+  acc_ok:"¡Cuenta creada!", acc_hello:"¡Bienvenido {p}!", acc_keep:"Apunta tu código secreto: te permite recuperar tu cuenta en otro dispositivo.",
+  pf_title:"Perfil", pf_games:"Duelos jugados", pf_wins:"Victorias", pf_rate:"Tasa de victorias",
+  pf_streak:"Racha actual", pf_best:"Mejor racha", pf_most:"Jugador más comprado",
+  pf_fav:"Jugador favorito", pf_spent:"Total gastado", pf_bid:"Mayor puja",
+  pf_troph:"Trofeos", pf_note:"Solo las partidas online (rival aleatorio) cuentan en estas estadísticas.",
+  rk_title:"Clasificaciones", rk_world:"🌍 Mundial", rk_country:"País", rk_friends:"Amigos",
+  rk_empty:"Nadie por aquí todavía…", rk_loading:"Cargando…", rk_me:"tú",
+  rk_v:"V", rk_j:"P",
+  lg_title:"Ligas privadas", lg_mine:"Mis ligas", lg_none:"Ninguna liga todavía. ¡Crea una!",
+  lg_create:"Crear una liga", lg_join:"Unirse a una liga", lg_name:"Nombre de la liga",
+  lg_pass:"Contraseña (opcional)", lg_max:"Jugadores máx (4-100)", lg_code:"Código de invitación",
+  lg_members:"{n} miembros", lg_full:"Liga completa.", lg_wrongpass:"Contraseña incorrecta.",
+  lg_notfound:"No hay liga con ese código.", lg_already:"Ya eres miembro.",
+  lg_created:"¡Liga creada!", lg_joined:"¡Te uniste a la liga!", lg_badname:"Nombre inválido (3-20 caracteres).",
+  lg_badmax:"Jugadores entre 4 y 100.", lg_season:"Temporada {n}", lg_standings:"Clasificación — temporada {n}",
+  lg_hist:"Temporadas pasadas", lg_champ:"🏆 {p}", lg_close:"Cerrar la temporada",
+  lg_close_confirm:"¿Cerrar la temporada? El 1º gana un trofeo 🏆 y la clasificación se reinicia.",
+  lg_closed:"¡Temporada cerrada! Campeón: {p} 🏆", lg_nogames:"Ningún duelo jugado esta temporada.",
+  lg_pick:"Contar esta partida para una liga:", lg_free:"Ninguna (partida libre)",
+  lg_share:"¡Comparte este código para invitar a tus amigos!",
+  country_label:"País"
 }
 };
 
@@ -879,7 +1095,7 @@ var BONUSES = [
 /* ---------- STORAGE ---------- */
 var memStore = null;
 function loadStore(){
-  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", bonus:{ time:0, cash:0, star:0 } };
+  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", bonus:{ time:0, cash:0, star:0 }, account:null };
   try {
     var raw = window.localStorage.getItem("elevenduel_store");
     if (raw){
@@ -888,6 +1104,7 @@ function loadStore(){
         if (!s.pseudo) s.pseudo = "";
         if (!s.lang) s.lang = "fr";
         if (!s.bonus) s.bonus = { time:0, cash:0, star:0 };
+        if (s.account === undefined) s.account = null;
         return s;
       }
     }
@@ -912,6 +1129,7 @@ var bidDeadline = 0;
 var rewardGiven = false;
 var usedBonus = { time:false, cash:false, star:false };   /* par duel */
 var endShownLocal = false;
+var statsRecorded = false;
 
 function newSide(name){
   return { name:name, budget:250, squad:[], paid:[], passes:0, out:false, forfeit:false, boostPending:false, boosted:-1 };
@@ -931,6 +1149,7 @@ function hide(id){ qs(id).classList.add("hidden"); }
 function hideAllScreens(){
   hide("screen-home"); hide("screen-game"); hide("screen-end");
   hide("screen-shop"); hide("screen-online"); hide("screen-wait");
+  hide("screen-profile"); hide("screen-ranks"); hide("screen-leagues"); hide("screen-league-detail");
   hide("overlay-reveal");
 }
 function cleanData(o){
@@ -1532,6 +1751,7 @@ function renderEnd(reason){
 
   var gain = giveCoins(outcome);
   qs("end-coins").textContent = tf("coins_gain", { g: gain, t: store.coins });
+  maybeRecordOnline(outcome);
   renderCoins();
   renderAllSquads(qs("end-squads-all"));
   if (outcome === "win") playAnim(store.equipped);
@@ -1570,12 +1790,8 @@ function initFirebase(){
 }
 
 function myPseudo(){
-  var v = qs("pseudo-input").value.replace(/\s+/g," ").trim();
-  if (!v) v = "Joueur" + Math.floor(100 + Math.random()*900);
-  if (v.length > 14) v = v.substring(0,14);
-  store.pseudo = v;
-  saveStore(store);
-  return v;
+  if (store.account && store.account.pseudo) return store.account.pseudo;
+  return "Joueur" + Math.floor(100 + Math.random()*900);
 }
 function makeCode(){
   var chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -1599,7 +1815,7 @@ function setOnlineStatus(msg, isError){
 }
 
 function newDocSide(name, uid){
-  return { uid: uid, name: name, budget: 250, squad: [], paid: [], passes: 0, out: false, forfeit: false, boostPending: false, boosted: -1 };
+  return { uid: uid, userKey: (store.account ? store.account.key : null), name: name, budget: 250, squad: [], paid: [], passes: 0, out: false, forfeit: false, boostPending: false, boosted: -1 };
 }
 
 function resetOnlineSession(){
@@ -1614,6 +1830,7 @@ function effectiveLeague(){
 }
 
 function createPrivateGame(isPublic){
+  if (!store.account){ setOnlineStatus(t("acc_need"), true); return; }
   setOnlineStatus(t("st_creating"));
   initFirebase().then(function(ok){
     if (!ok) return setOnlineStatus(t("st_noconfig"), true);
@@ -1628,6 +1845,7 @@ function createPrivateGame(isPublic){
       joined: 1,
       players: { p0: newDocSide(myPseudo(), fb.uid) },
       round: 0, currentIdx: -1, used: [], bids: {},
+      leagueCode: (!isPublic && qs("game-league").value) ? qs("game-league").value : null,
       lastResult: null, endReason: null
     };
     online.ref.set(cleanData(doc)).then(function(){
@@ -1656,6 +1874,7 @@ function tryJoin(ref, code){
 }
 
 function joinPrivateGame(){
+  if (!store.account){ setOnlineStatus(t("acc_need"), true); return; }
   var code = qs("join-code-input").value.trim().toUpperCase();
   if (code.length !== 5){ setOnlineStatus(t("st_badcode"), true); return; }
   setOnlineStatus(tf("st_joining", { c: code }));
@@ -1676,6 +1895,7 @@ function joinPrivateGame(){
 }
 
 function findRandomGame(){
+  if (!store.account){ setOnlineStatus(t("acc_need"), true); return; }
   setOnlineStatus(t("st_searching"));
   initFirebase().then(function(ok){
     if (!ok) return setOnlineStatus(t("st_noconfig"), true);
@@ -1720,6 +1940,7 @@ function listenGame(){
   MODE = "online";
   rewardGiven = false;
   endShownLocal = false;
+  statsRecorded = false;
   usedBonus = { time:false, cash:false, star:false };
   online.unsub = online.ref.onSnapshot(onGameUpdate, function(){
     setOnlineStatus(t("st_lost"), true);
@@ -2250,7 +2471,6 @@ function bindChips(selector, activeClass, cb){
 function init(){
   renderCoins();
   applyI18n();
-  qs("pseudo-input").value = store.pseudo || "";
   var langBtns = document.querySelectorAll(".lang-chip");
   for (var i=0;i<langBtns.length;i++){
     if (langBtns[i].getAttribute("data-lang") === store.lang) langBtns[i].classList.add("lang-active");
@@ -2267,6 +2487,7 @@ function init(){
   qs("btn-online").addEventListener("click", function(){
     hideAllScreens();
     show("screen-online");
+    renderOnlineAccount();
     setOnlineStatus(fbConfigured() ? "" : t("st_noconfig"), !fbConfigured());
   });
   qs("btn-online-back").addEventListener("click", function(){
@@ -2329,9 +2550,621 @@ function init(){
     store.lang = btn.getAttribute("data-lang");
     saveStore(store);
     applyI18n();
+    if (!qs("screen-profile").classList.contains("hidden")) renderProfile();
   });
+  initV5();
 }
 document.addEventListener("DOMContentLoaded", init);
+
+/* =========================================================
+   V5 : COMPTES, PROFIL, LIGUES PRIVEES, CLASSEMENTS
+   ========================================================= */
+var COUNTRIES = [
+  ["FR","🇫🇷 France"],["IL","🇮🇱 Israël"],["GB","🇬🇧 UK"],
+  ["ES","🇪🇸 España"],["IT","🇮🇹 Italia"],["DE","🇩🇪 Deutschland"],
+  ["PT","🇵🇹 Portugal"],["BE","🇧🇪 Belgique"],["CH","🇨🇭 Suisse"],
+  ["NL","🇳🇱 Nederland"],["BR","🇧🇷 Brasil"],["AR","🇦🇷 Argentina"],
+  ["MA","🇲🇦 Maroc"],["DZ","🇩🇿 Algérie"],["TN","🇹🇳 Tunisie"],
+  ["SN","🇸🇳 Sénégal"],["CI","🇨🇮 Côte d'Ivoire"],["CM","🇨🇲 Cameroun"],
+  ["US","🇺🇸 USA"],["CA","🇨🇦 Canada"],["MX","🇲🇽 México"],
+  ["JP","🇯🇵 Japon"],["SA","🇸🇦 Saudi"],["AE","🇦🇪 UAE"],
+  ["XX","🌍 Autre"]
+];
+function countryLabel(code){
+  for (var i=0;i<COUNTRIES.length;i++) if (COUNTRIES[i][0] === code) return COUNTRIES[i][1];
+  return "🌍";
+}
+function countryFlag(code){
+  var l = countryLabel(code);
+  return l.split(" ")[0];
+}
+
+function zeroStats(){
+  return { games:0, wins:0, losses:0, ties:0, streak:0, bestStreak:0, totalSpent:0, biggestBid:0, trophies:0, buys:{} };
+}
+function hashSecret(key, code){
+  return hashBid(key + "|" + code, "elevenduel");
+}
+function pseudoKey(pseudo){
+  return pseudo.toLowerCase().replace(/[^a-z0-9à-ſ]/g, "");
+}
+function sanitizeField(name){
+  return name.replace(/[.~/*\[\]]/g, "");
+}
+function setAccStatus(msg, isError){
+  var e = qs("acc-status");
+  e.textContent = msg || "";
+  e.className = "online-status" + (isError ? " online-error" : "");
+}
+
+/* ---------- COMPTE ---------- */
+function registerAccount(){
+  var pseudo = qs("acc-pseudo").value.replace(/\s+/g," ").trim();
+  var code = qs("acc-code").value.trim();
+  var country = qs("acc-country").value;
+  if (pseudo.length < 3 || pseudo.length > 14){ setAccStatus(t("acc_badpseudo"), true); return; }
+  var key = pseudoKey(pseudo);
+  if (key.length < 3){ setAccStatus(t("acc_badpseudo"), true); return; }
+  if (code.length < 4){ setAccStatus(t("acc_short"), true); return; }
+  setAccStatus(t("rk_loading"));
+  initFirebase().then(function(ok){
+    if (!ok) return setAccStatus(t("st_noconfig"), true);
+    var ref = fb.db.collection("users").doc(key);
+    fb.db.runTransaction(function(tx){
+      return tx.get(ref).then(function(snap){
+        if (snap.exists) throw new Error("taken");
+        tx.set(ref, cleanData({
+          pseudo: pseudo, codeHash: hashSecret(key, code), country: country,
+          createdAt: Date.now(), leagues: [], stats: zeroStats()
+        }));
+      });
+    }).then(function(){
+      store.account = { pseudo: pseudo, key: key, secret: code, country: country };
+      saveStore(store);
+      setAccStatus(t("acc_ok") + " " + t("acc_keep"));
+      renderProfile();
+    }).catch(function(err){
+      setAccStatus((err && err.message === "taken") ? t("acc_taken") : t("st_err"), true);
+    });
+  });
+}
+function loginAccount(){
+  var pseudo = qs("acc-pseudo").value.replace(/\s+/g," ").trim();
+  var code = qs("acc-code").value.trim();
+  var key = pseudoKey(pseudo);
+  if (key.length < 3 || code.length < 1){ setAccStatus(t("acc_bad"), true); return; }
+  setAccStatus(t("rk_loading"));
+  initFirebase().then(function(ok){
+    if (!ok) return setAccStatus(t("st_noconfig"), true);
+    fb.db.collection("users").doc(key).get().then(function(snap){
+      if (!snap.exists || snap.data().codeHash !== hashSecret(key, code)){
+        setAccStatus(t("acc_bad"), true); return;
+      }
+      var d = snap.data();
+      store.account = { pseudo: d.pseudo, key: key, secret: code, country: d.country || "XX" };
+      saveStore(store);
+      setAccStatus(tf("acc_hello", { p: d.pseudo }));
+      renderProfile();
+    }).catch(function(){ setAccStatus(t("st_err"), true); });
+  });
+}
+function logoutAccount(){
+  store.account = null;
+  saveStore(store);
+  renderProfile();
+}
+function myUserRef(){
+  return fb.db.collection("users").doc(store.account.key);
+}
+
+/* ---------- STATS FIN DE DUEL ---------- */
+function maybeRecordOnline(outcome){
+  if (MODE !== "online" || !store.account || statsRecorded || !online.data) return;
+  statsRecorded = true;
+  var d = online.data;
+  var mySide = state.players[state.myIdx];
+  if (d.isPublic){
+    recordGlobalStats(outcome, mySide);
+  } else if (d.leagueCode){
+    recordLeagueGame(d.leagueCode, outcome);
+  }
+}
+function recordGlobalStats(outcome, side){
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    var ref = myUserRef();
+    fb.db.runTransaction(function(tx){
+      return tx.get(ref).then(function(snap){
+        if (!snap.exists) return;
+        var st = snap.data().stats || zeroStats();
+        st.games = (st.games || 0) + 1;
+        if (outcome === "win"){
+          st.wins = (st.wins || 0) + 1;
+          st.streak = (st.streak || 0) + 1;
+          if (st.streak > (st.bestStreak || 0)) st.bestStreak = st.streak;
+        } else if (outcome === "tie"){
+          st.ties = (st.ties || 0) + 1;
+        } else {
+          st.losses = (st.losses || 0) + 1;
+          st.streak = 0;
+        }
+        var i, spent = 0;
+        for (i=0;i<side.paid.length;i++){
+          spent += side.paid[i];
+          if (side.paid[i] > (st.biggestBid || 0)) st.biggestBid = side.paid[i];
+        }
+        st.totalSpent = (st.totalSpent || 0) + spent;
+        if (!st.buys) st.buys = {};
+        for (i=0;i<side.squad.length;i++){
+          var nm = sanitizeField(PLAYERS[side.squad[i]][0]);
+          if (!st.buys[nm]) st.buys[nm] = { n:0, spent:0 };
+          st.buys[nm].n += 1;
+          st.buys[nm].spent += side.paid[i];
+        }
+        tx.update(ref, cleanData({ stats: st }));
+      });
+    }).catch(function(){});
+  });
+}
+function recordLeagueGame(code, outcome){
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    var ref = fb.db.collection("leagues").doc(code);
+    ref.get().then(function(snap){
+      if (!snap.exists) return;
+      var d = snap.data();
+      if (!d.members || !d.members[store.account.key]) return;
+      var u = {};
+      u["standings." + store.account.key + ".pseudo"] = store.account.pseudo;
+      u["standings." + store.account.key + ".games"] = firebase.firestore.FieldValue.increment(1);
+      u["standings." + store.account.key + ".wins"] = firebase.firestore.FieldValue.increment(outcome === "win" ? 1 : 0);
+      ref.update(u).catch(function(){});
+    }).catch(function(){});
+  });
+}
+
+/* ---------- PROFIL ---------- */
+function openProfile(){
+  hideAllScreens();
+  show("screen-profile");
+  renderProfile();
+}
+function fillCountrySelect(sel, val){
+  clear(sel);
+  for (var i=0;i<COUNTRIES.length;i++){
+    var o = el("option", null, COUNTRIES[i][1]);
+    o.value = COUNTRIES[i][0];
+    sel.appendChild(o);
+  }
+  sel.value = val || "FR";
+}
+function renderProfile(){
+  var logged = !!store.account;
+  qs("acc-box").classList.toggle("hidden", logged);
+  qs("profile-box").classList.toggle("hidden", !logged);
+  if (!logged){
+    fillCountrySelect(qs("acc-country"), "FR");
+    return;
+  }
+  qs("pf-pseudo").textContent = store.account.pseudo + " " + countryFlag(store.account.country);
+  qs("pf-loading").classList.remove("hidden");
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    myUserRef().get().then(function(snap){
+      qs("pf-loading").classList.add("hidden");
+      if (!snap.exists) return;
+      var st = snap.data().stats || zeroStats();
+      var grid = qs("pf-grid");
+      clear(grid);
+      var rate = st.games > 0 ? Math.round((st.wins || 0) / st.games * 100) + "%" : "—";
+      var most = "—", fav = "—", bestN = 0, bestSpent = 0;
+      if (st.buys){
+        for (var k in st.buys){
+          if (st.buys[k].n > bestN){ bestN = st.buys[k].n; most = k + " (x" + st.buys[k].n + ")"; }
+          if (st.buys[k].spent > bestSpent){ bestSpent = st.buys[k].spent; fav = k + " (" + st.buys[k].spent + "M)"; }
+        }
+      }
+      var cells = [
+        ["⚔️", t("pf_games"), st.games || 0],
+        ["🏆", t("pf_wins"), st.wins || 0],
+        ["📈", t("pf_rate"), rate],
+        ["🔥", t("pf_streak"), st.streak || 0],
+        ["⚡", t("pf_best"), st.bestStreak || 0],
+        ["🏵", t("pf_troph"), st.trophies || 0],
+        ["💰", t("pf_spent"), (st.totalSpent || 0) + "M"],
+        ["💸", t("pf_bid"), (st.biggestBid || 0) + "M"],
+        ["🛒", t("pf_most"), most],
+        ["❤️", t("pf_fav"), fav]
+      ];
+      for (var i=0;i<cells.length;i++){
+        var c = el("div","stat-cell");
+        c.appendChild(el("div","stat-emoji", cells[i][0]));
+        c.appendChild(el("div","stat-label", cells[i][1]));
+        c.appendChild(el("div","stat-value", String(cells[i][2])));
+        grid.appendChild(c);
+      }
+    }).catch(function(){ qs("pf-loading").classList.add("hidden"); });
+  });
+}
+function changeCountry(){
+  if (!store.account) return;
+  var v = qs("pf-country").value;
+  store.account.country = v;
+  saveStore(store);
+  initFirebase().then(function(ok){
+    if (ok) myUserRef().update({ country: v }).catch(function(){});
+  });
+  qs("pf-pseudo").textContent = store.account.pseudo + " " + countryFlag(v);
+}
+
+/* ---------- CLASSEMENTS ---------- */
+var rankTab = "world";
+function openRanks(){
+  hideAllScreens();
+  show("screen-ranks");
+  var cbtn = document.querySelector(".tab-chip[data-tab=country]");
+  if (cbtn) cbtn.textContent = store.account ? countryLabel(store.account.country) : t("rk_country");
+  loadRanks(rankTab);
+}
+function rankRow(pos, pseudo, flag, wins, games, isMe){
+  var row = el("div","rank-row" + (isMe ? " rank-me" : ""));
+  var medals = ["🥇","🥈","🥉"];
+  row.appendChild(el("span","rank-medal", pos <= 3 ? medals[pos-1] : pos + "."));
+  row.appendChild(el("span","rank-name", flag + " " + pseudo + (isMe ? " · " + t("rk_me") : "")));
+  row.appendChild(el("span","rank-det", wins + " " + t("rk_v") + " · " + games + " " + t("rk_j")));
+  return row;
+}
+function renderRankList(users){
+  var box = qs("ranks-list");
+  clear(box);
+  if (!users.length){
+    box.appendChild(el("div","rk-empty", t("rk_empty")));
+    return;
+  }
+  users.sort(function(a,b){
+    var wa = (a.stats && a.stats.wins) || 0, wb = (b.stats && b.stats.wins) || 0;
+    if (wa !== wb) return wb - wa;
+    var ga = (a.stats && a.stats.games) || 0, gb = (b.stats && b.stats.games) || 0;
+    return ga - gb;
+  });
+  for (var i=0;i<users.length && i<50;i++){
+    var u = users[i];
+    var isMe = store.account && u.key === store.account.key;
+    box.appendChild(rankRow(i+1, u.pseudo, countryFlag(u.country || "XX"), (u.stats && u.stats.wins) || 0, (u.stats && u.stats.games) || 0, isMe));
+  }
+}
+function loadRanks(tab){
+  rankTab = tab;
+  var box = qs("ranks-list");
+  clear(box);
+  box.appendChild(el("div","rk-empty", t("rk_loading")));
+  initFirebase().then(function(ok){
+    if (!ok){ clear(box); box.appendChild(el("div","rk-empty", t("st_noconfig"))); return; }
+    if (tab === "world"){
+      fb.db.collection("users").orderBy("stats.wins","desc").limit(50).get().then(function(qsnap){
+        var arr = [];
+        qsnap.forEach(function(s){ var d = s.data(); d.key = s.id; arr.push(d); });
+        renderRankList(arr);
+      }).catch(function(){ clear(box); box.appendChild(el("div","rk-empty", t("st_err"))); });
+    } else if (tab === "country"){
+      var c = store.account ? store.account.country : "FR";
+      fb.db.collection("users").where("country","==",c).limit(200).get().then(function(qsnap){
+        var arr = [];
+        qsnap.forEach(function(s){ var d = s.data(); d.key = s.id; arr.push(d); });
+        renderRankList(arr);
+      }).catch(function(){ clear(box); box.appendChild(el("div","rk-empty", t("st_err"))); });
+    } else {
+      /* amis = tous les membres de mes ligues, stats globales */
+      if (!store.account){ clear(box); box.appendChild(el("div","rk-empty", t("acc_need"))); return; }
+      myUserRef().get().then(function(snap){
+        var codes = (snap.exists && snap.data().leagues) || [];
+        if (!codes.length){ clear(box); box.appendChild(el("div","rk-empty", t("lg_none"))); return; }
+        var gets = [];
+        for (var i=0;i<codes.length && i<10;i++) gets.push(fb.db.collection("leagues").doc(codes[i]).get());
+        Promise.all(gets).then(function(snaps){
+          var keys = {}, list = [];
+          for (var j=0;j<snaps.length;j++){
+            if (!snaps[j].exists) continue;
+            var mem = snaps[j].data().members || {};
+            for (var k in mem){ if (!keys[k]){ keys[k] = true; list.push(k); } }
+          }
+          if (!list.length){ clear(box); box.appendChild(el("div","rk-empty", t("rk_empty"))); return; }
+          var chunks = [];
+          for (var c2=0;c2<list.length && c2<100;c2+=10) chunks.push(list.slice(c2, c2+10));
+          var gets2 = [];
+          for (var c3=0;c3<chunks.length;c3++){
+            gets2.push(fb.db.collection("users").where(firebase.firestore.FieldPath.documentId(),"in",chunks[c3]).get());
+          }
+          Promise.all(gets2).then(function(qsnaps){
+            var arr = [];
+            for (var q=0;q<qsnaps.length;q++){
+              qsnaps[q].forEach(function(s){ var d = s.data(); d.key = s.id; arr.push(d); });
+            }
+            renderRankList(arr);
+          }).catch(function(){ clear(box); box.appendChild(el("div","rk-empty", t("st_err"))); });
+        });
+      }).catch(function(){ clear(box); box.appendChild(el("div","rk-empty", t("st_err"))); });
+    }
+  });
+}
+
+/* ---------- LIGUES ---------- */
+var currentLeague = null;
+function setLgStatus(msg, isError){
+  var e = qs("lg-status");
+  e.textContent = msg || "";
+  e.className = "online-status" + (isError ? " online-error" : "");
+}
+function openLeagues(){
+  hideAllScreens();
+  show("screen-leagues");
+  setLgStatus("");
+  renderMyLeagues();
+}
+function renderMyLeagues(){
+  var box = qs("lg-mine-list");
+  clear(box);
+  if (!store.account){
+    box.appendChild(el("div","rk-empty", t("acc_need")));
+    return;
+  }
+  box.appendChild(el("div","rk-empty", t("rk_loading")));
+  initFirebase().then(function(ok){
+    if (!ok){ clear(box); box.appendChild(el("div","rk-empty", t("st_noconfig"))); return; }
+    myUserRef().get().then(function(snap){
+      clear(box);
+      var codes = (snap.exists && snap.data().leagues) || [];
+      if (!codes.length){ box.appendChild(el("div","rk-empty", t("lg_none"))); return; }
+      for (var i=0;i<codes.length;i++){
+        (function(code){
+          fb.db.collection("leagues").doc(code).get().then(function(ls){
+            if (!ls.exists) return;
+            var d = ls.data();
+            var card = el("button","lg-card");
+            var top = el("div","lg-card-top");
+            top.appendChild(el("span","lg-card-name", d.name));
+            top.appendChild(el("span","lg-card-season", tf("lg_season", { n: d.season })));
+            card.appendChild(top);
+            card.appendChild(el("div","lg-card-sub", code + " · " + tf("lg_members", { n: d.memberCount || 0 })));
+            card.addEventListener("click", function(){ openLeagueDetail(code); });
+            box.appendChild(card);
+          });
+        })(codes[i]);
+      }
+    }).catch(function(){ clear(box); box.appendChild(el("div","rk-empty", t("st_err"))); });
+  });
+}
+function createLeague(){
+  if (!store.account){ setLgStatus(t("acc_need"), true); return; }
+  var name = qs("lg-name-input").value.replace(/\s+/g," ").trim();
+  var pass = qs("lg-pass-input").value.trim();
+  var maxM = parseInt(qs("lg-max-input").value, 10);
+  if (name.length < 3 || name.length > 20){ setLgStatus(t("lg_badname"), true); return; }
+  if (isNaN(maxM) || maxM < 4 || maxM > 100){ setLgStatus(t("lg_badmax"), true); return; }
+  setLgStatus(t("st_creating"));
+  initFirebase().then(function(ok){
+    if (!ok) return setLgStatus(t("st_noconfig"), true);
+    var code = makeCode() + makeCode().charAt(0);
+    var ref = fb.db.collection("leagues").doc(code);
+    var members = {};
+    members[store.account.key] = { pseudo: store.account.pseudo };
+    ref.set(cleanData({
+      code: code, name: name, passHash: pass ? hashSecret(code, pass) : null,
+      creator: store.account.key, createdAt: Date.now(), maxMembers: maxM,
+      memberCount: 1, members: members, season: 1, standings: {}, history: []
+    })).then(function(){
+      myUserRef().update({ leagues: firebase.firestore.FieldValue.arrayUnion(code) }).catch(function(){});
+      qs("lg-name-input").value = ""; qs("lg-pass-input").value = "";
+      setLgStatus(t("lg_created") + " " + code);
+      renderMyLeagues();
+    }).catch(function(){ setLgStatus(t("st_err"), true); });
+  });
+}
+function joinLeague(){
+  if (!store.account){ setLgStatus(t("acc_need"), true); return; }
+  var code = qs("lg-code-input").value.trim().toUpperCase();
+  var pass = qs("lg-joinpass-input").value.trim();
+  if (code.length < 5){ setLgStatus(t("lg_notfound"), true); return; }
+  setLgStatus(t("rk_loading"));
+  initFirebase().then(function(ok){
+    if (!ok) return setLgStatus(t("st_noconfig"), true);
+    var ref = fb.db.collection("leagues").doc(code);
+    fb.db.runTransaction(function(tx){
+      return tx.get(ref).then(function(snap){
+        if (!snap.exists) throw new Error("notfound");
+        var d = snap.data();
+        if (d.members && d.members[store.account.key]) throw new Error("already");
+        if ((d.memberCount || 0) >= d.maxMembers) throw new Error("full");
+        if (d.passHash && d.passHash !== hashSecret(code, pass)) throw new Error("pass");
+        var u = { memberCount: (d.memberCount || 0) + 1 };
+        u["members." + store.account.key] = { pseudo: store.account.pseudo };
+        tx.update(ref, cleanData(u));
+      });
+    }).then(function(){
+      myUserRef().update({ leagues: firebase.firestore.FieldValue.arrayUnion(code) }).catch(function(){});
+      qs("lg-code-input").value = ""; qs("lg-joinpass-input").value = "";
+      setLgStatus(t("lg_joined"));
+      renderMyLeagues();
+    }).catch(function(err){
+      var m = err && err.message;
+      if (m === "notfound") setLgStatus(t("lg_notfound"), true);
+      else if (m === "already") setLgStatus(t("lg_already"), true);
+      else if (m === "full") setLgStatus(t("lg_full"), true);
+      else if (m === "pass") setLgStatus(t("lg_wrongpass"), true);
+      else setLgStatus(t("st_err"), true);
+    });
+  });
+}
+function leagueStandingsArr(d){
+  var arr = [];
+  for (var k in (d.standings || {})){
+    var s = d.standings[k];
+    arr.push({ key: k, pseudo: s.pseudo || k, wins: s.wins || 0, games: s.games || 0 });
+  }
+  arr.sort(function(a,b){
+    if (a.wins !== b.wins) return b.wins - a.wins;
+    if (a.games !== b.games) return a.games - b.games;
+    return a.pseudo < b.pseudo ? -1 : 1;
+  });
+  return arr;
+}
+function openLeagueDetail(code){
+  hideAllScreens();
+  show("screen-league-detail");
+  currentLeague = code;
+  var box = qs("ld-body");
+  clear(box);
+  box.appendChild(el("div","rk-empty", t("rk_loading")));
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    fb.db.collection("leagues").doc(code).get().then(function(snap){
+      if (!snap.exists) return;
+      renderLeagueDetail(snap.data());
+    });
+  });
+}
+function renderLeagueDetail(d){
+  qs("ld-name").textContent = d.name;
+  var box = qs("ld-body");
+  clear(box);
+
+  var codeBox = el("div","ld-code-box");
+  codeBox.appendChild(el("div","online-label", t("lg_code")));
+  codeBox.appendChild(el("div","wait-code ld-code", d.code));
+  codeBox.appendChild(el("div","wait-msg", t("lg_share")));
+  codeBox.appendChild(el("div","wait-players", tf("lg_members", { n: d.memberCount || 0 }) + " / " + d.maxMembers));
+  box.appendChild(codeBox);
+
+  box.appendChild(el("div","shop-section", tf("lg_standings", { n: d.season })));
+  var arr = leagueStandingsArr(d);
+  if (!arr.length){
+    box.appendChild(el("div","rk-empty", t("lg_nogames")));
+  } else {
+    for (var i=0;i<arr.length;i++){
+      var isMe = store.account && arr[i].key === store.account.key;
+      box.appendChild(rankRow(i+1, arr[i].pseudo, "", arr[i].wins, arr[i].games, isMe));
+    }
+  }
+
+  if (d.history && d.history.length){
+    box.appendChild(el("div","shop-section", t("lg_hist")));
+    for (var h=d.history.length-1; h>=0; h--){
+      var hh = d.history[h];
+      var row = el("div","rank-row");
+      row.appendChild(el("span","rank-medal","🏵"));
+      row.appendChild(el("span","rank-name", tf("lg_season", { n: hh.season })));
+      row.appendChild(el("span","rank-det", tf("lg_champ", { p: hh.championPseudo || "?" })));
+      box.appendChild(row);
+    }
+  }
+
+  if (store.account && d.creator === store.account.key && arr.length){
+    var closeBtn = el("button","big-btn gold ld-close", t("lg_close"));
+    closeBtn.addEventListener("click", function(){ closeSeason(d.code); });
+    box.appendChild(closeBtn);
+  }
+}
+function closeSeason(code){
+  if (!window.confirm(t("lg_close_confirm"))) return;
+  var ref = fb.db.collection("leagues").doc(code);
+  var championKey = null, championPseudo = null;
+  fb.db.runTransaction(function(tx){
+    return tx.get(ref).then(function(snap){
+      if (!snap.exists) return;
+      var d = snap.data();
+      var arr = leagueStandingsArr(d);
+      if (!arr.length) throw new Error("empty");
+      championKey = arr[0].key;
+      championPseudo = arr[0].pseudo;
+      var top = [];
+      for (var i=0;i<arr.length && i<10;i++) top.push({ pseudo: arr[i].pseudo, wins: arr[i].wins, games: arr[i].games });
+      var hist = (d.history || []).slice();
+      hist.push({ season: d.season, closedAt: Date.now(), championKey: championKey, championPseudo: championPseudo, top: top });
+      tx.update(ref, cleanData({ season: d.season + 1, standings: {}, history: hist }));
+    });
+  }).then(function(){
+    if (championKey){
+      fb.db.collection("users").doc(championKey).update({
+        "stats.trophies": firebase.firestore.FieldValue.increment(1)
+      }).catch(function(){});
+    }
+    window.alert(tf("lg_closed", { p: championPseudo }));
+    openLeagueDetail(code);
+  }).catch(function(err){
+    if (err && err.message === "empty") setLgStatus(t("lg_nogames"), true);
+  });
+}
+
+/* ---------- ECRAN ONLINE : compte + selecteur de ligue ---------- */
+function renderOnlineAccount(){
+  var box = qs("online-acc");
+  clear(box);
+  if (store.account){
+    var line = el("div","online-acc-line");
+    line.appendChild(el("span","online-acc-name", tf("acc_logged", { p: store.account.pseudo + " " + countryFlag(store.account.country) })));
+    var b = el("button","link-btn", t("pf_title"));
+    b.addEventListener("click", openProfile);
+    line.appendChild(b);
+    box.appendChild(line);
+    fillGameLeagueSelect();
+  } else {
+    var need = el("div","online-acc-line");
+    need.appendChild(el("span","online-acc-name", t("acc_need")));
+    var b2 = el("button","mid-btn", t("acc_title"));
+    b2.addEventListener("click", openProfile);
+    need.appendChild(b2);
+    box.appendChild(need);
+    qs("game-league-row").classList.add("hidden");
+  }
+}
+function fillGameLeagueSelect(){
+  var row = qs("game-league-row");
+  var sel = qs("game-league");
+  clear(sel);
+  var none = el("option", null, t("lg_free"));
+  none.value = "";
+  sel.appendChild(none);
+  row.classList.add("hidden");
+  initFirebase().then(function(ok){
+    if (!ok || !store.account) return;
+    myUserRef().get().then(function(snap){
+      var codes = (snap.exists && snap.data().leagues) || [];
+      if (!codes.length) return;
+      for (var i=0;i<codes.length;i++){
+        (function(code){
+          fb.db.collection("leagues").doc(code).get().then(function(ls){
+            if (!ls.exists) return;
+            var o = el("option", null, ls.data().name + " (" + code + ")");
+            o.value = code;
+            sel.appendChild(o);
+            row.classList.remove("hidden");
+          });
+        })(codes[i]);
+      }
+    });
+  });
+}
+
+/* ---------- INIT V5 ---------- */
+function initV5(){
+  qs("btn-profile").addEventListener("click", openProfile);
+  qs("btn-ranks").addEventListener("click", openRanks);
+  qs("btn-leagues").addEventListener("click", openLeagues);
+  qs("btn-register").addEventListener("click", registerAccount);
+  qs("btn-login").addEventListener("click", loginAccount);
+  qs("btn-logout").addEventListener("click", logoutAccount);
+  qs("pf-country").addEventListener("change", changeCountry);
+  qs("btn-profile-back").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
+  qs("btn-ranks-back").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
+  qs("btn-leagues-back").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
+  qs("btn-ld-back").addEventListener("click", openLeagues);
+  qs("btn-lg-create").addEventListener("click", createLeague);
+  qs("btn-lg-join").addEventListener("click", joinLeague);
+  bindChips(".tab-chip", "tab-active", function(btn){ loadRanks(btn.getAttribute("data-tab")); });
+  fillCountrySelect(qs("acc-country"), "FR");
+  if (store.account) fillCountrySelect(qs("pf-country"), store.account.country);
+  else fillCountrySelect(qs("pf-country"), "FR");
+}
 
 </script>
 </body>

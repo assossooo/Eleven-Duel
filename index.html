@@ -1,0 +1,1949 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0817">
+<title>Eleven Duel</title>
+<style>
+:root{
+  --bg:#0a0817;
+  --panel:#151228;
+  --panel2:#1d1936;
+  --cyan:#27c3f5;
+  --gold:#f5b31c;
+  --orange:#f5731c;
+  --pink:#f52c8c;
+  --violet:#8b3df5;
+  --txt:#f2f0fa;
+  --muted:#8d87ad;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
+  overflow-x:hidden;
+  background-image:radial-gradient(circle at 20% 0%, rgba(139,61,245,.14), transparent 45%),
+                   radial-gradient(circle at 85% 100%, rgba(39,195,245,.10), transparent 45%);
+  background-attachment:fixed;
+}
+.hidden{display:none !important}
+.screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
+.brush{
+  font-weight:900;font-style:italic;letter-spacing:-.5px;
+  text-transform:uppercase;
+  text-shadow:2px 2px 0 rgba(0,0,0,.55);
+}
+
+/* ------- HOME ------- */
+#screen-home{justify-content:center;text-align:center;gap:16px;position:relative}
+.coins-pill{
+  position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;
+  background:var(--panel2);border:1px solid rgba(245,179,28,.5);border-radius:999px;
+  padding:7px 14px;font-weight:900;font-style:italic;font-size:15px;color:var(--gold);
+}
+.logo{width:210px;max-width:58vw;border-radius:28px;filter:drop-shadow(0 8px 30px rgba(139,61,245,.45))}
+.home-tag{color:var(--muted);font-size:14px;max-width:290px;line-height:1.45}
+.prof-select{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:320px}
+.prof-label{width:100%;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:2px}
+.prof-chip{
+  background:var(--panel2);border:1px solid #3a3260;color:var(--txt);
+  border-radius:999px;padding:8px 13px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit;
+}
+.prof-chip.prof-active{
+  background:linear-gradient(120deg,rgba(245,44,140,.3),rgba(139,61,245,.3));
+  border-color:var(--pink);
+}
+.btn{
+  border:none;border-radius:16px;cursor:pointer;
+  font-family:inherit;font-weight:800;font-size:17px;color:#fff;
+  padding:15px 22px;width:260px;max-width:80vw;
+  transition:transform .12s ease;
+}
+.btn:active{transform:scale(.96)}
+.btn-play{
+  background:linear-gradient(120deg,var(--cyan),var(--violet) 55%,var(--pink));
+  box-shadow:0 6px 22px rgba(139,61,245,.5);
+  font-style:italic;text-transform:uppercase;letter-spacing:.5px;font-size:19px;
+}
+.btn-ghost{background:var(--panel2);color:var(--txt);border:1px solid #322b58}
+.btn-shop-home{
+  background:linear-gradient(120deg,var(--gold),var(--orange));color:#1a1000;
+  box-shadow:0 5px 18px rgba(245,115,28,.35);font-style:italic;text-transform:uppercase;
+}
+.btn-soon{background:var(--panel);color:var(--muted);border:1px dashed #3a3260}
+.soon-pill{font-size:11px;background:var(--pink);color:#fff;border-radius:8px;padding:2px 7px;margin-left:8px;font-style:italic;vertical-align:2px}
+
+/* ------- HUD ------- */
+#screen-game{padding:12px 14px 24px;gap:13px}
+.hud{width:100%;max-width:460px;display:flex;flex-direction:column;gap:8px}
+.hud-round{
+  text-align:center;font-size:13px;color:var(--gold);
+  font-weight:900;font-style:italic;letter-spacing:2px;
+}
+.hud-sides{display:flex;gap:10px}
+.hud-side{flex:1;background:var(--panel);border-radius:14px;padding:10px 12px;border:1px solid #29224a}
+.hud-side.you{border-color:rgba(39,195,245,.5)}
+.hud-side.ai{border-color:rgba(245,44,140,.5)}
+.hud-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.hud-side.you .hud-label{color:var(--cyan)}
+.hud-side.ai .hud-label{color:var(--pink)}
+.hud-nums{display:flex;justify-content:space-between;align-items:baseline;margin-top:3px}
+.hud-budget{font-size:21px;font-weight:900;font-style:italic}
+.hud-count{font-size:13px;color:var(--muted);font-weight:700}
+.hud-barwrap{height:5px;background:#241e42;border-radius:3px;margin-top:7px;overflow:hidden}
+.hud-bar{height:100%;border-radius:3px;transition:width .5s ease}
+.hud-side.you .hud-bar{background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.hud-side.ai .hud-bar{background:linear-gradient(90deg,var(--pink),var(--orange))}
+
+/* ------- CARTE JOUEUR ------- */
+.player-card{width:100%;max-width:340px;border-radius:22px;padding:3px;animation:cardIn .4s ease}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.94)}to{opacity:1;transform:none}}
+.tier-gold{background:linear-gradient(135deg,var(--gold),var(--orange),var(--pink))}
+.tier-pink{background:linear-gradient(135deg,var(--pink),var(--violet))}
+.tier-cyan{background:linear-gradient(135deg,var(--cyan),var(--violet))}
+.tier-grey{background:linear-gradient(135deg,#565073,#39335c)}
+.pc-inner{background:var(--panel);border-radius:19px;padding:16px 18px;text-align:center;position:relative;overflow:hidden}
+.pc-inner:before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 50% -30%, rgba(255,255,255,.09), transparent 60%);
+  pointer-events:none;
+}
+.pc-note{
+  font-size:52px;font-weight:900;font-style:italic;line-height:1;
+  background:linear-gradient(180deg,#fff,#cfc8ff);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.pc-name{font-size:24px;font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:-.5px;margin-top:5px}
+.pc-meta{margin-top:5px;color:var(--muted);font-size:14px;font-weight:600}
+.pc-meta span{color:var(--txt)}
+
+/* ------- TIMER ------- */
+.timer-wrap{width:100%;max-width:340px;display:flex;align-items:center;gap:10px}
+.timer-track{flex:1;height:8px;background:#241e42;border-radius:4px;overflow:hidden}
+#timer-bar{
+  height:100%;width:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--gold),var(--orange),var(--pink));
+}
+#timer-sec{font-size:14px;font-weight:900;font-style:italic;color:var(--gold);width:30px;text-align:right}
+
+/* ------- ZONE DE MISE ------- */
+#bid-zone{width:100%;max-width:340px;display:flex;flex-direction:column;gap:11px}
+.bid-row{display:flex;align-items:center;gap:10px}
+#bid-input{
+  width:92px;background:var(--panel2);border:1px solid #3a3260;border-radius:12px;
+  color:var(--txt);font-size:24px;font-weight:900;font-style:italic;text-align:center;
+  padding:10px 6px;font-family:inherit;
+}
+.bid-m{font-size:20px;font-weight:900;color:var(--gold);font-style:italic}
+#bid-slider{flex:1;accent-color:var(--violet);height:30px}
+.chips{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.chip-bump{
+  background:var(--panel2);border:1px solid #3a3260;color:var(--txt);
+  border-radius:10px;padding:8px 10px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit;
+}
+.chip-bump:active{background:var(--violet)}
+.chip-minus{color:var(--pink);border-color:rgba(245,44,140,.4)}
+.chip-allin{
+  background:linear-gradient(120deg,var(--pink),var(--orange));color:#fff;border:none;
+  font-style:italic;text-transform:uppercase;
+}
+#bid-max-label{text-align:center;color:var(--muted);font-size:12px;font-weight:600}
+.bid-actions{display:flex;gap:10px}
+.btn-bid{
+  flex:1.6;background:linear-gradient(120deg,var(--gold),var(--orange));
+  box-shadow:0 5px 18px rgba(245,115,28,.4);color:#1a1000;
+  font-style:italic;text-transform:uppercase;font-size:18px;
+}
+.btn-pass{flex:1;background:var(--panel2);border:1px solid #3a3260;color:var(--muted)}
+#auto-pass{color:var(--muted);font-size:14px;font-weight:600;text-align:center}
+.btn-squads-float{
+  background:var(--panel2);border:1px solid #3a3260;color:var(--txt);
+  border-radius:12px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;
+}
+
+/* ------- OVERLAYS ------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(6,4,16,.88);
+  display:flex;align-items:center;justify-content:center;
+  z-index:50;padding:18px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.overlay-inner{
+  background:var(--panel);border:1px solid #322b58;border-radius:22px;
+  padding:22px 18px;width:100%;max-width:380px;max-height:82vh;overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* ------- REVEAL ------- */
+#overlay-reveal .overlay-inner{text-align:center}
+.rv-title{font-size:13px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:2px}
+#rv-player{font-size:19px;font-weight:900;font-style:italic;margin-top:4px}
+.rv-cards{display:flex;align-items:center;gap:10px;margin:18px 0}
+.rv-card{flex:1;border-radius:16px;padding:16px 8px}
+.rv-card .rv-side{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;opacity:.85}
+.rv-card .rv-amt{font-size:32px;font-weight:900;font-style:italic;margin-top:4px}
+#rv-card-you{background:linear-gradient(140deg,rgba(39,195,245,.22),rgba(139,61,245,.22));border:1px solid rgba(39,195,245,.6)}
+#rv-card-ai{background:linear-gradient(140deg,rgba(245,44,140,.22),rgba(245,115,28,.22));border:1px solid rgba(245,44,140,.6)}
+.rv-vs{font-size:20px;font-weight:900;font-style:italic;color:var(--gold)}
+.slam-left{animation:slamL .38s cubic-bezier(.2,1.4,.4,1)}
+.slam-right{animation:slamR .38s cubic-bezier(.2,1.4,.4,1)}
+@keyframes slamL{from{opacity:0;transform:translateX(-45px) scale(1.15)}to{opacity:1;transform:none}}
+@keyframes slamR{from{opacity:0;transform:translateX(45px) scale(1.15)}to{opacity:1;transform:none}}
+.rv-result{font-size:16px;font-weight:800;line-height:1.45;min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;padding:8px}
+.rv-win{background:rgba(39,195,245,.14);color:var(--cyan)}
+.rv-lose{background:rgba(245,44,140,.14);color:var(--pink)}
+.rv-tie{background:rgba(245,179,28,.14);color:var(--gold)}
+.btn-next{margin-top:16px;width:100%;background:linear-gradient(120deg,var(--cyan),var(--violet));font-style:italic;text-transform:uppercase}
+
+/* ------- REGLES ------- */
+.rules-title{font-size:22px;margin-bottom:12px;text-align:center}
+.rules-list{color:#cdc8e6;font-size:14px;line-height:1.6;padding-left:18px}
+.rules-list li{margin-bottom:8px}
+.rules-list b{color:var(--gold)}
+
+/* ------- EFFECTIFS ------- */
+.sq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;margin-top:14px}
+.sq-head:first-child{margin-top:0}
+.sq-title{font-size:15px;font-weight:900;font-style:italic;text-transform:uppercase}
+.sq-title.you{color:var(--cyan)}
+.sq-title.ai{color:var(--pink)}
+.sq-avg{font-size:13px;color:var(--gold);font-weight:800}
+.squad-row{display:flex;align-items:center;gap:8px;background:var(--panel2);border-radius:10px;padding:7px 10px;margin-bottom:5px}
+.squad-pos{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0}
+.pos-G{background:rgba(245,179,28,.2);color:var(--gold)}
+.pos-D{background:rgba(39,195,245,.2);color:var(--cyan)}
+.pos-M{background:rgba(139,61,245,.25);color:#b78df8}
+.pos-A{background:rgba(245,44,140,.2);color:var(--pink)}
+.squad-name{flex:1;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.squad-paid{font-size:12px;color:var(--muted);font-weight:700}
+.squad-note{width:34px;text-align:center;border-radius:8px;padding:3px 0;font-size:14px;font-weight:900;font-style:italic;color:#fff;flex-shrink:0}
+.squad-empty{color:var(--muted);font-size:13px;text-align:center;padding:10px}
+.btn-close{margin-top:14px;width:100%}
+
+/* ------- FIN ------- */
+#screen-end{justify-content:flex-start;padding-top:26px;gap:14px}
+.end-box{
+  width:100%;max-width:380px;border-radius:22px;padding:22px 18px;text-align:center;
+  background:var(--panel);border:1px solid #322b58;
+}
+.end-box.end-win{border-color:var(--cyan);box-shadow:0 0 34px rgba(39,195,245,.28)}
+.end-box.end-lose{border-color:var(--pink);box-shadow:0 0 34px rgba(245,44,140,.25)}
+.end-box.end-tie{border-color:var(--gold);box-shadow:0 0 34px rgba(245,179,28,.22)}
+#end-title{font-size:34px}
+#end-sub{color:var(--muted);font-size:14px;margin-top:8px;line-height:1.5}
+.end-avgs{display:flex;gap:10px;margin-top:16px}
+.end-avg{flex:1;background:var(--panel2);border-radius:14px;padding:12px}
+.end-avg .lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.end-avg.you .lbl{color:var(--cyan)}
+.end-avg.ai .lbl{color:var(--pink)}
+.end-avg .val{font-size:22px;font-weight:900;font-style:italic;margin-top:2px}
+.end-form{font-size:11px;color:var(--muted);font-weight:600;margin-top:4px;line-height:1.35}
+#end-coins{
+  margin-top:14px;font-size:15px;font-weight:900;font-style:italic;color:var(--gold);
+}
+.end-squads{width:100%;max-width:380px}
+.end-actions{display:flex;gap:10px;width:100%;max-width:380px;margin-top:4px;flex-wrap:wrap}
+.end-actions .btn{width:auto;flex:1;font-size:15px;padding:13px 10px;min-width:100px}
+
+/* ------- SHOP ------- */
+#screen-shop{padding-top:20px;gap:14px}
+.shop-head{width:100%;max-width:400px;display:flex;justify-content:space-between;align-items:center}
+.shop-title{font-size:26px}
+.shop-coins-pill{
+  background:var(--panel2);border:1px solid rgba(245,179,28,.5);border-radius:999px;
+  padding:7px 14px;font-weight:900;font-style:italic;font-size:15px;color:var(--gold);
+}
+.shop-sub{color:var(--muted);font-size:13px;max-width:340px;text-align:center;line-height:1.45}
+.shop-grid{width:100%;max-width:400px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.shop-card{
+  background:var(--panel);border:1px solid #322b58;border-radius:18px;
+  padding:14px 10px;text-align:center;display:flex;flex-direction:column;gap:8px;
+}
+.shop-card.shop-equipped{border-color:var(--gold);box-shadow:0 0 18px rgba(245,179,28,.25)}
+.shop-emoji{font-size:38px;line-height:1}
+.shop-name{font-size:13px;font-weight:800}
+.shop-btns{display:flex;flex-direction:column;gap:6px}
+.shop-btn{
+  border:none;border-radius:10px;padding:8px 6px;font-family:inherit;
+  font-weight:800;font-size:13px;cursor:pointer;
+}
+.shop-preview{background:var(--panel2);color:var(--muted);border:1px solid #3a3260}
+.shop-btn-buy{background:linear-gradient(120deg,var(--gold),var(--orange));color:#1a1000}
+.shop-btn-poor{opacity:.4}
+.shop-btn-own{background:linear-gradient(120deg,var(--cyan),var(--violet));color:#fff}
+.shop-btn-equipped{background:var(--panel2);color:var(--gold);border:1px solid rgba(245,179,28,.5)}
+
+/* ------- ANIMATIONS DE VICTOIRE ------- */
+.victory-animation{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
+.money{position:absolute;top:-40px;font-size:28px;animation:fallMoney 2.8s linear forwards}
+@keyframes fallMoney{to{transform:translateY(110vh) rotate(420deg);opacity:.2}}
+.confetti{position:absolute;top:-20px;width:8px;height:16px;background:gold;animation:fallConfetti 2.5s linear forwards}
+@keyframes fallConfetti{to{transform:translateY(110vh) rotate(720deg);opacity:.1}}
+.firework{
+  position:absolute;width:8px;height:8px;border-radius:50%;background:white;
+  box-shadow:0 -40px gold,28px -28px #ff4aa2,40px 0 #27c3f5,28px 28px gold,0 40px #fff,-28px 28px #8b3df5,-40px 0 #f5731c,-28px -28px #27c3f5;
+  animation:boom .8s ease-out forwards;
+}
+@keyframes boom{from{transform:scale(.1);opacity:1}to{transform:scale(2.8);opacity:0}}
+.dragon-fire{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);font-size:70px;animation:dragonPop 1.5s ease forwards}
+@keyframes dragonPop{
+  0%{transform:translateX(-50%) scale(.4);opacity:0}
+  35%{transform:translateX(-50%) scale(1.2);opacity:1}
+  100%{transform:translateX(-50%) scale(1);opacity:0}
+}
+.dragon-spark{position:absolute;bottom:26%;font-size:26px;animation:sparkUp 1.2s ease-out forwards}
+@keyframes sparkUp{to{transform:translateY(-45vh) scale(.5);opacity:0}}
+.mercato-king{
+  position:absolute;top:30%;left:50%;transform:translateX(-50%);
+  font-size:42px;font-weight:900;font-style:italic;text-transform:uppercase;color:gold;
+  text-shadow:3px 3px 0 #000,0 0 24px gold;white-space:nowrap;
+  animation:kingPop 1.8s ease forwards;
+}
+@keyframes kingPop{
+  0%{transform:translateX(-50%) scale(.3) rotate(-8deg);opacity:0}
+  35%{transform:translateX(-50%) scale(1.15) rotate(2deg);opacity:1}
+  100%{transform:translateX(-50%) scale(1) rotate(0);opacity:0}
+}
+.phone-notif{
+  position:absolute;bottom:22%;left:50%;transform:translateX(-50%);
+  background:#111;border:2px solid #333;border-radius:22px;padding:16px 18px;
+  font-size:18px;font-weight:800;box-shadow:0 0 30px rgba(39,195,245,.6);
+  animation:phoneVibe 1.4s linear forwards;white-space:nowrap;
+}
+.phone-line2{font-size:14px;color:var(--cyan);margin-top:4px}
+@keyframes phoneVibe{
+  0%,100%{transform:translateX(-50%) rotate(0);opacity:0}
+  10%,20%,30%,40%,50%,60%,75%{opacity:1}
+  15%{transform:translateX(-54%) rotate(-3deg)}
+  25%{transform:translateX(-46%) rotate(3deg)}
+  35%{transform:translateX(-53%) rotate(-2deg)}
+  45%{transform:translateX(-47%) rotate(2deg)}
+}
+
+/* ------- EN LIGNE ------- */
+#screen-online{justify-content:center;gap:18px}
+.online-title{font-size:28px;text-align:center}
+.online-block{width:100%;max-width:320px;display:flex;flex-direction:column;gap:8px}
+.online-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+.online-input{
+  background:var(--panel2);border:1px solid #3a3260;border-radius:12px;
+  color:var(--txt);font-size:17px;font-weight:700;padding:13px 14px;font-family:inherit;width:100%;
+}
+.online-input::placeholder{color:#5b5480}
+.online-btn{width:100%;max-width:none}
+.join-row{display:flex;gap:8px}
+.join-input{flex:1;text-transform:uppercase;letter-spacing:4px;font-weight:900;font-style:italic;text-align:center}
+.btn-join{width:auto;padding:13px 18px;background:linear-gradient(120deg,var(--cyan),var(--violet));font-size:15px}
+.btn-online-home{
+  background:linear-gradient(120deg,#1db954,#27c3f5);
+  box-shadow:0 5px 18px rgba(29,185,84,.35);font-style:italic;text-transform:uppercase;
+}
+.online-status{min-height:20px;font-size:13px;font-weight:700;color:var(--muted);text-align:center;max-width:300px;line-height:1.45}
+.online-status.online-error{color:var(--pink)}
+.btn-abandon{
+  background:none;border:1px solid rgba(245,44,140,.4);color:var(--pink);
+  border-radius:12px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;
+}
+/* ------- SALLE D'ATTENTE ------- */
+#screen-wait{justify-content:center;gap:18px;text-align:center}
+.wait-code-box{
+  background:var(--panel);border:2px dashed rgba(245,179,28,.6);border-radius:20px;
+  padding:18px 34px;
+}
+.wait-code-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+.wait-code{
+  font-size:44px;font-weight:900;font-style:italic;letter-spacing:8px;color:var(--gold);
+  text-shadow:2px 2px 0 rgba(0,0,0,.5);margin-top:4px;
+}
+.wait-msg{color:var(--muted);font-size:14px;max-width:280px;line-height:1.5}
+.wait-spinner{
+  width:34px;height:34px;border-radius:50%;
+  border:4px solid #2a2450;border-top-color:var(--violet);
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* ------- REVEAL EN ATTENTE ------- */
+.rv-waiting{
+  margin:26px 0;font-size:16px;font-weight:800;color:var(--gold);line-height:1.5;
+  animation:pulse 1.4s ease infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+</style>
+</head>
+<body>
+
+<div id="victory-animation" class="victory-animation"></div>
+
+<!-- ========== ACCUEIL ========== -->
+<div id="screen-home" class="screen">
+  <div class="coins-pill">🪙 <span id="home-coins">100</span></div>
+  <img class="logo" src="data:image/jpeg;base64,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K9o84zdQNjaBSzGQlIxjGcq+e1n1FVqOw7JdQ0w2pa1nCUpSSVHoBzqattkuOpJb099QaaccKnH3PtEnJCRxP4eNWs/qjS0Ulv3VrTgrVguu+A6DwGB1Jq1BTueMRybzKp1FbHEcA6TuQVfc06LXbHn52FzCgltkKylvxURxPgNw554VxuhW6wy9GSDFQylKNjeEbt+fGmF8vsi6OKSMtR+TYPHzNR8aU/FUVMOFOeI5HzFTK+IG0enNdDZ8z42O34zdy4e6kIh+jKWXkFa/rsugbK/I0BpK1KbbcVEWrf3S1EJV6/1rmHYszcoCM8eY+of6V9vKkxmizISHGyPdUr3gP3TWPRcM8wukC0tzzA4/Mx9OxcSktuFtQwpJwcVIWpDbfezZGCzGG0QftK+yKjGgVLCUjKlHAFOr0+GW27cycpa950j7Sz/Sl7C6iFwjBlOg07+Hue5NH5jjjjz61ZffJ2lfdHQf3wpnRRWgm65z3ueblFFFFQsEUUUURLRSUURFLSUURLRRSURLRSUURFLSUURFFFFERRRRREUUUURFFLSURPrfdJUAjul7Ted7at6T/Sp1V1i3eMI7my04DlLbp90nwP8A6qqUVdgrpYW4NW8itzJnNFuCmyt2E0tlkr7krCy2VEFChzSeION3jXy1cZyXkPNyFv8AdnchxRJ38QRUY1Jcb3BW0noactqYkqAOG18to4HxqHCKU3Z0TyWl9jmFbYV9YlDGHG3gPebKSceRFOjMWrc02tZPUYH9flVWZi3KIrbiTFNlYwfpDvH504W1KDRVPuLqkHiC4UpP9a1bh97EKsZ4xxXG429tuS49KmB6S4oq7htOVZPXfuHnTqJEQtpszC2222chKjhCOpPU/wDoVGOXCPGBRBaBP31DA+HOo+RJekK2nnCrHAch5CjSyPtPooc2WUWHRHqrXctXoYaEazI+qMd+4PmE/wBfhVTkSHpLynpDinHFcVKOSa5UVjLM+U9IrKnpYoB0Bnz4oopaK1Kwkp1FnvRhsghbZ4trGU01oqQSNFmx7mG7TYqSF6kJ/wApuO30KWxmo5SipRUo5JOSTzpKKkuJ1WUk0klg83siiiisVqRS0lFERRRRREUtJS0RJRRS0RFJRRREUUtJREtFJRREUUUtESUUUURFLSUtESUUtJREUtJRREUUtJRE8iXOdCSUxpLiEn7Ocj4GuMmU/LcLkl5bq+qzmuVJWWIkWvksRGwOxAZoopaSsVkiiiiiIopaSiIoopaIkooooiKKKKIilopKIiilpKIiiiiiIoopaKUlFLSUUJaSiiiIopaSiIopaSiJaSlpKIiilpKIiiiiiJaSiiiIooooiKKKWiJKWkpaIkoopaIkoopaIkooooiKKKKIlpKKKIiloooiSlpKKIilpKWiL//Z" alt="Eleven Duel">
+  <div class="home-tag">Enchères à l'aveugle. 250M de budget. 11 joueurs à recruter. La meilleure équipe gagne.</div>
+  <div class="prof-select">
+    <div class="prof-label">Ton adversaire : Ali</div>
+    <button class="prof-chip prof-active" data-prof="random">🎲 Aléatoire</button>
+    <button class="prof-chip" data-prof="prudent">🛡️ Prudent</button>
+    <button class="prof-chip" data-prof="agressif">🔥 Agressif</button>
+    <button class="prof-chip" data-prof="malin">🧠 Malin</button>
+  </div>
+  <button id="btn-play" class="btn btn-play">⚽ Lancer le duel</button>
+  <button id="btn-shop" class="btn btn-shop-home">🛒 Shop</button>
+  <button id="btn-rules" class="btn btn-ghost">📖 Règles du jeu</button>
+  <button id="btn-online" class="btn btn-online-home">🌐 Multijoueur en ligne</button>
+</div>
+
+<!-- ========== JEU ========== -->
+<div id="screen-game" class="screen hidden">
+  <div class="hud">
+    <div id="hud-round" class="hud-round">TOUR 1</div>
+    <div class="hud-sides">
+      <div class="hud-side you">
+        <div class="hud-label">Toi</div>
+        <div class="hud-nums"><span id="hud-you-budget" class="hud-budget">250M</span><span id="hud-you-count" class="hud-count">0/11</span></div>
+        <div class="hud-barwrap"><div id="hud-you-bar" class="hud-bar" style="width:100%"></div></div>
+      </div>
+      <div class="hud-side ai">
+        <div id="hud-ai-name" class="hud-label">Ali</div>
+        <div class="hud-nums"><span id="hud-ai-budget" class="hud-budget">250M</span><span id="hud-ai-count" class="hud-count">0/11</span></div>
+        <div class="hud-barwrap"><div id="hud-ai-bar" class="hud-bar" style="width:100%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="player-card" class="player-card tier-grey">
+    <div class="pc-inner">
+      <div id="pc-note" class="pc-note">88</div>
+      <div id="pc-name" class="pc-name brush">Joueur</div>
+      <div class="pc-meta"><span id="pc-pos">Milieu</span> &middot; <span id="pc-club">Club</span></div>
+    </div>
+  </div>
+
+  <div class="timer-wrap">
+    <div class="timer-track"><div id="timer-bar"></div></div>
+    <span id="timer-sec">15s</span>
+  </div>
+
+  <div id="bid-zone">
+    <div class="bid-row">
+      <input id="bid-input" type="number" inputmode="numeric" pattern="[0-9]*" value="10">
+      <span class="bid-m">M</span>
+      <input id="bid-slider" type="range" min="0" max="250" value="10">
+    </div>
+    <div class="chips">
+      <button class="chip-bump chip-minus" data-n="-10">-10</button>
+      <button class="chip-bump chip-minus" data-n="-5">-5</button>
+      <button class="chip-bump chip-minus" data-n="-1">-1</button>
+      <button class="chip-bump" data-n="1">+1</button>
+      <button class="chip-bump" data-n="5">+5</button>
+      <button class="chip-bump" data-n="10">+10</button>
+      <button class="chip-bump chip-allin" data-n="allin">All in</button>
+    </div>
+    <div id="bid-max-label">Mise max : 250M</div>
+    <div class="bid-actions">
+      <button id="btn-pass" class="btn btn-pass">Passer (0M)</button>
+      <button id="btn-bid" class="btn btn-bid">Miser !</button>
+    </div>
+  </div>
+  <div id="auto-pass" class="hidden">Ton 11 est complet — tu passes automatiquement…</div>
+
+  <button id="btn-squads" class="btn-squads-float">👥 Voir les effectifs</button>
+  <button id="btn-abandon" class="btn-abandon hidden">🏳️ Abandonner</button>
+</div>
+
+<!-- ========== REVEAL ========== -->
+<div id="overlay-reveal" class="overlay hidden">
+  <div class="overlay-inner">
+    <div class="rv-title">Mises révélées</div>
+    <div id="rv-player">Joueur (88)</div>
+    <div id="rv-waiting" class="rv-waiting hidden">⏳ En attente…</div>
+    <div id="rv-cards" class="rv-cards">
+      <div id="rv-card-you" class="rv-card"><div class="rv-side">Toi</div><div id="rv-you" class="rv-amt">0M</div></div>
+      <div class="rv-vs">VS</div>
+      <div id="rv-card-ai" class="rv-card"><div id="rv-ai-name" class="rv-side">Ali</div><div id="rv-ai" class="rv-amt">0M</div></div>
+    </div>
+    <div id="rv-result" class="rv-result"></div>
+    <button id="btn-next" class="btn btn-next">Tour suivant →</button>
+  </div>
+</div>
+
+<!-- ========== REGLES ========== -->
+<div id="overlay-rules" class="overlay hidden">
+  <div class="overlay-inner">
+    <div class="rules-title brush">Règles</div>
+    <ul class="rules-list">
+      <li>Chaque joueur démarre avec <b>250M</b> de budget.</li>
+      <li>À chaque tour, un joueur de foot est tiré au sort. Les stars sont <b>rares</b> !</li>
+      <li>Chacun mise <b>en secret</b> — tu as <b>15 secondes</b> pour choisir, sinon la mise affichée part toute seule !</li>
+      <li>La plus grosse mise remporte le joueur. Miser <b>0M</b> est autorisé. <b>All-in</b> aussi… à tes risques !</li>
+      <li>Maximum <b>5 passes</b> (mise à 0M) par duel — ensuite tu es <b>obligé de miser</b> au moins 1M !</li>
+      <li>En cas d'<b>égalité</b>, personne ne prend le joueur et les mises sont remboursées.</li>
+      <li>Objectif : recruter <b>11 joueurs</b>. Si ton budget ne permet plus de compléter (1M mini par joueur), tu es <b>éliminé</b>.</li>
+      <li>Bonus compo : <b>+0.5</b> sur ta note finale si ton 11 forme un vrai dispositif (1 gardien + 4-4-2, 4-3-3, 3-5-2, 4-5-1, 3-4-3, 5-3-2, 5-4-1 ou 4-2-4).</li>
+      <li>La meilleure <b>note finale</b> (moyenne + bonus) gagne le duel.</li>
+      <li>Gagne des <b>pièces</b> à chaque duel (100 victoire / 50 nul / 20 défaite) et dépense-les au <b>Shop</b> !</li>
+    </ul>
+    <button id="btn-rules-close" class="btn btn-ghost btn-close">Compris !</button>
+  </div>
+</div>
+
+<!-- ========== EFFECTIFS ========== -->
+<div id="overlay-squads" class="overlay hidden">
+  <div class="overlay-inner">
+    <div class="sq-head"><span class="sq-title you">Ton équipe</span><span class="sq-avg">Moy. <span id="sq-avg-you">-</span></span></div>
+    <div id="squad-you"></div>
+    <div class="sq-head"><span id="sq-title-ai" class="sq-title ai">Ali</span><span class="sq-avg">Moy. <span id="sq-avg-ai">-</span></span></div>
+    <div id="squad-ai"></div>
+    <button id="btn-squads-close" class="btn btn-ghost btn-close">Fermer</button>
+  </div>
+</div>
+
+<!-- ========== FIN ========== -->
+<div id="screen-end" class="screen hidden">
+  <div id="end-box" class="end-box">
+    <div id="end-title" class="brush">VICTOIRE !</div>
+    <div id="end-sub"></div>
+    <div class="end-avgs">
+      <div class="end-avg you">
+        <div class="lbl">Ta note</div>
+        <div id="end-avg-you" class="val">-</div>
+        <div id="end-form-you" class="end-form"></div>
+      </div>
+      <div class="end-avg ai">
+        <div id="end-ai-lbl" class="lbl">Ali</div>
+        <div id="end-avg-ai" class="val">-</div>
+        <div id="end-form-ai" class="end-form"></div>
+      </div>
+    </div>
+    <div id="end-coins">+100 🪙</div>
+  </div>
+  <div class="end-squads">
+    <div class="sq-head"><span class="sq-title you">Ton équipe</span></div>
+    <div id="end-squad-you"></div>
+    <div class="sq-head"><span id="end-sq-ai" class="sq-title ai">Ali</span></div>
+    <div id="end-squad-ai"></div>
+  </div>
+  <div class="end-actions">
+    <button id="btn-home" class="btn btn-ghost">Accueil</button>
+    <button id="btn-end-shop" class="btn btn-shop-home">🛒 Shop</button>
+    <button id="btn-replay" class="btn btn-play">Rejouer !</button>
+  </div>
+</div>
+
+<!-- ========== SHOP ========== -->
+<div id="screen-shop" class="screen hidden">
+  <div class="shop-head">
+    <div class="shop-title brush">Shop</div>
+    <div class="shop-coins-pill">🪙 <span id="shop-coins">100</span></div>
+  </div>
+  <div class="shop-sub">Achète des animations de victoire et équipe ta préférée : elle se déclenche à chaque duel gagné !</div>
+  <div id="shop-grid" class="shop-grid"></div>
+  <button id="btn-shop-back" class="btn btn-ghost">← Retour</button>
+</div>
+
+
+<!-- ========== EN LIGNE ========== -->
+<div id="screen-online" class="screen hidden">
+  <div class="online-title brush">Multijoueur</div>
+  <div class="online-block">
+    <label class="online-label" for="pseudo-input">Ton pseudo</label>
+    <input id="pseudo-input" class="online-input" type="text" maxlength="14" placeholder="Ex : DragonSlayer">
+  </div>
+  <div class="online-block">
+    <div class="online-label">Partie privée entre amis</div>
+    <button id="btn-create-private" class="btn btn-play online-btn">➕ Créer une partie</button>
+    <div class="join-row">
+      <input id="join-code-input" class="online-input join-input" type="text" maxlength="5" placeholder="CODE" autocapitalize="characters">
+      <button id="btn-join-private" class="btn btn-join">Rejoindre</button>
+    </div>
+  </div>
+  <div class="online-block">
+    <div class="online-label">Ou trouve un adversaire</div>
+    <button id="btn-random-match" class="btn btn-shop-home online-btn">🎲 Adversaire aléatoire</button>
+  </div>
+  <div id="online-status" class="online-status"></div>
+  <button id="btn-online-back" class="btn btn-ghost">← Retour</button>
+</div>
+
+<!-- ========== SALLE D'ATTENTE ========== -->
+<div id="screen-wait" class="screen hidden">
+  <div class="online-title brush">Partie créée !</div>
+  <div class="wait-code-box">
+    <div class="wait-code-label">Code de la partie</div>
+    <div id="wait-code" class="wait-code">-----</div>
+  </div>
+  <div id="wait-msg" class="wait-msg">Partage ce code avec ton ami !</div>
+  <div class="wait-spinner"></div>
+  <button id="btn-wait-cancel" class="btn btn-ghost">Annuler</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script>
+/* ELEVEN DUEL - v3 - solo vs Ali + MODE EN LIGNE (Firebase) */
+/* Contraintes iOS Safari : pas de spread, pas d'optional chaining, pas d'await hors async, pas de quotes imbriquees dans onclick */
+
+/* =========================================================
+   CONFIG FIREBASE - A REMPLIR !
+   Console Firebase > Parametres du projet > Tes applis > Config
+   ========================================================= */
+var FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAutkZjYKV6Fr1LSQ5JWw8h3hX1ew8QKUQ",
+  authDomain: "eleven-duel.firebaseapp.com",
+  projectId: "eleven-duel",
+  storageBucket: "eleven-duel.firebasestorage.app",
+  messagingSenderId: "893476714490",
+  appId: "1:893476714490:web:9c3bb883bce8eef246d643"
+};
+
+/* ---------- DATA : pool de joueurs [nom, poste, note, club] ---------- */
+var PLAYERS = [
+  /* Gardiens */
+  ["Courtois","G",89,"Real Madrid"],["Alisson","G",89,"Liverpool"],["Donnarumma","G",89,"Man City"],
+  ["Maignan","G",87,"Milan AC"],["Oblak","G",86,"Atl\u00e9tico"],["Ter Stegen","G",86,"Barcelone"],
+  ["Diogo Costa","G",86,"FC Porto"],["Ederson","G",85,"Fenerbah\u00e7e"],["E. Mart\u00ednez","G",85,"Aston Villa"],
+  ["Sommer","G",85,"Inter"],["Raya","G",85,"Arsenal"],["Kobel","G",84,"Dortmund"],
+  ["Rulli","G",83,"OM"],["Trubin","G",82,"Benfica"],
+  /* Defenseurs */
+  ["Van Dijk","D",89,"Liverpool"],["Hakimi","D",89,"PSG"],["Saliba","D",87,"Arsenal"],
+  ["Bastoni","D",87,"Inter"],["Nuno Mendes","D",87,"PSG"],["R\u00fcdiger","D",86,"Real Madrid"],
+  ["Gabriel","D",86,"Arsenal"],["Kound\u00e9","D",86,"Barcelone"],["Alexander-Arnold","D",86,"Real Madrid"],
+  ["Marquinhos","D",85,"PSG"],["Araujo","D",85,"Barcelone"],["Gvardiol","D",85,"Man City"],
+  ["Cubars\u00ed","D",85,"Barcelone"],["Grimaldo","D",85,"Leverkusen"],["Romero","D",85,"Tottenham"],
+  ["Konat\u00e9","D",85,"Liverpool"],["Upamecano","D",85,"Bayern"],["Tah","D",85,"Bayern"],
+  ["Huijsen","D",85,"Real Madrid"],["Milit\u00e3o","D",84,"Real Madrid"],["Pacho","D",84,"PSG"],
+  ["Frimpong","D",84,"Liverpool"],["Di Lorenzo","D",84,"Naples"],["Van de Ven","D",84,"Tottenham"],
+  ["Theo Hernandez","D",84,"Al-Hilal"],["Hincapi\u00e9","D",84,"Arsenal"],["Calafiori","D",84,"Arsenal"],
+  ["Zabarnyi","D",84,"PSG"],["Cucurella","D",84,"Chelsea"],["Robertson","D",83,"Liverpool"],
+  ["Davies","D",83,"Bayern"],["Kim Min-jae","D",83,"Bayern"],["Pavard","D",83,"OM"],
+  ["A\u00eft-Nouri","D",83,"Man City"],["Colwill","D",83,"Chelsea"],["Sch\u00e4r","D",82,"Newcastle"],
+  ["Botman","D",82,"Newcastle"],["Balerdi","D",82,"OM"],["Cancelo","D",82,"Al-Hilal"],
+  ["Yoro","D",82,"Man United"],["Aguerd","D",82,"OM"],["Bradley","D",81,"Liverpool"],
+  /* Milieux */
+  ["Rodri","M",90,"Man City"],["Bellingham","M",90,"Real Madrid"],["Wirtz","M",89,"Liverpool"],
+  ["Pedri","M",89,"Barcelone"],["Palmer","M",88,"Chelsea"],["Valverde","M",88,"Real Madrid"],
+  ["Musiala","M",88,"Bayern"],["Vitinha","M",88,"PSG"],["Olise","M",88,"Bayern"],
+  ["Odegaard","M",87,"Arsenal"],["Bruno Fernandes","M",87,"Man United"],["Rice","M",87,"Arsenal"],
+  ["Foden","M",86,"Man City"],["Barella","M",86,"Inter"],["Mac Allister","M",86,"Liverpool"],
+  ["Caicedo","M",86,"Chelsea"],["Kimmich","M",86,"Bayern"],["Joao Neves","M",86,"PSG"],
+  ["Gravenberch","M",86,"Liverpool"],["De Bruyne","M",85,"Naples"],["Zubimendi","M",85,"Arsenal"],
+  ["Enzo Fern\u00e1ndez","M",85,"Chelsea"],["Guimar\u00e3es","M",85,"Newcastle"],["Szoboszlai","M",85,"Liverpool"],
+  ["Tchouameni","M",85,"Real Madrid"],["Fabi\u00e1n Ruiz","M",85,"PSG"],["De Jong","M",85,"Barcelone"],
+  ["McTominay","M",85,"Naples"],["Modric","M",84,"Milan AC"],["Camavinga","M",84,"Real Madrid"],
+  ["Gavi","M",84,"Barcelone"],["Lobotka","M",84,"Naples"],["Za\u00efre-Emery","M",84,"PSG"],
+  ["Rabiot","M",84,"Milan AC"],["Ferm\u00edn L\u00f3pez","M",84,"Barcelone"],["Anguissa","M",83,"Naples"],
+  ["G\u00fcndogan","M",83,"Galatasaray"],["Kon\u00e9","M",83,"AS Roma"],["H\u00f8jbjerg","M",83,"OM"],
+  ["Merino","M",83,"Arsenal"],["Goretzka","M",82,"Bayern"],["Ugarte","M",82,"Man United"],
+  /* Attaquants */
+  ["Mbapp\u00e9","A",91,"Real Madrid"],["Haaland","A",91,"Man City"],["Demb\u00e9l\u00e9","A",90,"PSG"],
+  ["Lamine Yamal","A",90,"Barcelone"],["Salah","A",90,"Liverpool"],["Kane","A",90,"Bayern"],
+  ["Vinicius Jr","A",89,"Real Madrid"],["Raphinha","A",88,"Barcelone"],["Lautaro","A",88,"Inter"],
+  ["Saka","A",88,"Arsenal"],["Kvaratskhelia","A",88,"PSG"],["Isak","A",88,"Liverpool"],
+  ["Juli\u00e1n Alvarez","A",88,"Atl\u00e9tico"],["Lewandowski","A",87,"Barcelone"],["Dou\u00e9","A",87,"PSG"],
+  ["Gy\u00f6keres","A",86,"Arsenal"],["Osimhen","A",86,"Galatasaray"],["Rodrygo","A",86,"Real Madrid"],
+  ["Thuram","A",86,"Inter"],["Le\u00e3o","A",86,"Milan AC"],["Luis D\u00edaz","A",86,"Bayern"],
+  ["Barcola","A",86,"PSG"],["Yildiz","A",86,"Juventus"],["Simons","A",85,"Tottenham"],
+  ["Messi","A",85,"Inter Miami"],["Greenwood","A",85,"OM"],["Ekitike","A",85,"Liverpool"],
+  ["Pulisic","A",85,"Milan AC"],["Griezmann","A",84,"Atl\u00e9tico"],["Son","A",84,"LAFC"],
+  ["Ronaldo","A",84,"Al-Nassr"],["Sesko","A",84,"Man United"],["Mbeumo","A",84,"Man United"],
+  ["Retegui","A",84,"Al-Qadsiah"],["Jonathan David","A",84,"Juventus"],["Vlahovic","A",84,"Juventus"],
+  ["Adeyemi","A",84,"Dortmund"],["Watkins","A",83,"Aston Villa"],["Gordon","A",83,"Newcastle"],
+  ["Kolo Muani","A",83,"Tottenham"],["Neymar","A",82,"Santos"],["Nkunku","A",82,"Milan AC"],
+  ["Openda","A",82,"Juventus"],["Bowen","A",82,"West Ham"],["H\u00f8jlund","A",82,"Naples"],
+  ["Morata","A",81,"C\u00f4me"],["Jo\u00e3o F\u00e9lix","A",81,"Al-Nassr"],["Aubameyang","A",81,"OM"]
+];
+
+var POS_LABEL = { G:"Gardien", D:"D\u00e9fenseur", M:"Milieu", A:"Attaquant" };
+var FORMATIONS = ["3-4-3","3-5-2","4-4-2","4-3-3","4-5-1","4-2-4","5-3-2","5-4-1"];
+var FORMATION_BONUS = 0.5;
+var TIMER_SECONDS = 15;
+var MAX_PASSES = 5;
+
+var PROFILES = {
+  prudent:  { name:"Prudent",  emoji:"\ud83d\udee1\ufe0f" },
+  agressif: { name:"Agressif", emoji:"\ud83d\udd25" },
+  malin:    { name:"Malin",    emoji:"\ud83e\udde0" }
+};
+var PROFILE_KEYS = ["prudent","agressif","malin"];
+
+var ANIMS = [
+  { id:"confetti",  name:"Confettis dor\u00e9s",  emoji:"\ud83c\udf8a", price:0 },
+  { id:"money",     name:"Pluie de billets",      emoji:"\ud83d\udcb8", price:100 },
+  { id:"fireworks", name:"Feu d\u2019artifice",   emoji:"\ud83c\udf86", price:150 },
+  { id:"phone",     name:"Notif transfert",       emoji:"\ud83d\udcf1", price:150 },
+  { id:"dragon",    name:"Dragon de feu",         emoji:"\ud83d\udc09", price:250 },
+  { id:"king",      name:"Mercato King",          emoji:"\ud83d\udc51", price:300 }
+];
+
+/* ---------- STORAGE (safe : fallback memoire) ---------- */
+var memStore = null;
+function loadStore(){
+  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"" };
+  try {
+    var raw = window.localStorage.getItem("elevenduel_store");
+    if (raw){
+      var s = JSON.parse(raw);
+      if (s && typeof s.coins === "number" && s.owned && s.owned.length){
+        if (!s.pseudo) s.pseudo = "";
+        return s;
+      }
+    }
+  } catch(e){}
+  if (memStore) return memStore;
+  return def;
+}
+function saveStore(s){
+  memStore = s;
+  try { window.localStorage.setItem("elevenduel_store", JSON.stringify(s)); } catch(e){}
+}
+var store = loadStore();
+
+/* ---------- ETAT ---------- */
+var MODE = "solo";           /* "solo" | "online" */
+var state = null;
+var chosenProfile = "random";
+var bidTimerId = null;
+var bidDeadline = 0;
+var rewardGiven = false;
+
+function newState(){
+  var pool = [];
+  for (var i=0;i<PLAYERS.length;i++) pool.push(i);
+  var prof = chosenProfile;
+  if (prof === "random") prof = PROFILE_KEYS[Math.floor(Math.random()*PROFILE_KEYS.length)];
+  return {
+    pool: pool, round: 0, current: -1,
+    phase: "idle", profile: prof,
+    you: { budget:250, squad:[], paid:[], passes:0 },
+    ai:  { budget:250, squad:[], paid:[], passes:0 }
+  };
+}
+
+/* ---------- OUTILS ---------- */
+function qs(id){ return document.getElementById(id); }
+function el(tag, cls, txt){
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (txt !== undefined && txt !== null) e.textContent = txt;
+  return e;
+}
+function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+function show(id){ qs(id).classList.remove("hidden"); }
+function hide(id){ qs(id).classList.add("hidden"); }
+function hideAllScreens(){
+  hide("screen-home"); hide("screen-game"); hide("screen-end");
+  hide("screen-shop"); hide("screen-online"); hide("screen-wait");
+  hide("overlay-reveal");
+}
+/* Sanitize Firestore : jamais d'undefined */
+function cleanData(o){
+  return JSON.parse(JSON.stringify(o, function(k,v){ return v === undefined ? null : v; }));
+}
+
+function tierClass(note){
+  if (note >= 90) return "tier-gold";
+  if (note >= 87) return "tier-pink";
+  if (note >= 84) return "tier-cyan";
+  return "tier-grey";
+}
+function avgOf(squad){
+  if (!squad || squad.length === 0) return 0;
+  var s = 0;
+  for (var i=0;i<squad.length;i++) s += PLAYERS[squad[i]][2];
+  return s / squad.length;
+}
+function posCounts(squad){
+  var c = { G:0, D:0, M:0, A:0 };
+  for (var i=0;i<squad.length;i++) c[PLAYERS[squad[i]][1]]++;
+  return c;
+}
+function formationOf(squad){
+  if (!squad || squad.length !== 11) return null;
+  var c = posCounts(squad);
+  if (c.G !== 1) return null;
+  var key = c.D + "-" + c.M + "-" + c.A;
+  return FORMATIONS.indexOf(key) >= 0 ? key : null;
+}
+function finalScore(squad){
+  var base = avgOf(squad);
+  var f = formationOf(squad);
+  return { base: base, formation: f, total: base + (f ? FORMATION_BONUS : 0) };
+}
+function oppLabel(){
+  if (MODE === "online") return online.oppName || "Adversaire";
+  var p = PROFILES[state.profile];
+  return "Ali " + p.emoji;
+}
+
+function drawWeight(note){
+  if (note >= 90) return 1;
+  if (note >= 88) return 2;
+  if (note >= 86) return 3;
+  if (note >= 84) return 5;
+  if (note >= 82) return 7;
+  return 8;
+}
+/* tirage pondere dans une liste d'indices */
+function weightedPick(list){
+  var total = 0, i;
+  for (i=0;i<list.length;i++) total += drawWeight(PLAYERS[list[i]][2]);
+  var r = Math.random() * total;
+  for (i=0;i<list.length;i++){
+    r -= drawWeight(PLAYERS[list[i]][2]);
+    if (r <= 0) return list[i];
+  }
+  return list[list.length-1];
+}
+function drawPlayerSolo(){
+  var idx = weightedPick(state.pool);
+  state.pool.splice(state.pool.indexOf(idx), 1);
+  return idx;
+}
+
+/* ---------- IA "ALI" (solo) ---------- */
+function aiValue(note){
+  if (note >= 91) return 62;
+  if (note >= 90) return 52;
+  if (note >= 89) return 43;
+  if (note >= 88) return 36;
+  if (note >= 87) return 29;
+  if (note >= 86) return 23;
+  if (note >= 85) return 18;
+  if (note >= 84) return 14;
+  if (note >= 83) return 10;
+  if (note >= 82) return 7;
+  if (note >= 81) return 5;
+  return 3;
+}
+function aiBid(pIdx){
+  var note = PLAYERS[pIdx][2];
+  var pos = PLAYERS[pIdx][1];
+  var slotsLeft = 11 - state.ai.squad.length;
+  if (slotsLeft <= 0) return 0;
+  var maxAllowed = state.ai.budget - (slotsLeft - 1);
+  if (maxAllowed < 1) return 0;
+  if (state.you.squad.length >= 11) return 1;
+  var mustBid = state.ai.passes >= MAX_PASSES;
+
+  var fairShare = state.ai.budget / slotsLeft;
+  var pace = fairShare / 22;
+  if (pace < 0.45) pace = 0.45;
+  if (pace > 1.7) pace = 1.7;
+
+  var rnd = 0.75 + Math.random() * 0.6;
+  var mult = 1;
+  var c = posCounts(state.ai.squad);
+
+  if (state.profile === "prudent"){
+    mult = 0.8;
+    if (note <= 83 && Math.random() < 0.5) return mustBid ? 1 : 0;
+  }
+  else if (state.profile === "agressif"){
+    if (note >= 87) mult = 1.55;
+    else mult = 0.7;
+    if (note >= 84 && note <= 86 && Math.random() < 0.12) mult = 1.9;
+  }
+  else if (state.profile === "malin"){
+    var target = { G:1, D:4, M:4, A:2 };
+    if (pos === "G"){
+      if (c.G >= 1) return mustBid ? 1 : ((Math.random() < 0.85) ? 0 : 1);
+      mult = 1.6;
+    } else {
+      mult = (c[pos] < target[pos]) ? 1.25 : 0.45;
+    }
+  }
+
+  var bid = Math.round(aiValue(note) * pace * mult * rnd);
+
+  if (state.profile === "prudent"){
+    var cap = Math.round(fairShare * 1.4);
+    if (bid > cap) bid = cap;
+  }
+  if (state.profile === "malin"){
+    var smart = state.you.budget + 1;
+    if (bid > smart) bid = smart;
+  }
+  if (state.pool.length < slotsLeft * 2 + 4 && bid < 2) bid = 2;
+  if (bid < 1) return mustBid ? 1 : ((Math.random() < 0.45) ? 0 : 1);
+  if (bid > maxAllowed) bid = maxAllowed;
+  return bid;
+}
+
+/* ---------- TIMER ---------- */
+function stopTimer(){
+  if (bidTimerId !== null){ clearInterval(bidTimerId); bidTimerId = null; }
+}
+function startTimer(){
+  stopTimer();
+  bidDeadline = Date.now() + TIMER_SECONDS * 1000;
+  qs("timer-bar").style.width = "100%";
+  qs("timer-sec").textContent = TIMER_SECONDS + "s";
+  bidTimerId = setInterval(function(){
+    var left = bidDeadline - Date.now();
+    if (left <= 0){
+      stopTimer();
+      qs("timer-bar").style.width = "0%";
+      qs("timer-sec").textContent = "0s";
+      var v = parseInt(qs("bid-input").value, 10);
+      if (isNaN(v) || v < 0) v = 0;
+      if (v < minBidYou()) v = minBidYou();
+      if (v > maxBidYou()) v = maxBidYou();
+      submitBid(v);
+      return;
+    }
+    qs("timer-bar").style.width = (left / (TIMER_SECONDS * 1000) * 100) + "%";
+    qs("timer-sec").textContent = Math.ceil(left / 1000) + "s";
+  }, 100);
+}
+
+/* ---------- FLUX SOLO ---------- */
+function startGame(){
+  MODE = "solo";
+  state = newState();
+  state.phase = "bidding";
+  rewardGiven = false;
+  hideAllScreens();
+  clearVictoryAnimation();
+  show("screen-game");
+  hide("btn-abandon");
+  qs("hud-ai-name").textContent = oppLabel();
+  nextRound();
+}
+
+function nextRound(){
+  var youDone = state.you.squad.length >= 11;
+  var aiDone  = state.ai.squad.length >= 11;
+  if (youDone && aiDone) return endGame(null);
+
+  var youNeed = 11 - state.you.squad.length;
+  var aiNeed  = 11 - state.ai.squad.length;
+  var youOut = (!youDone && state.you.budget < youNeed);
+  var aiOut  = (!aiDone && state.ai.budget < aiNeed);
+  if (youOut && aiOut) return endGame("double");
+  if (youOut) return endGame("you-out");
+  if (aiOut)  return endGame("ai-out");
+  if (state.pool.length === 0) return endGame("pool");
+
+  state.round++;
+  state.current = drawPlayerSolo();
+  state.phase = "bidding";
+  renderRound();
+}
+
+function maxBidYou(){
+  if (state.you.squad.length >= 11) return 0;
+  return state.you.budget;
+}
+
+/* mise minimum : 0, sauf si les 5 passes sont grillees -> 1M obligatoire */
+function minBidYou(){
+  if (!state || state.you.squad.length >= 11) return 0;
+  return (state.you.passes >= MAX_PASSES) ? 1 : 0;
+}
+
+function submitBid(youBid){
+  if (MODE === "online") return submitOnlineBid(youBid);
+  if (state.phase !== "bidding") return;
+  state.phase = "reveal";
+  stopTimer();
+
+  var p = state.current;
+  var ai = aiBid(p);
+  if (youBid === 0 && state.you.squad.length < 11) state.you.passes++;
+  if (ai === 0 && state.ai.squad.length < 11) state.ai.passes++;
+  var res;
+  if (youBid === 0 && ai === 0) res = "none";
+  else if (youBid === ai) res = "tie";
+  else if (youBid > ai) res = "you";
+  else res = "ai";
+
+  if (res === "you"){ state.you.budget -= youBid; state.you.squad.push(p); state.you.paid.push(youBid); }
+  if (res === "ai"){ state.ai.budget -= ai; state.ai.squad.push(p); state.ai.paid.push(ai); }
+
+  renderReveal(p, youBid, ai, res);
+}
+
+function endGame(reason){
+  state.phase = "end";
+  stopTimer();
+  hideAllScreens();
+  show("screen-end");
+  renderEnd(reason);
+}
+
+/* ---------- RENDU COMMUN ---------- */
+function renderHUD(){
+  qs("hud-round").textContent = "TOUR " + state.round;
+  qs("hud-you-budget").textContent = state.you.budget + "M";
+  qs("hud-ai-budget").textContent = state.ai.budget + "M";
+  qs("hud-you-count").textContent = state.you.squad.length + "/11";
+  qs("hud-ai-count").textContent = state.ai.squad.length + "/11";
+  qs("hud-you-bar").style.width = (state.you.budget / 250 * 100) + "%";
+  qs("hud-ai-bar").style.width = (state.ai.budget / 250 * 100) + "%";
+}
+
+function setBid(v){
+  var maxB = maxBidYou();
+  var minB = minBidYou();
+  if (isNaN(v) || v < minB) v = minB;
+  if (v > maxB) v = maxB;
+  qs("bid-input").value = String(v);
+  qs("bid-slider").value = String(v);
+}
+
+function renderRound(){
+  renderHUD();
+  hide("overlay-reveal");
+  var p = PLAYERS[state.current];
+  var card = qs("player-card");
+  card.className = "player-card " + tierClass(p[2]);
+  qs("pc-note").textContent = p[2];
+  qs("pc-name").textContent = p[0];
+  qs("pc-pos").textContent = POS_LABEL[p[1]];
+  qs("pc-club").textContent = p[3];
+
+  var maxB = maxBidYou();
+  qs("bid-slider").max = String(maxB);
+  qs("bid-slider").min = String(minBidYou());
+  var def = Math.min(maxB, Math.max(1, Math.round(aiValue(p[2]) * 0.8)));
+  setBid(def);
+  var passesLeft = MAX_PASSES - state.you.passes;
+  if (passesLeft < 0) passesLeft = 0;
+  qs("bid-max-label").textContent = "Mise max : " + maxB + "M (all-in \u26a0\ufe0f) \u00b7 Passes : " + passesLeft + "/" + MAX_PASSES;
+  var pb = qs("btn-pass");
+  if (minBidYou() > 0){
+    pb.disabled = true;
+    pb.textContent = "Plus de passes !";
+  } else {
+    pb.disabled = false;
+    pb.textContent = "Passer (" + passesLeft + ")";
+  }
+
+  if (state.you.squad.length >= 11){
+    qs("bid-zone").classList.add("hidden");
+    qs("auto-pass").classList.remove("hidden");
+    setTimeout(function(){ submitBid(0); }, 900);
+  } else {
+    qs("bid-zone").classList.remove("hidden");
+    qs("auto-pass").classList.add("hidden");
+    startTimer();
+  }
+}
+
+function syncFromSlider(){ qs("bid-input").value = qs("bid-slider").value; }
+function syncFromInput(){
+  var v = parseInt(qs("bid-input").value, 10);
+  setBid(isNaN(v) ? 0 : v);
+}
+function bumpBid(n){
+  var v = parseInt(qs("bid-input").value, 10);
+  if (isNaN(v)) v = 0;
+  setBid(v + n);
+}
+
+function setRevealWaiting(w){
+  if (w){
+    qs("rv-cards").classList.add("hidden");
+    qs("rv-result").classList.add("hidden");
+    qs("btn-next").classList.add("hidden");
+    qs("rv-waiting").classList.remove("hidden");
+  } else {
+    qs("rv-cards").classList.remove("hidden");
+    qs("rv-result").classList.remove("hidden");
+    qs("btn-next").classList.remove("hidden");
+    qs("rv-waiting").classList.add("hidden");
+  }
+}
+
+function renderReveal(pIdx, youBid, oppBid, res){
+  var p = PLAYERS[pIdx];
+  show("overlay-reveal");
+  setRevealWaiting(false);
+  qs("rv-you").textContent = youBid + "M";
+  qs("rv-ai").textContent = oppBid + "M";
+  qs("rv-ai-name").textContent = oppLabel();
+  qs("rv-player").textContent = p[0] + " (" + p[2] + ")";
+  var msg = qs("rv-result");
+  msg.className = "rv-result";
+  if (res === "you"){ msg.textContent = "\ud83c\udfc6 Tu remportes " + p[0] + " pour " + youBid + "M !"; msg.classList.add("rv-win"); }
+  else if (res === "ai"){ msg.textContent = "\u26bd " + oppLabel() + " remporte " + p[0] + " pour " + oppBid + "M"; msg.classList.add("rv-lose"); }
+  else if (res === "tie"){ msg.textContent = "\u2694\ufe0f \u00c9galit\u00e9 ! " + p[0] + " est d\u00e9fauss\u00e9, mises rembours\u00e9es"; msg.classList.add("rv-tie"); }
+  else { msg.textContent = "\ud83d\ude34 Personne n'a mis\u00e9, " + p[0] + " est d\u00e9fauss\u00e9"; msg.classList.add("rv-tie"); }
+  renderHUD();
+  var cardY = qs("rv-card-you"), cardA = qs("rv-card-ai");
+  cardY.classList.remove("slam-left"); cardA.classList.remove("slam-right");
+  void cardY.offsetWidth;
+  cardY.classList.add("slam-left"); cardA.classList.add("slam-right");
+}
+
+function renderSquadList(container, side){
+  clear(container);
+  var order = { G:0, D:1, M:2, A:3 };
+  var arr = [];
+  for (var i=0;i<side.squad.length;i++) arr.push({ idx: side.squad[i], paid: side.paid[i] });
+  arr.sort(function(a,b){
+    var pa = PLAYERS[a.idx], pb = PLAYERS[b.idx];
+    if (order[pa[1]] !== order[pb[1]]) return order[pa[1]] - order[pb[1]];
+    return pb[2] - pa[2];
+  });
+  if (arr.length === 0){
+    container.appendChild(el("div","squad-empty","Aucun joueur pour l\u2019instant"));
+    return;
+  }
+  for (var j=0;j<arr.length;j++){
+    (function(item){
+      var p = PLAYERS[item.idx];
+      var row = el("div","squad-row");
+      row.appendChild(el("span","squad-pos pos-" + p[1], p[1]));
+      row.appendChild(el("span","squad-name", p[0]));
+      row.appendChild(el("span","squad-paid", item.paid + "M"));
+      row.appendChild(el("span","squad-note " + tierClass(p[2]), String(p[2])));
+      container.appendChild(row);
+    })(arr[j]);
+  }
+}
+
+function openSquads(){
+  renderSquadList(qs("squad-you"), state.you);
+  renderSquadList(qs("squad-ai"), state.ai);
+  qs("sq-title-ai").textContent = oppLabel();
+  qs("sq-avg-you").textContent = state.you.squad.length ? avgOf(state.you.squad).toFixed(2) : "-";
+  qs("sq-avg-ai").textContent = state.ai.squad.length ? avgOf(state.ai.squad).toFixed(2) : "-";
+  show("overlay-squads");
+}
+
+function scoreLabel(sc, count){
+  if (count === 0) return "-";
+  var t = sc.base.toFixed(2);
+  if (sc.formation) t += " +" + FORMATION_BONUS + " \u2705";
+  return t;
+}
+
+function giveCoins(outcome){
+  if (rewardGiven) return 0;
+  rewardGiven = true;
+  var gain = 20;
+  if (outcome === "win") gain = 100;
+  else if (outcome === "tie") gain = 50;
+  store.coins += gain;
+  saveStore(store);
+  return gain;
+}
+
+function renderEnd(reason){
+  var title = qs("end-title");
+  var sub = qs("end-sub");
+  var scY = finalScore(state.you.squad);
+  var scA = finalScore(state.ai.squad);
+  var box = qs("end-box");
+  box.className = "end-box";
+  qs("end-ai-lbl").textContent = oppLabel();
+
+  qs("end-avg-you").textContent = scoreLabel(scY, state.you.squad.length);
+  qs("end-avg-ai").textContent = scoreLabel(scA, state.ai.squad.length);
+  qs("end-form-you").textContent = scY.formation ? ("Compo " + scY.formation + " \u2192 total " + scY.total.toFixed(2)) : "Compo libre (pas de bonus)";
+  qs("end-form-ai").textContent = scA.formation ? ("Compo " + scA.formation + " \u2192 total " + scA.total.toFixed(2)) : "Compo libre (pas de bonus)";
+
+  var outcome = "lose";
+  if (reason === "you-out"){
+    title.textContent = "\u00c9LIMIN\u00c9 !";
+    sub.textContent = "Budget insuffisant pour compl\u00e9ter ton 11. " + oppLabel() + " gagne.";
+    box.classList.add("end-lose");
+  } else if (reason === "ai-out"){
+    title.textContent = "VICTOIRE !";
+    sub.textContent = oppLabel() + " ne peut plus compl\u00e9ter son 11. Tu gagnes par \u00e9limination !";
+    box.classList.add("end-win");
+    outcome = "win";
+  } else if (reason === "you-forfeit"){
+    title.textContent = "ABANDON";
+    sub.textContent = "Tu as abandonn\u00e9 le duel. " + oppLabel() + " gagne.";
+    box.classList.add("end-lose");
+  } else if (reason === "opp-forfeit"){
+    title.textContent = "VICTOIRE !";
+    sub.textContent = oppLabel() + " a abandonn\u00e9 le duel. Tu gagnes !";
+    box.classList.add("end-win");
+    outcome = "win";
+  } else if (reason === "double"){
+    title.textContent = "DOUBLE K.O.";
+    sub.textContent = "Aucun des deux ne peut compl\u00e9ter son 11. Match nul !";
+    box.classList.add("end-tie");
+    outcome = "tie";
+  } else if (reason === "pool"){
+    title.textContent = "PLUS DE JOUEURS !";
+    sub.textContent = "Le pool est \u00e9puis\u00e9\u2026 personne ne peut compl\u00e9ter. Match nul !";
+    box.classList.add("end-tie");
+    outcome = "tie";
+  } else {
+    if (scY.total > scA.total){
+      title.textContent = "VICTOIRE !";
+      sub.textContent = "Ton 11 (" + scY.total.toFixed(2) + ") bat celui de " + oppLabel() + " (" + scA.total.toFixed(2) + ")";
+      box.classList.add("end-win");
+      outcome = "win";
+    } else if (scA.total > scY.total){
+      title.textContent = "D\u00c9FAITE\u2026";
+      sub.textContent = "Le 11 de " + oppLabel() + " (" + scA.total.toFixed(2) + ") bat le tien (" + scY.total.toFixed(2) + ")";
+      box.classList.add("end-lose");
+    } else {
+      title.textContent = "\u00c9GALIT\u00c9 PARFAITE !";
+      sub.textContent = "Deux \u00e9quipes \u00e0 " + scY.total.toFixed(2) + ". Incroyable.";
+      box.classList.add("end-tie");
+      outcome = "tie";
+    }
+  }
+
+  var gain = giveCoins(outcome);
+  qs("end-coins").textContent = "+" + gain + " \ud83e\ude99 (total : " + store.coins + ")";
+  renderCoins();
+
+  renderSquadList(qs("end-squad-you"), state.you);
+  renderSquadList(qs("end-squad-ai"), state.ai);
+  qs("end-sq-ai").textContent = oppLabel();
+
+  if (outcome === "win") playAnim(store.equipped);
+}
+
+/* =========================================================
+   MODE EN LIGNE (Firebase Firestore)
+   ========================================================= */
+var fb = { app:null, db:null, uid:null, ready:false };
+var online = {
+  ref:null, unsub:null, role:null, code:null,
+  data:null, oppName:"",
+  submittedRound:0, revealShownRound:0, renderedRound:0,
+  revealWrittenRound:0, pendingBid:null,
+  hostBusy:false, endShown:false
+};
+
+function fbConfigured(){
+  return FIREBASE_CONFIG.apiKey.indexOf("COLLE") < 0;
+}
+
+function initFirebase(){
+  if (fb.ready) return Promise.resolve(true);
+  if (typeof firebase === "undefined" || !fbConfigured()) return Promise.resolve(false);
+  try {
+    if (!fb.app) fb.app = firebase.initializeApp(FIREBASE_CONFIG);
+    fb.db = firebase.firestore();
+    return firebase.auth().signInAnonymously().then(function(cred){
+      fb.uid = cred.user.uid;
+      fb.ready = true;
+      return true;
+    }).catch(function(){ return false; });
+  } catch(e){
+    return Promise.resolve(false);
+  }
+}
+
+function myPseudo(){
+  var v = qs("pseudo-input").value.replace(/\s+/g," ").trim();
+  if (!v) v = "Joueur" + Math.floor(100 + Math.random()*900);
+  if (v.length > 14) v = v.substring(0,14);
+  store.pseudo = v;
+  saveStore(store);
+  return v;
+}
+
+function makeCode(){
+  var chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  var c = "";
+  for (var i=0;i<5;i++) c += chars.charAt(Math.floor(Math.random()*chars.length));
+  return c;
+}
+
+function hashBid(v, salt){
+  var s = String(v) + ":" + salt;
+  var h = 5381;
+  for (var i=0;i<s.length;i++){ h = ((h << 5) + h + s.charCodeAt(i)) | 0; }
+  return String(h);
+}
+function randomSalt(){
+  return Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+}
+
+function setOnlineStatus(msg, isError){
+  var e = qs("online-status");
+  e.textContent = msg || "";
+  e.className = "online-status" + (isError ? " online-error" : "");
+}
+
+function onlineUnavailable(){
+  setOnlineStatus("Firebase n'est pas configur\u00e9 (ou pas de r\u00e9seau). Colle ta config FIREBASE_CONFIG en haut du fichier.", true);
+}
+
+function initialDoc(isPublic){
+  return cleanData({
+    code: online.code,
+    isPublic: !!isPublic,
+    status: "waiting",
+    createdAt: Date.now(),
+    h: { uid: fb.uid, name: myPseudo(), budget: 250, squad: [], paid: [], passes: 0 },
+    g: null,
+    round: 0, currentIdx: -1, used: [],
+    bids: {},
+    lastResult: null,
+    winner: null, endReason: null
+  });
+}
+
+function resetOnlineSession(){
+  if (online.unsub){ online.unsub(); }
+  online.ref = null; online.unsub = null; online.role = null; online.code = null;
+  online.data = null; online.oppName = "";
+  online.submittedRound = 0; online.revealShownRound = 0; online.renderedRound = 0;
+  online.revealWrittenRound = 0; online.pendingBid = null;
+  online.hostBusy = false; online.endShown = false;
+}
+
+function createPrivateGame(isPublic){
+  setOnlineStatus("Cr\u00e9ation de la partie\u2026");
+  initFirebase().then(function(ok){
+    if (!ok) return onlineUnavailable();
+    resetOnlineSession();
+    online.code = makeCode();
+    online.role = "h";
+    online.ref = fb.db.collection("duels").doc(online.code);
+    online.ref.set(initialDoc(isPublic)).then(function(){
+      listenGame();
+      hideAllScreens();
+      show("screen-wait");
+      qs("wait-code").textContent = online.code;
+      qs("wait-msg").textContent = isPublic ? "En attente d'un adversaire al\u00e9atoire\u2026" : "Partage ce code avec ton ami !";
+    }).catch(function(){ setOnlineStatus("Erreur de cr\u00e9ation. R\u00e9essaie.", true); });
+  });
+}
+
+function joinPrivateGame(){
+  var code = qs("join-code-input").value.trim().toUpperCase();
+  if (code.length !== 5){ setOnlineStatus("Code invalide (5 caract\u00e8res).", true); return; }
+  setOnlineStatus("Connexion \u00e0 la partie " + code + "\u2026");
+  initFirebase().then(function(ok){
+    if (!ok) return onlineUnavailable();
+    resetOnlineSession();
+    var ref = fb.db.collection("duels").doc(code);
+    fb.db.runTransaction(function(tx){
+      return tx.get(ref).then(function(snap){
+        if (!snap.exists) throw new Error("notfound");
+        var d = snap.data();
+        if (d.status !== "waiting" || d.g) throw new Error("full");
+        if (d.h && d.h.uid === fb.uid) throw new Error("self");
+        tx.update(ref, cleanData({
+          g: { uid: fb.uid, name: myPseudo(), budget: 250, squad: [], paid: [], passes: 0 },
+          status: "playing"
+        }));
+        return true;
+      });
+    }).then(function(){
+      online.code = code;
+      online.role = "g";
+      online.ref = ref;
+      listenGame();
+    }).catch(function(err){
+      if (err && err.message === "notfound") setOnlineStatus("Aucune partie avec ce code.", true);
+      else if (err && err.message === "full") setOnlineStatus("Cette partie est d\u00e9j\u00e0 compl\u00e8te.", true);
+      else if (err && err.message === "self") setOnlineStatus("Tu ne peux pas rejoindre ta propre partie \ud83d\ude04", true);
+      else setOnlineStatus("Erreur de connexion. R\u00e9essaie.", true);
+    });
+  });
+}
+
+function findRandomGame(){
+  setOnlineStatus("Recherche d'un adversaire\u2026");
+  initFirebase().then(function(ok){
+    if (!ok) return onlineUnavailable();
+    fb.db.collection("duels")
+      .where("isPublic", "==", true)
+      .where("status", "==", "waiting")
+      .limit(5).get()
+      .then(function(qsnap){
+        var candidate = null;
+        var now = Date.now();
+        qsnap.forEach(function(docSnap){
+          var d = docSnap.data();
+          if (candidate) return;
+          if (d.h && d.h.uid === fb.uid) return;               /* pas soi-meme */
+          if (now - d.createdAt > 5 * 60 * 1000) return;       /* partie abandonnee */
+          candidate = docSnap.id;
+        });
+        if (!candidate){ createPrivateGame(true); return; }
+        resetOnlineSession();
+        var ref = fb.db.collection("duels").doc(candidate);
+        fb.db.runTransaction(function(tx){
+          return tx.get(ref).then(function(snap){
+            if (!snap.exists) throw new Error("gone");
+            var d = snap.data();
+            if (d.status !== "waiting" || d.g) throw new Error("gone");
+            tx.update(ref, cleanData({
+              g: { uid: fb.uid, name: myPseudo(), budget: 250, squad: [], paid: [], passes: 0 },
+              status: "playing"
+            }));
+            return true;
+          });
+        }).then(function(){
+          online.code = candidate;
+          online.role = "g";
+          online.ref = ref;
+          listenGame();
+        }).catch(function(){
+          createPrivateGame(true);   /* quelqu'un l'a prise avant nous */
+        });
+      })
+      .catch(function(){ setOnlineStatus("Erreur de recherche. R\u00e9essaie.", true); });
+  });
+}
+
+function cancelWaiting(){
+  if (online.ref && online.role === "h" && online.data && online.data.status === "waiting"){
+    online.ref.delete().catch(function(){});
+  }
+  resetOnlineSession();
+  MODE = "solo";
+  hideAllScreens();
+  show("screen-online");
+  setOnlineStatus("");
+}
+
+function listenGame(){
+  MODE = "online";
+  rewardGiven = false;
+  online.unsub = online.ref.onSnapshot(onGameUpdate, function(){
+    setOnlineStatus("Connexion perdue.", true);
+  });
+}
+
+/* --- structure des mises --- */
+function bidOf(d, role){ return (d.bids && d.bids[role]) ? d.bids[role] : null; }
+function bothCommitted(d){
+  var h = bidOf(d,"h"), g = bidOf(d,"g");
+  return !!(h && h.hash && g && g.hash);
+}
+function bothRevealed(d){
+  var h = bidOf(d,"h"), g = bidOf(d,"g");
+  return !!(h && typeof h.value === "number" && g && typeof g.value === "number");
+}
+
+function syncOnlineToState(d){
+  var mine = (online.role === "h") ? d.h : d.g;
+  var opp  = (online.role === "h") ? d.g : d.h;
+  online.oppName = (opp && opp.name) ? opp.name : "Adversaire";
+  state = {
+    pool: [], round: d.round, current: d.currentIdx,
+    phase: "bidding", profile: null,
+    you: { budget: mine.budget, squad: mine.squad || [], paid: mine.paid || [], passes: mine.passes || 0 },
+    ai:  { budget: opp ? opp.budget : 250, squad: (opp && opp.squad) ? opp.squad : [], paid: (opp && opp.paid) ? opp.paid : [], passes: (opp && opp.passes) ? opp.passes : 0 }
+  };
+}
+
+function onGameUpdate(snap){
+  if (!snap.exists){
+    /* partie supprimee par l'hote */
+    if (MODE === "online" && !online.endShown){
+      resetOnlineSession();
+      MODE = "solo";
+      hideAllScreens();
+      show("screen-online");
+      setOnlineStatus("La partie a \u00e9t\u00e9 annul\u00e9e par l'h\u00f4te.", true);
+    }
+    return;
+  }
+  var d = snap.data();
+  online.data = d;
+
+  /* --- devoirs de l'hote --- */
+  if (online.role === "h" && d.status === "playing"){
+    if (d.round === 0 && !online.hostBusy){
+      online.hostBusy = true;
+      hostStartFirstRound(d);
+      return;
+    }
+    if (bothRevealed(d) && !(d.lastResult && d.lastResult.round === d.round)){
+      hostResolve(d);
+    }
+  }
+
+  /* --- les deux : reveler sa mise quand les deux hashes sont la --- */
+  if (d.status === "playing" && bothCommitted(d) && online.revealWrittenRound < d.round){
+    var mine = bidOf(d, online.role);
+    if (mine && mine.hash && typeof mine.value !== "number"){
+      online.revealWrittenRound = d.round;
+      var pb = online.pendingBid || { v: 0, salt: "" };
+      var u = {};
+      u["bids." + online.role + ".value"] = pb.v;
+      u["bids." + online.role + ".salt"] = pb.salt;
+      online.ref.update(u).catch(function(){ online.revealWrittenRound = 0; });
+    }
+  }
+
+  /* --- rendu --- */
+  if (d.status === "waiting"){
+    hideAllScreens();
+    show("screen-wait");
+    qs("wait-code").textContent = online.code;
+    return;
+  }
+
+  syncOnlineToState(d);
+
+  /* reveal du tour precedent pas encore vu ? */
+  if (d.lastResult && d.lastResult.round > online.revealShownRound){
+    showOnlineReveal(d);
+    return;
+  }
+
+  if (d.status === "finished"){
+    showOnlineEnd(d);
+    return;
+  }
+
+  /* tour en cours */
+  if (d.round > 0){
+    if (qs("screen-game").classList.contains("hidden")){
+      hideAllScreens();
+      show("screen-game");
+      show("btn-abandon");
+      qs("hud-ai-name").textContent = oppLabel();
+    }
+    if (online.submittedRound >= d.round){
+      showWaitingBidState();
+    } else if (online.renderedRound !== d.round){
+      online.renderedRound = d.round;
+      renderRound();
+    }
+  }
+}
+
+function hostStartFirstRound(d){
+  var used = [];
+  var available = [];
+  for (var i=0;i<PLAYERS.length;i++) available.push(i);
+  var idx = weightedPick(available);
+  used.push(idx);
+  online.ref.update(cleanData({ round: 1, currentIdx: idx, used: used }))
+    .then(function(){ online.hostBusy = false; })
+    .catch(function(){ online.hostBusy = false; });
+}
+
+function hostResolve(d){
+  if (online.hostBusy) return;
+  online.hostBusy = true;
+  var ref = online.ref;
+  fb.db.runTransaction(function(tx){
+    return tx.get(ref).then(function(snap){
+      if (!snap.exists) return;
+      var dd = snap.data();
+      if (dd.status !== "playing") return;
+      if (!bothRevealed(dd)) return;
+      if (dd.lastResult && dd.lastResult.round === dd.round) return;
+
+      var hb = bidOf(dd,"h"), gb = bidOf(dd,"g");
+      /* anti-triche : hash invalide = mise annulee */
+      var hVal = (hashBid(hb.value, hb.salt || "") === hb.hash) ? hb.value : 0;
+      var gVal = (hashBid(gb.value, gb.salt || "") === gb.hash) ? gb.value : 0;
+      if (hVal < 0) hVal = 0;
+      if (gVal < 0) gVal = 0;
+      if (hVal > dd.h.budget) hVal = dd.h.budget;
+      if (gVal > dd.g.budget) gVal = dd.g.budget;
+
+      /* 5 passes max : au-dela, mise forcee a 1M */
+      var hPasses = dd.h.passes || 0, gPasses = dd.g.passes || 0;
+      if (hVal === 0 && dd.h.squad.length < 11 && hPasses >= MAX_PASSES && dd.h.budget >= 1) hVal = 1;
+      if (gVal === 0 && dd.g.squad.length < 11 && gPasses >= MAX_PASSES && dd.g.budget >= 1) gVal = 1;
+
+      var res;
+      if (hVal === 0 && gVal === 0) res = "none";
+      else if (hVal === gVal) res = "tie";
+      else if (hVal > gVal) res = "h";
+      else res = "g";
+
+      var h = { uid: dd.h.uid, name: dd.h.name, budget: dd.h.budget, squad: dd.h.squad.slice(), paid: dd.h.paid.slice(), passes: hPasses };
+      var g = { uid: dd.g.uid, name: dd.g.name, budget: dd.g.budget, squad: dd.g.squad.slice(), paid: dd.g.paid.slice(), passes: gPasses };
+      if (hVal === 0 && dd.h.squad.length < 11) h.passes = hPasses + 1;
+      if (gVal === 0 && dd.g.squad.length < 11) g.passes = gPasses + 1;
+      if (res === "h" && h.squad.length < 11){ h.budget -= hVal; h.squad.push(dd.currentIdx); h.paid.push(hVal); }
+      if (res === "g" && g.squad.length < 11){ g.budget -= gVal; g.squad.push(dd.currentIdx); g.paid.push(gVal); }
+
+      var upd = {
+        h: h, g: g,
+        bids: {},
+        lastResult: { round: dd.round, playerIdx: dd.currentIdx, hBid: hVal, gBid: gVal, res: res }
+      };
+
+      /* conditions de fin */
+      var hDone = h.squad.length >= 11, gDone = g.squad.length >= 11;
+      var hNeed = 11 - h.squad.length, gNeed = 11 - g.squad.length;
+      var hOut = (!hDone && h.budget < hNeed);
+      var gOut = (!gDone && g.budget < gNeed);
+      var available = [];
+      for (var i=0;i<PLAYERS.length;i++){
+        if (dd.used.indexOf(i) < 0) available.push(i);
+      }
+
+      var finished = false;
+      if (hDone && gDone){
+        finished = true;
+        var sH = finalScore(h.squad), sG = finalScore(g.squad);
+        upd.winner = (sH.total > sG.total) ? "h" : (sG.total > sH.total ? "g" : "tie");
+        upd.endReason = "score";
+      } else if (hOut && gOut){
+        finished = true; upd.winner = "tie"; upd.endReason = "double";
+      } else if (hOut){
+        finished = true; upd.winner = "g"; upd.endReason = "elim";
+      } else if (gOut){
+        finished = true; upd.winner = "h"; upd.endReason = "elim";
+      } else if (available.length === 0){
+        finished = true; upd.winner = "tie"; upd.endReason = "pool";
+      }
+
+      if (finished){
+        upd.status = "finished";
+      } else {
+        var nextIdx = weightedPick(available);
+        var newUsed = dd.used.slice();
+        newUsed.push(nextIdx);
+        upd.round = dd.round + 1;
+        upd.currentIdx = nextIdx;
+        upd.used = newUsed;
+      }
+      tx.update(ref, cleanData(upd));
+    });
+  }).then(function(){ online.hostBusy = false; })
+    .catch(function(){ online.hostBusy = false; });
+}
+
+function submitOnlineBid(v){
+  var d = online.data;
+  if (!d || d.status !== "playing" || d.round === 0) return;
+  if (online.submittedRound >= d.round) return;
+  online.submittedRound = d.round;
+  stopTimer();
+
+  if (isNaN(v) || v < 0) v = 0;
+  if (v < minBidYou()) v = minBidYou();
+  var myBudget = (online.role === "h") ? d.h.budget : d.g.budget;
+  if (v > myBudget) v = myBudget;
+
+  var salt = randomSalt();
+  online.pendingBid = { v: v, salt: salt };
+  var u = {};
+  u["bids." + online.role] = { hash: hashBid(v, salt) };
+  online.ref.update(u).then(function(){
+    showWaitingBidState();
+  }).catch(function(){
+    online.submittedRound = 0;
+    setOnlineStatus("Erreur d'envoi de la mise.", true);
+  });
+}
+
+function showWaitingBidState(){
+  var d = online.data;
+  var p = PLAYERS[d.currentIdx];
+  show("overlay-reveal");
+  setRevealWaiting(true);
+  qs("rv-player").textContent = p[0] + " (" + p[2] + ")";
+  qs("rv-waiting").textContent = "\u23f3 Mise envoy\u00e9e ! En attente de " + oppLabel() + "\u2026";
+}
+
+function showOnlineReveal(d){
+  stopTimer();
+  var lr = d.lastResult;
+  online.revealShownRound = lr.round;
+  var youBid = (online.role === "h") ? lr.hBid : lr.gBid;
+  var oppBid = (online.role === "h") ? lr.gBid : lr.hBid;
+  var res;
+  if (lr.res === "none") res = "none";
+  else if (lr.res === "tie") res = "tie";
+  else if (lr.res === online.role) res = "you";
+  else res = "ai";
+  if (qs("screen-game").classList.contains("hidden")){
+    hideAllScreens();
+    show("screen-game");
+    show("btn-abandon");
+    qs("hud-ai-name").textContent = oppLabel();
+  }
+  renderReveal(lr.playerIdx, youBid, oppBid, res);
+}
+
+function onlineNextRound(){
+  hide("overlay-reveal");
+  var d = online.data;
+  if (!d) return;
+  if (d.status === "finished"){
+    showOnlineEnd(d);
+    return;
+  }
+  if (online.submittedRound >= d.round){
+    showWaitingBidState();
+  } else if (d.round > 0){
+    online.renderedRound = d.round;
+    renderRound();
+  }
+}
+
+function showOnlineEnd(d){
+  if (online.endShown) return;
+  online.endShown = true;
+  stopTimer();
+  hideAllScreens();
+  show("screen-end");
+  var reason = null;
+  if (d.endReason === "double") reason = "double";
+  else if (d.endReason === "pool") reason = "pool";
+  else if (d.endReason === "elim") reason = (d.winner === online.role) ? "ai-out" : "you-out";
+  else if (d.endReason === "forfeit") reason = (d.winner === online.role) ? "opp-forfeit" : "you-forfeit";
+  /* "score" -> null : renderEnd compare les notes finales */
+  renderEnd(reason);
+}
+
+function abandonGame(){
+  if (MODE !== "online" || !online.ref || !online.data) return;
+  if (online.data.status !== "playing") return;
+  var sure = window.confirm("Abandonner le duel ? Ton adversaire gagnera.");
+  if (!sure) return;
+  var other = (online.role === "h") ? "g" : "h";
+  online.ref.update(cleanData({ status: "finished", winner: other, endReason: "forfeit" })).catch(function(){});
+}
+
+function leaveOnline(){
+  resetOnlineSession();
+  MODE = "solo";
+}
+
+/* ---------- ANIMATIONS DE VICTOIRE ---------- */
+function clearVictoryAnimation(){
+  var box = qs("victory-animation");
+  if (box) clear(box);
+}
+function victoryMoney(){
+  clearVictoryAnimation();
+  var box = qs("victory-animation");
+  for (var i=0;i<35;i++){
+    var e = el("div","money","\ud83d\udcb8");
+    e.style.left = Math.random()*100 + "vw";
+    e.style.animationDelay = (Math.random()*0.8) + "s";
+    box.appendChild(e);
+  }
+}
+function victoryConfetti(){
+  clearVictoryAnimation();
+  var box = qs("victory-animation");
+  for (var i=0;i<70;i++){
+    var e = el("div","confetti");
+    e.style.left = Math.random()*100 + "vw";
+    e.style.animationDelay = (Math.random()*1) + "s";
+    var hue = Math.random();
+    if (hue < 0.6) e.style.background = "#f5b31c";
+    else if (hue < 0.8) e.style.background = "#f5d76e";
+    else e.style.background = "#fff3c4";
+    box.appendChild(e);
+  }
+}
+function victoryFireworks(){
+  clearVictoryAnimation();
+  var box = qs("victory-animation");
+  for (var i=0;i<7;i++){
+    setTimeout(function(){
+      var e = el("div","firework");
+      e.style.left = (15 + Math.random()*70) + "vw";
+      e.style.top = (15 + Math.random()*45) + "vh";
+      box.appendChild(e);
+      setTimeout(function(){ if (e.parentNode) e.parentNode.removeChild(e); }, 900);
+    }, i*250);
+  }
+}
+function victoryDragon(){
+  clearVictoryAnimation();
+  var box = qs("victory-animation");
+  var e = el("div","dragon-fire","\ud83d\udc09\ud83d\udd25");
+  box.appendChild(e);
+  for (var i=0;i<10;i++){
+    (function(k){
+      setTimeout(function(){
+        var f = el("div","dragon-spark","\ud83d\udd25");
+        f.style.left = (40 + Math.random()*20) + "vw";
+        box.appendChild(f);
+        setTimeout(function(){ if (f.parentNode) f.parentNode.removeChild(f); }, 1300);
+      }, k*120);
+    })(i);
+  }
+}
+function victoryMercatoKing(){
+  clearVictoryAnimation();
+  var box = qs("victory-animation");
+  var e = el("div","mercato-king","MERCATO KING \ud83d\udc51");
+  box.appendChild(e);
+  for (var i=0;i<25;i++){
+    var c = el("div","confetti");
+    c.style.left = Math.random()*100 + "vw";
+    c.style.animationDelay = (Math.random()*0.8) + "s";
+    c.style.background = "#f5b31c";
+    box.appendChild(c);
+  }
+}
+function victoryPhone(){
+  clearVictoryAnimation();
+  var box = qs("victory-animation");
+  var e = el("div","phone-notif");
+  e.appendChild(el("div","phone-line1","\ud83d\udcf1 Offre accept\u00e9e !"));
+  e.appendChild(el("div","phone-line2","+1 star recrut\u00e9e \u2705"));
+  box.appendChild(e);
+}
+var ANIM_FN = {
+  confetti: victoryConfetti,
+  money: victoryMoney,
+  fireworks: victoryFireworks,
+  dragon: victoryDragon,
+  king: victoryMercatoKing,
+  phone: victoryPhone
+};
+function playAnim(id){
+  var fn = ANIM_FN[id];
+  if (fn) fn();
+  setTimeout(clearVictoryAnimation, 3400);
+}
+
+/* ---------- SHOP ---------- */
+function renderCoins(){
+  qs("home-coins").textContent = store.coins;
+  qs("shop-coins").textContent = store.coins;
+}
+function isOwned(id){ return store.owned.indexOf(id) >= 0; }
+function renderShop(){
+  renderCoins();
+  var grid = qs("shop-grid");
+  clear(grid);
+  for (var i=0;i<ANIMS.length;i++){
+    (function(a){
+      var card = el("div","shop-card" + (store.equipped === a.id ? " shop-equipped" : ""));
+      card.appendChild(el("div","shop-emoji", a.emoji));
+      card.appendChild(el("div","shop-name", a.name));
+      var btnRow = el("div","shop-btns");
+      var prev = el("button","shop-btn shop-preview","\u25b6 Tester");
+      prev.addEventListener("click", function(){ playAnim(a.id); });
+      btnRow.appendChild(prev);
+      var main = el("button","shop-btn");
+      if (store.equipped === a.id){
+        main.textContent = "\u2705 \u00c9quip\u00e9";
+        main.className = "shop-btn shop-btn-equipped";
+      } else if (isOwned(a.id)){
+        main.textContent = "\u00c9quiper";
+        main.className = "shop-btn shop-btn-own";
+        main.addEventListener("click", function(){
+          store.equipped = a.id;
+          saveStore(store);
+          renderShop();
+        });
+      } else {
+        main.textContent = a.price + " \ud83e\ude99";
+        main.className = "shop-btn shop-btn-buy" + (store.coins < a.price ? " shop-btn-poor" : "");
+        main.addEventListener("click", function(){
+          if (store.coins < a.price) return;
+          store.coins -= a.price;
+          store.owned.push(a.id);
+          store.equipped = a.id;
+          saveStore(store);
+          renderShop();
+          playAnim(a.id);
+        });
+      }
+      btnRow.appendChild(main);
+      card.appendChild(btnRow);
+      grid.appendChild(card);
+    })(ANIMS[i]);
+  }
+}
+function openShop(){
+  hideAllScreens();
+  renderShop();
+  show("screen-shop");
+}
+
+/* ---------- INIT ---------- */
+function init(){
+  renderCoins();
+  qs("pseudo-input").value = store.pseudo || "";
+
+  qs("btn-play").addEventListener("click", startGame);
+  qs("btn-rules").addEventListener("click", function(){ show("overlay-rules"); });
+  qs("btn-rules-close").addEventListener("click", function(){ hide("overlay-rules"); });
+  qs("btn-shop").addEventListener("click", openShop);
+  qs("btn-shop-back").addEventListener("click", function(){
+    hideAllScreens(); clearVictoryAnimation(); show("screen-home");
+  });
+
+  /* --- en ligne --- */
+  qs("btn-online").addEventListener("click", function(){
+    hideAllScreens();
+    show("screen-online");
+    setOnlineStatus(fbConfigured() ? "" : "\u26a0\ufe0f Firebase pas encore configur\u00e9 : colle ta config en haut du fichier HTML.", !fbConfigured());
+  });
+  qs("btn-online-back").addEventListener("click", function(){
+    leaveOnline();
+    hideAllScreens();
+    show("screen-home");
+  });
+  qs("btn-create-private").addEventListener("click", function(){ createPrivateGame(false); });
+  qs("btn-join-private").addEventListener("click", joinPrivateGame);
+  qs("btn-random-match").addEventListener("click", findRandomGame);
+  qs("btn-wait-cancel").addEventListener("click", cancelWaiting);
+  qs("btn-abandon").addEventListener("click", abandonGame);
+
+  qs("btn-bid").addEventListener("click", function(){
+    syncFromInput();
+    var v = parseInt(qs("bid-input").value, 10);
+    if (isNaN(v) || v < 0) v = 0;
+    submitBid(v);
+  });
+  qs("btn-pass").addEventListener("click", function(){
+    if (minBidYou() > 0) return;
+    submitBid(0);
+  });
+  qs("btn-next").addEventListener("click", function(){
+    if (MODE === "online") onlineNextRound();
+    else nextRound();
+  });
+  qs("bid-slider").addEventListener("input", syncFromSlider);
+  qs("bid-input").addEventListener("input", syncFromInput);
+  qs("btn-squads").addEventListener("click", openSquads);
+  qs("btn-squads-close").addEventListener("click", function(){ hide("overlay-squads"); });
+  qs("btn-replay").addEventListener("click", function(){
+    if (MODE === "online"){ leaveOnline(); hideAllScreens(); show("screen-online"); setOnlineStatus(""); }
+    else startGame();
+  });
+  qs("btn-home").addEventListener("click", function(){
+    leaveOnline();
+    hideAllScreens(); clearVictoryAnimation(); show("screen-home");
+  });
+  qs("btn-end-shop").addEventListener("click", openShop);
+
+  var bumps = document.querySelectorAll(".chip-bump");
+  for (var i=0;i<bumps.length;i++){
+    (function(btn){
+      btn.addEventListener("click", function(){
+        var d = btn.getAttribute("data-n");
+        if (d === "allin") setBid(maxBidYou());
+        else bumpBid(parseInt(d, 10));
+      });
+    })(bumps[i]);
+  }
+
+  var profBtns = document.querySelectorAll(".prof-chip");
+  for (var j=0;j<profBtns.length;j++){
+    (function(btn){
+      btn.addEventListener("click", function(){
+        chosenProfile = btn.getAttribute("data-prof");
+        for (var k=0;k<profBtns.length;k++) profBtns[k].classList.remove("prof-active");
+        btn.classList.add("prof-active");
+      });
+    })(profBtns[j]);
+  }
+}
+document.addEventListener("DOMContentLoaded", init);
+
+</script>
+</body>
+</html>

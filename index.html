@@ -575,7 +575,7 @@ body {
   <div id="acc-box" class="online-block">
     <div class="online-label" data-i18n="acc_title"></div>
     <input id="acc-pseudo" class="text-input" type="text" maxlength="14" data-i18n-ph="acc_pseudo" style="margin-bottom:8px;">
-    <input id="acc-code" class="text-input" type="text" maxlength="20" autocapitalize="off" autocomplete="off" data-i18n-ph="acc_code" style="margin-bottom:8px;">
+    <input id="acc-code" class="text-input" type="password" maxlength="20" autocapitalize="off" autocomplete="off" data-i18n-ph="acc_code" style="margin-bottom:8px;">
     <div class="online-label" data-i18n="acc_country"></div>
     <select id="acc-country" class="select-input" style="margin-bottom:10px;"></select>
     <button id="btn-register" class="mid-btn gold full" data-i18n="acc_register"></button>
@@ -629,7 +629,7 @@ body {
   <div class="online-block">
     <div class="online-label" data-i18n="lg_create"></div>
     <input id="lg-name-input" class="text-input" type="text" maxlength="20" data-i18n-ph="lg_name" style="margin-bottom:8px;">
-    <input id="lg-pass-input" class="text-input" type="text" maxlength="20" autocapitalize="off" data-i18n-ph="lg_pass" style="margin-bottom:8px;">
+    <input id="lg-pass-input" class="text-input" type="password" maxlength="20" autocapitalize="off" data-i18n-ph="lg_pass" style="margin-bottom:8px;">
     <div class="online-label" data-i18n="lg_max"></div>
     <input id="lg-max-input" class="text-input" type="number" inputmode="numeric" min="4" max="100" value="10" style="margin-bottom:10px;">
     <button id="btn-lg-create" class="mid-btn gold full" data-i18n="lg_create"></button>
@@ -638,7 +638,7 @@ body {
   <div class="online-block">
     <div class="online-label" data-i18n="lg_join"></div>
     <input id="lg-code-input" class="text-input" type="text" maxlength="6" autocapitalize="characters" autocomplete="off" data-i18n-ph="lg_code" style="margin-bottom:8px; text-transform:uppercase; letter-spacing:2px; text-align:center;">
-    <input id="lg-joinpass-input" class="text-input" type="text" maxlength="20" autocapitalize="off" data-i18n-ph="lg_pass" style="margin-bottom:10px;">
+    <input id="lg-joinpass-input" class="text-input" type="password" maxlength="20" autocapitalize="off" data-i18n-ph="lg_pass" style="margin-bottom:10px;">
     <button id="btn-lg-join" class="mid-btn full" data-i18n="lg_join"></button>
   </div>
 
@@ -759,7 +759,8 @@ fr: {
   lg_closed:"Saison clôturée ! Champion : {p} 🏆", lg_nogames:"Aucun duel joué cette saison.",
   lg_pick:"Compter la partie pour une ligue :", lg_free:"Aucune (partie libre)",
   lg_share:"Partage ce code pour inviter tes amis !",
-  country_label:"Pays"
+  country_label:"Pays",
+  acc_rules:"Accès refusé par Firebase — mets à jour les règles Firestore (users + leagues)."
 },
 en: {
   tagline:"Blind auctions. 250M budget. 11 players to sign. Best team wins.",
@@ -848,7 +849,8 @@ en: {
   lg_closed:"Season closed! Champion: {p} 🏆", lg_nogames:"No duel played this season.",
   lg_pick:"Count this game for a league:", lg_free:"None (casual game)",
   lg_share:"Share this code to invite your friends!",
-  country_label:"Country"
+  country_label:"Country",
+  acc_rules:"Access denied by Firebase — update the Firestore rules (users + leagues)."
 },
 es: {
   tagline:"Subastas a ciegas. 250M de presupuesto. 11 jugadores por fichar. Gana el mejor equipo.",
@@ -937,7 +939,8 @@ es: {
   lg_closed:"¡Temporada cerrada! Campeón: {p} 🏆", lg_nogames:"Ningún duelo jugado esta temporada.",
   lg_pick:"Contar esta partida para una liga:", lg_free:"Ninguna (partida libre)",
   lg_share:"¡Comparte este código para invitar a tus amigos!",
-  country_label:"País"
+  country_label:"País",
+  acc_rules:"Acceso denegado por Firebase — actualiza las reglas de Firestore (users + leagues)."
 }
 };
 
@@ -2624,7 +2627,9 @@ function registerAccount(){
       setAccStatus(t("acc_ok") + " " + t("acc_keep"));
       renderProfile();
     }).catch(function(err){
-      setAccStatus((err && err.message === "taken") ? t("acc_taken") : t("st_err"), true);
+      if (err && err.message === "taken") setAccStatus(t("acc_taken"), true);
+      else if (err && err.code === "permission-denied") setAccStatus(t("acc_rules"), true);
+      else setAccStatus(t("st_err"), true);
     });
   });
 }
@@ -2645,7 +2650,9 @@ function loginAccount(){
       saveStore(store);
       setAccStatus(tf("acc_hello", { p: d.pseudo }));
       renderProfile();
-    }).catch(function(){ setAccStatus(t("st_err"), true); });
+    }).catch(function(err){
+      setAccStatus((err && err.code === "permission-denied") ? t("acc_rules") : t("st_err"), true);
+    });
   });
 }
 function logoutAccount(){

@@ -355,6 +355,24 @@ body {
 }
 .phone-line1 { font-weight:900; color:#27c3f5; margin-bottom:2px; }
 .phone-line2 { color:#cfd2ea; font-size:0.9rem; }
+
+/* ------ V6 : AMIS ------ */
+.friends-badge { position:absolute; top:8px; right:6px; background:#f52c8c; color:#fff; border-radius:50%; width:20px; height:20px; font-size:0.7rem; font-weight:900; display:flex; align-items:center; justify-content:center; }
+.friend-req-row { display:flex; justify-content:space-between; align-items:center; padding:10px 8px; border-bottom:1px solid #1d1936; }
+.friend-req-name { font-weight:800; flex:1; }
+.friend-req-btns { display:flex; gap:8px; }
+.friend-req-btn { border:none; border-radius:8px; padding:6px 10px; font-weight:900; font-size:0.9rem; cursor:pointer; }
+.friend-req-accept { background:#27c3f5; color:#0a0817; }
+.friend-req-reject { background:#f52c8c; color:#fff; }
+.friend-menu { display:flex; flex-direction:column; gap:4px; }
+.friend-menu-btn { background:#151228; border:1px solid #2c2750; color:#cfd2ea; border-radius:10px; padding:8px 12px; font-weight:700; font-size:0.85rem; }
+.game-hist-row { display:flex; gap:8px; align-items:center; padding:8px; border-bottom:1px solid #1d1936; }
+.gh-emoji { font-size:1.2rem; min-width:20px; }
+.gh-date { color:#f5b31c; font-weight:800; font-size:0.8rem; min-width:80px; }
+.gh-league { color:#8b8fa8; font-size:0.75rem; flex:1; }
+.game-hist-top { display:flex; justify-content:space-around; padding:10px 0; border-bottom:2px solid #2c2750; margin-bottom:10px; }
+.gh-stat { color:#27c3f5; font-weight:900; font-size:0.9rem; }
+
 </style>
 </head>
 <body>
@@ -657,6 +675,25 @@ body {
   </div>
 </div>
 
+
+
+<!-- ================= FRIEND REQUESTS ================= -->
+<div id="screen-friends-requests" class="screen hidden">
+  <div class="brush shop-title" style="text-align:center; margin-bottom:14px;">Demandes d'ami</div>
+  <div id="fr-list"></div>
+  <div class="end-btns">
+    <button id="btn-fr-back" class="big-btn ghost" data-i18n="back"></button>
+  </div>
+</div>
+
+<!-- ================= FRIEND HISTORY ================= -->
+<div id="screen-friends-history" class="screen hidden">
+  <div id="fh-name" class="brush shop-title" style="text-align:center; margin-bottom:14px;"></div>
+  <div id="fh-list"></div>
+  <div class="end-btns">
+    <button id="btn-fh-back" class="big-btn ghost" data-i18n="back"></button>
+  </div>
+</div>
 <script>
 /* ELEVEN DUEL - v4 - championnats, 1v1v1v1, FR/EN/ES, bonus */
 /* Contraintes iOS Safari : pas de spread, pas d'optional chaining, pas de quotes imbriquees dans onclick */
@@ -762,6 +799,10 @@ fr: {
   country_label:"Pays",
   acc_rules:"Accès refusé par Firebase — mets à jour les règles Firestore (users + leagues)."
 },
+  fr_add:"Ajouter en ami", fr_remove:"Retirer", fr_history:"Historique", fr_none:"Aucune demande en attente",
+  fr_no_games:"Aucun duel joué ensemble", already_friend:"Vous êtes déjà amis",
+  request_pending:"Une demande est déjà en attente", cant_add_yourself:"Tu ne peux pas t'ajouter toi-même",
+  request_sent:"Demande d'ami envoyée !",
 en: {
   tagline:"Blind auctions. 250M budget. 11 players to sign. Best team wins.",
   opponent:"Your opponent: Ali", prof_random:"Random", prof_prudent:"Cautious", prof_agressif:"Aggressive", prof_malin:"Smart",
@@ -852,6 +893,10 @@ en: {
   country_label:"Country",
   acc_rules:"Access denied by Firebase — update the Firestore rules (users + leagues)."
 },
+  en_add:"Ajouter en ami", en_remove:"Retirer", en_history:"Historique", en_none:"Aucune demande en attente",
+  en_no_games:"Aucun duel joué ensemble", already_friend:"Vous êtes déjà amis",
+  request_pending:"Une demande est déjà en attente", cant_add_yourself:"Tu ne peux pas t'ajouter toi-même",
+  request_sent:"Demande d'ami envoyée !",
 es: {
   tagline:"Subastas a ciegas. 250M de presupuesto. 11 jugadores por fichar. Gana el mejor equipo.",
   opponent:"Tu rival: Ali", prof_random:"Aleatorio", prof_prudent:"Prudente", prof_agressif:"Agresivo", prof_malin:"Astuto",
@@ -941,7 +986,11 @@ es: {
   lg_share:"¡Comparte este código para invitar a tus amigos!",
   country_label:"País",
   acc_rules:"Acceso denegado por Firebase — actualiza las reglas de Firestore (users + leagues)."
-}
+},
+  es_add:"Ajouter en ami", es_remove:"Retirer", es_history:"Historique", es_none:"Aucune demande en attente",
+  es_no_games:"Aucun duel joué ensemble", already_friend:"Vous êtes déjà amis",
+  request_pending:"Une demande est déjà en attente", cant_add_yourself:"Tu ne peux pas t'ajouter toi-même",
+  request_sent:"Demande d'ami envoyée !"
 };
 
 function t(key){
@@ -1074,7 +1123,7 @@ function leagueLabel(id){
 
 var FORMATIONS = ["3-4-3","3-5-2","4-4-2","4-3-3","4-5-1","4-2-4","5-3-2","5-4-1"];
 var FORMATION_BONUS = 0.5;
-var TIMER_SECONDS = 15;
+var TIMER_SECONDS = 12;
 var MAX_PASSES = 5;
 var PCOLORS = ["cyan","pink","orange","violet"];
 
@@ -2472,6 +2521,7 @@ function bindChips(selector, activeClass, cb){
 }
 
 function init(){
+  showCreateAccountPopup();
   renderCoins();
   applyI18n();
   var langBtns = document.querySelectorAll(".lang-chip");
@@ -2556,6 +2606,8 @@ function init(){
     if (!qs("screen-profile").classList.contains("hidden")) renderProfile();
   });
   initV5();
+  qs("btn-fr-back").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
+  qs("btn-fh-back").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
 }
 document.addEventListener("DOMContentLoaded", init);
 
@@ -2665,7 +2717,18 @@ function myUserRef(){
 }
 
 /* ---------- STATS FIN DE DUEL ---------- */
+function recordOnlineGame(outcome){
+  if (MODE !== "online" || !online.data || !state.players) return;
+  var opponent = null, opponentKey = null;
+  for (var i=0;i<state.players.length;i++){
+    if (i !== state.myIdx && state.players[i] && state.players[i].userKey){
+      opponent = state.players[i]; opponentKey = opponent.userKey; break;
+    }
+  }
+  if (opponent && opponentKey) recordGameHistory(opponentKey, opponent.name, outcome, state.players.length);
+}
 function maybeRecordOnline(outcome){
+  recordOnlineGame(outcome);
   if (MODE !== "online" || !store.account || statsRecorded || !online.data) return;
   statsRecorded = true;
   var d = online.data;
@@ -2754,6 +2817,12 @@ function renderProfile(){
     return;
   }
   qs("pf-pseudo").textContent = store.account.pseudo + " " + countryFlag(store.account.country);
+  loadFriendsData();
+  if (friendsModule.pendingRequests.length > 0){
+    var reqBtn = el("button","link-btn", "📬 Demandes (" + friendsModule.pendingRequests.length + ")");
+    reqBtn.addEventListener("click", openFriendsRequests);
+    qs("pf-pseudo").parentNode.appendChild(reqBtn);
+  }
   qs("pf-loading").classList.remove("hidden");
   initFirebase().then(function(ok){
     if (!ok) return;
@@ -3154,6 +3223,7 @@ function fillGameLeagueSelect(){
 
 /* ---------- INIT V5 ---------- */
 function initV5(){
+  initFriendsSystem();
   qs("btn-profile").addEventListener("click", openProfile);
   qs("btn-ranks").addEventListener("click", openRanks);
   qs("btn-leagues").addEventListener("click", openLeagues);
@@ -3171,6 +3241,278 @@ function initV5(){
   fillCountrySelect(qs("acc-country"), "FR");
   if (store.account) fillCountrySelect(qs("pf-country"), store.account.country);
   else fillCountrySelect(qs("pf-country"), "FR");
+}
+
+/* =========================================================
+   V6 : SYSTEME D'AMIS + HISTORIQUE + NOTIFICATIONS
+   ========================================================= */
+
+var friendsModule = {
+  pendingRequests: [],    /* [{senderKey, senderPseudo}, ...] */
+  friendsList: [],        /* [key, ...] */
+  historyWith: null,      /* current friend viewed */
+  unreadCount: 0
+};
+
+function initFriendsSystem(){
+  if (!store.account) return;
+  loadFriendsData();
+}
+
+function loadFriendsData(){
+  initFirebase().then(function(ok){
+    if (!ok || !store.account) return;
+    myUserRef().get().then(function(snap){
+      if (!snap.exists) return;
+      var d = snap.data();
+      friendsModule.friendsList = (d.friends || []);
+      friendsModule.pendingRequests = [];
+      var reqs = (d.friendRequests || {});
+      for (var k in reqs){
+        friendsModule.pendingRequests.push({
+          senderKey: k,
+          senderPseudo: reqs[k].pseudo,
+          timestamp: reqs[k].timestamp
+        });
+      }
+      friendsModule.unreadCount = friendsModule.pendingRequests.length;
+      updateFriendsNotification();
+    });
+  });
+}
+
+function updateFriendsNotification(){
+  var badge = document.querySelector(".friends-badge");
+  if (badge){
+    if (friendsModule.unreadCount > 0){
+      badge.textContent = friendsModule.unreadCount;
+      badge.classList.remove("hidden");
+    } else {
+      badge.classList.add("hidden");
+    }
+  }
+}
+
+function sendFriendRequest(targetKey, targetPseudo){
+  if (!store.account) return;
+  if (friendsModule.friendsList.indexOf(targetKey) >= 0){
+    window.alert(t("already_friend"));
+    return;
+  }
+  var hasRequest = friendsModule.pendingRequests.some(function(r){ return r.senderKey === targetKey; });
+  if (hasRequest){
+    window.alert(t("request_pending"));
+    return;
+  }
+  if (targetKey === store.account.key){
+    window.alert(t("cant_add_yourself"));
+    return;
+  }
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    var targetRef = fb.db.collection("users").doc(targetKey);
+    targetRef.update({
+      ["friendRequests." + store.account.key]: {
+        pseudo: store.account.pseudo,
+        timestamp: Date.now()
+      }
+    }).then(function(){
+      window.alert(t("request_sent"));
+      loadFriendsData();
+    }).catch(function(){
+      window.alert(t("st_err"));
+    });
+  });
+}
+
+function acceptFriendRequest(senderKey, senderPseudo){
+  if (!store.account) return;
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    var myRef = myUserRef();
+    var theirRef = fb.db.collection("users").doc(senderKey);
+    var myUpdate = {
+      friends: firebase.firestore.FieldValue.arrayUnion(senderKey)
+    };
+    myUpdate["friendRequests." + senderKey] = firebase.firestore.FieldValue.delete();
+    myRef.update(myUpdate);
+    theirRef.update({
+      friends: firebase.firestore.FieldValue.arrayUnion(store.account.key)
+    });
+    loadFriendsData();
+  });
+}
+
+function rejectFriendRequest(senderKey){
+  if (!store.account) return;
+  var myRef = myUserRef();
+  var u = {};
+  u["friendRequests." + senderKey] = firebase.firestore.FieldValue.delete();
+  myRef.update(u);
+  loadFriendsData();
+}
+
+function recordGameHistory(opponentKey, opponentPseudo, result, maxPlayers){
+  if (MODE !== "online" || !store.account || !online.data || !opponentKey) return;
+  if (friendsModule.friendsList.indexOf(opponentKey) < 0) return;
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    var rec = {
+      timestamp: Date.now(),
+      result: result,    /* "win", "lose", "tie" */
+      opponent: opponentPseudo,
+      players: maxPlayers,
+      league: online.data.league
+    };
+    var myRef = myUserRef();
+    myRef.update({
+      ["gameHistory." + opponentKey]: firebase.firestore.FieldValue.arrayUnion(rec)
+    }).catch(function(){});
+  });
+}
+
+function getGameHistory(friendKey, callback){
+  if (!store.account) return;
+  initFirebase().then(function(ok){
+    if (!ok) return callback([]);
+    myUserRef().get().then(function(snap){
+      if (!snap.exists) return callback([]);
+      var hist = (snap.data().gameHistory || {})[friendKey] || [];
+      hist.sort(function(a,b){ return b.timestamp - a.timestamp; });
+      callback(hist);
+    });
+  });
+}
+
+function openFriendsRequests(){
+  hideAllScreens();
+  show("screen-friends-requests");
+  renderFriendsRequests();
+}
+
+function renderFriendsRequests(){
+  var box = qs("fr-list");
+  clear(box);
+  if (!store.account){
+    box.appendChild(el("div","rk-empty", t("acc_need")));
+    return;
+  }
+  if (!friendsModule.pendingRequests.length){
+    box.appendChild(el("div","rk-empty", t("fr_none")));
+    return;
+  }
+  for (var i=0;i<friendsModule.pendingRequests.length;i++){
+    (function(req){
+      var row = el("div","friend-req-row");
+      row.appendChild(el("span","friend-req-name", req.senderPseudo));
+      var btns = el("div","friend-req-btns");
+      var accept = el("button","friend-req-btn friend-req-accept", "✓");
+      accept.addEventListener("click", function(){ acceptFriendRequest(req.senderKey, req.senderPseudo); });
+      btns.appendChild(accept);
+      var reject = el("button","friend-req-btn friend-req-reject", "✕");
+      reject.addEventListener("click", function(){ rejectFriendRequest(req.senderKey); });
+      btns.appendChild(reject);
+      row.appendChild(btns);
+      box.appendChild(row);
+    })(friendsModule.pendingRequests[i]);
+  }
+}
+
+function openFriendsHistory(friendKey, friendPseudo){
+  hideAllScreens();
+  show("screen-friends-history");
+  qs("fh-name").textContent = friendPseudo;
+  var box = qs("fh-list");
+  clear(box);
+  box.appendChild(el("div","rk-empty", t("rk_loading")));
+  getGameHistory(friendKey, function(hist){
+    clear(box);
+    if (!hist.length){
+      box.appendChild(el("div","rk-empty", t("fr_no_games")));
+      return;
+    }
+    var stats = { wins: 0, losses: 0, ties: 0 };
+    for (var i=0;i<hist.length;i++){
+      var h = hist[i];
+      if (h.result === "win") stats.wins++;
+      else if (h.result === "loss") stats.losses++;
+      else stats.ties++;
+      var row = el("div","game-hist-row");
+      var date = new Date(h.timestamp);
+      var dateStr = date.toLocaleDateString(store.lang === "fr" ? "fr-FR" : (store.lang === "es" ? "es-ES" : "en-US"));
+      var emoji = h.result === "win" ? "🏆" : (h.result === "loss" ? "💔" : "🤝");
+      row.appendChild(el("span","gh-emoji", emoji));
+      row.appendChild(el("span","gh-date", dateStr));
+      row.appendChild(el("span","gh-league", h.league + " (" + h.players + "p)"));
+      box.appendChild(row);
+    }
+    var top = el("div","game-hist-top");
+    top.appendChild(el("span","gh-stat", "🏆 " + stats.wins));
+    top.appendChild(el("span","gh-stat", "💔 " + stats.losses));
+    top.appendChild(el("span","gh-stat", "🤝 " + stats.ties));
+    box.insertBefore(top, box.firstChild);
+  });
+}
+
+function makeFriendNameClickable(nameEl, friendKey, friendPseudo){
+  nameEl.style.cursor = "pointer";
+  nameEl.style.textDecoration = "underline";
+  nameEl.addEventListener("click", function(e){
+    e.stopPropagation();
+    showFriendMenu(friendKey, friendPseudo);
+  });
+}
+
+function showFriendMenu(friendKey, friendPseudo){
+  var opts = [];
+  if (store.account && friendsModule.friendsList.indexOf(friendKey) >= 0){
+    opts.push({ label: "📊 " + t("fr_history"), action: function(){ openFriendsHistory(friendKey, friendPseudo); } });
+  } else if (store.account){
+    opts.push({ label: "👥 " + t("fr_add"), action: function(){ sendFriendRequest(friendKey, friendPseudo); } });
+  } else {
+    return;
+  }
+  if (!opts.length) return;
+  var menu = el("div","friend-menu");
+  for (var i=0;i<opts.length;i++){
+    (function(opt){
+      var btn = el("button","friend-menu-btn", opt.label);
+      btn.addEventListener("click", function(){ opt.action(); document.body.removeChild(menu); });
+      menu.appendChild(btn);
+    })(opts[i]);
+  }
+  menu.style.position = "fixed";
+  menu.style.top = "50%";
+  menu.style.left = "50%";
+  menu.style.transform = "translate(-50%, -50%)";
+  menu.style.background = "#151228";
+  menu.style.border = "1px solid #2c2750";
+  menu.style.borderRadius = "12px";
+  menu.style.padding = "8px";
+  menu.style.zIndex = "999";
+  document.body.appendChild(menu);
+  setTimeout(function(){
+    document.addEventListener("click", function(){ if (menu.parentNode) document.body.removeChild(menu); }, { once: true });
+  }, 100);
+}
+
+function showCreateAccountPopup(){
+  if (store.account) return;
+  var overlay = el("div","create-account-overlay");
+  overlay.className = "overlay";
+  var box = el("div","overlay-box");
+  box.appendChild(el("div","brush rules-title", t("acc_title")));
+  box.appendChild(el("p", null, t("acc_need")));
+  var btns = el("div","end-btns");
+  var createBtn = el("button","big-btn gold", t("acc_register"));
+  createBtn.addEventListener("click", function(){ hideAllScreens(); show("screen-profile"); document.body.removeChild(overlay); });
+  btns.appendChild(createBtn);
+  var cancelBtn = el("button","big-btn ghost", t("cancel"));
+  cancelBtn.addEventListener("click", function(){ document.body.removeChild(overlay); });
+  btns.appendChild(cancelBtn);
+  box.appendChild(btns);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
 }
 
 </script>

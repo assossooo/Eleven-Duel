@@ -87,8 +87,10 @@ body {
 /* ------ CARTE JOUEUR ------ */
 .player-card {
   border-radius:20px; padding:20px 16px; text-align:center; margin-bottom:12px;
-  border:2px solid; position:relative; animation:cardIn 0.45s ease;
+  border:2px solid; position:relative; animation:cardIn 0.45s ease; overflow:hidden;
 }
+.player-card.skinned .pc-note, .player-card.skinned .pc-name,
+.player-card.skinned .pc-pos, .player-card.skinned .pc-club { position:relative; z-index:2; }
 @keyframes cardIn { from { transform:translateY(18px) scale(0.95); opacity:0; } to { transform:none; opacity:1; } }
 .tier-gold { background:linear-gradient(160deg, #2a2008, #151228); border-color:#f5b31c; box-shadow:0 0 30px #f5b31c33; }
 .tier-pink { background:linear-gradient(160deg, #2a0818, #151228); border-color:#f52c8c; box-shadow:0 0 26px #f52c8c33; }
@@ -373,6 +375,74 @@ body {
 .game-hist-top { display:flex; justify-content:space-around; padding:10px 0; border-bottom:2px solid #2c2750; margin-bottom:10px; }
 .gh-stat { color:#27c3f5; font-weight:900; font-size:0.9rem; }
 
+
+/* ------ V7 : SKINS DE CARTES + DUELGOLD ------ */
+.dg-pill-row { display:flex; justify-content:center; margin-bottom:10px; }
+.dg-pill { background:#151228; border:1px solid #f5b31c66; color:#f5b31c; border-radius:20px; padding:6px 14px; font-weight:800; font-size:0.9rem; }
+.skins-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+.shop-skins-footer { display:flex; justify-content:center; margin-bottom:8px; }
+.skin-owned { color:#27c3f5; font-weight:800; padding:10px; }
+.skin-mini { border-radius:14px; padding:14px 10px; text-align:center; border:2px solid; position:relative; overflow:hidden; }
+.skin-mini-note { font-size:1.8rem; font-weight:900; line-height:1; position:relative; z-index:2; }
+.skin-mini-name { font-size:0.95rem; font-weight:900; font-style:italic; text-transform:uppercase; position:relative; z-index:2; }
+.skin-mini-lbl { font-size:0.65rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-top:3px; position:relative; z-index:2; opacity:0.8; }
+
+/* couleurs de base des minis (non-skinnés) */
+.skin-gold { background:linear-gradient(160deg,#2a2008,#151228); border-color:#f5b31c; }
+.skin-gold .skin-mini-note { color:#f5b31c; } .skin-gold .skin-mini-name { color:#fff4d0; } .skin-gold .skin-mini-lbl { color:#f5b31c; }
+.skin-pink { background:linear-gradient(160deg,#2a0818,#151228); border-color:#f52c8c; }
+.skin-pink .skin-mini-note { color:#f52c8c; } .skin-pink .skin-mini-name { color:#ffd6ea; } .skin-pink .skin-mini-lbl { color:#f52c8c; }
+.skin-cyan { background:linear-gradient(160deg,#08202a,#151228); border-color:#27c3f5; }
+.skin-cyan .skin-mini-note { color:#27c3f5; } .skin-cyan .skin-mini-name { color:#d0f2ff; } .skin-cyan .skin-mini-lbl { color:#27c3f5; }
+.skin-grey { background:linear-gradient(160deg,#1a1830,#151228); border-color:#3c3860; }
+.skin-grey .skin-mini-note { color:#b8bce0; } .skin-grey .skin-mini-name { color:#e4e6f5; } .skin-grey .skin-mini-lbl { color:#9a9ec0; }
+
+/* ===== SKINS PREMIUM (appliqués quand .skinned) ===== */
+/* GOLD — reflet brillant qui balaie */
+.skin-gold.skinned, .player-card.skinned.skin-gold {
+  background:linear-gradient(160deg, #3a2c08 0%, #1a1206 60%, #151228 100%);
+  box-shadow:0 0 30px #f5b31c44, inset 0 0 40px #f5b31c11;
+}
+.skin-gold.skinned::before, .player-card.skinned.skin-gold::before {
+  content:""; position:absolute; top:-40%; left:-60%; width:220%; height:60%;
+  background:linear-gradient(90deg, transparent, #ffffff55, transparent);
+  transform:rotate(25deg); animation:skinShine 3.5s ease-in-out infinite; z-index:1;
+}
+@keyframes skinShine { 0%,100%{ left:-60%; } 50%{ left:60%; } }
+
+/* PINK — néon + trame diagonale */
+.skin-pink.skinned, .player-card.skinned.skin-pink {
+  background:linear-gradient(155deg, #f52c8c22, #8b3df522), radial-gradient(circle at 50% 10%, #2a0820, #0a0817 70%);
+  border-color:#c14fd6; box-shadow:0 0 26px #a83df555;
+}
+.skin-pink.skinned::before, .player-card.skinned.skin-pink::before {
+  content:""; position:absolute; inset:0; z-index:1;
+  background:repeating-linear-gradient(45deg, #ffffff08 0 1px, transparent 1px 12px);
+}
+
+/* CYAN — ligne de scan animée */
+.skin-cyan.skinned, .player-card.skinned.skin-cyan {
+  background:#06141a;
+  background-image:linear-gradient(160deg, #08303acc, #0a0817ee), repeating-linear-gradient(0deg, #27c3f512 0 1px, transparent 1px 16px);
+  box-shadow:0 0 24px #27c3f544;
+}
+.skin-cyan.skinned::before, .player-card.skinned.skin-cyan::before {
+  content:""; position:absolute; top:0; left:0; right:0; height:3px; z-index:1;
+  background:linear-gradient(90deg, transparent, #27c3f5, transparent);
+  animation:skinScan 2.5s linear infinite;
+}
+@keyframes skinScan { 0%{ transform:translateY(0); opacity:0; } 10%{opacity:1;} 90%{opacity:1;} 100%{ transform:translateY(210px); opacity:0; } }
+
+/* GREY — texture croisée */
+.skin-grey.skinned, .player-card.skinned.skin-grey {
+  background:#14121f; background-image:linear-gradient(160deg, #26243a, #100e1a);
+  border-color:#6a6a80; box-shadow:0 0 16px #00000066;
+}
+.skin-grey.skinned::before, .player-card.skinned.skin-grey::before {
+  content:""; position:absolute; inset:0; z-index:1;
+  background:repeating-linear-gradient(45deg, #ffffff06 0 1px, transparent 1px 10px);
+}
+
 </style>
 </head>
 <body>
@@ -465,7 +535,6 @@ body {
     </div>
   </div>
   <div id="auto-pass" class="auto-pass hidden"></div>
-  <div id="bonus-bar" class="bonus-bar"></div>
 
   <div class="game-links">
     <button id="btn-squads" class="link-btn" data-i18n="squads_btn"></button>
@@ -524,11 +593,14 @@ body {
     <div class="brush shop-title" data-i18n="shop_title"></div>
     <div class="coins-pill">🪙 <span id="shop-coins">100</span></div>
   </div>
+  <div class="dg-pill-row"><div class="dg-pill">👑 <span id="shop-duelgold">0</span> DuelGold</div></div>
   <p class="shop-sub" data-i18n="shop_sub"></p>
   <div class="shop-section" data-i18n="shop_anims"></div>
   <div id="shop-grid" class="shop-grid"></div>
-  <div class="shop-section" data-i18n="shop_bonus"></div>
-  <div id="shop-bonus-grid" class="shop-grid"></div>
+  <div class="shop-section" data-i18n="shop_skins"></div>
+  <p class="shop-sub" data-i18n="shop_skins_sub"></p>
+  <div id="shop-skins-grid" class="skins-grid"></div>
+  <div id="shop-skins-footer" class="shop-skins-footer"></div>
   <div class="end-btns">
     <button id="btn-shop-back" class="big-btn ghost" data-i18n="back"></button>
   </div>
@@ -796,6 +868,9 @@ fr: {
   lg_closed:"Saison clôturée ! Champion : {p} 🏆", lg_nogames:"Aucun duel joué cette saison.",
   lg_pick:"Compter la partie pour une ligue :", lg_free:"Aucune (partie libre)",
   lg_share:"Partage ce code pour inviter tes amis !",
+  skin_gold:"Or", skin_pink:"Élite", skin_cyan:"Rare", skin_grey:"Commun",
+  skin_buy:"Débloquer les skins", skin_owned:"✅ Skins débloqués", skin_need_gold:"Pas assez de DuelGold 👑",
+  shop_skins:"Skins de cartes", shop_skins_sub:"Un pack unique qui applique un style premium aux cartes selon leur niveau. Achat en DuelGold 👑 (gagnés en fin de saison).",
   country_label:"Pays",
   acc_rules:"Accès refusé par Firebase — mets à jour les règles Firestore (users + leagues)."
 },
@@ -890,6 +965,9 @@ en: {
   lg_closed:"Season closed! Champion: {p} 🏆", lg_nogames:"No duel played this season.",
   lg_pick:"Count this game for a league:", lg_free:"None (casual game)",
   lg_share:"Share this code to invite your friends!",
+  skin_gold:"Gold", skin_pink:"Elite", skin_cyan:"Rare", skin_grey:"Common",
+  skin_buy:"Unlock skins", skin_owned:"✅ Skins unlocked", skin_need_gold:"Not enough DuelGold 👑",
+  shop_skins:"Card skins", shop_skins_sub:"A single pack that applies a premium style to cards based on their tier. Buy with DuelGold 👑 (earned at season end).",
   country_label:"Country",
   acc_rules:"Access denied by Firebase — update the Firestore rules (users + leagues)."
 },
@@ -984,6 +1062,9 @@ es: {
   lg_closed:"¡Temporada cerrada! Campeón: {p} 🏆", lg_nogames:"Ningún duelo jugado esta temporada.",
   lg_pick:"Contar esta partida para una liga:", lg_free:"Ninguna (partida libre)",
   lg_share:"¡Comparte este código para invitar a tus amigos!",
+  skin_gold:"Oro", skin_pink:"Élite", skin_cyan:"Raro", skin_grey:"Común",
+  skin_buy:"Desbloquear skins", skin_owned:"✅ Skins desbloqueados", skin_need_gold:"DuelGold insuficiente 👑",
+  shop_skins:"Skins de cartas", shop_skins_sub:"Un pack único que aplica un estilo premium a las cartas según su nivel. Compra con DuelGold 👑 (ganados al final de temporada).",
   country_label:"País",
   acc_rules:"Acceso denegado por Firebase — actualiza las reglas de Firestore (users + leagues)."
 },
@@ -1122,6 +1203,7 @@ function leagueLabel(id){
 }
 
 var FORMATIONS = ["3-4-3","3-5-2","4-4-2","4-3-3","4-5-1","4-2-4","5-3-2","5-4-1"];
+var SKINS_PACK_PRICE = 2000;
 var FORMATION_BONUS = 0.5;
 var TIMER_SECONDS = 12;
 var MAX_PASSES = 5;
@@ -1138,16 +1220,11 @@ var ANIMS = [
   { id:"dragon", emoji:"🐉", price:250 },
   { id:"king", emoji:"👑", price:300 }
 ];
-var BONUSES = [
-  { id:"time", emoji:"⏱", price:30 },
-  { id:"star", emoji:"⭐", price:80 },
-  { id:"cash", emoji:"💰", price:100 }
-];
 
 /* ---------- STORAGE ---------- */
 var memStore = null;
 function loadStore(){
-  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", bonus:{ time:0, cash:0, star:0 }, account:null };
+  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false };
   try {
     var raw = window.localStorage.getItem("elevenduel_store");
     if (raw){
@@ -1155,7 +1232,8 @@ function loadStore(){
       if (s && typeof s.coins === "number" && s.owned && s.owned.length){
         if (!s.pseudo) s.pseudo = "";
         if (!s.lang) s.lang = "fr";
-        if (!s.bonus) s.bonus = { time:0, cash:0, star:0 };
+        if (typeof s.duelgold !== "number") s.duelgold = 0;
+        if (s.skinsPack === undefined) s.skinsPack = false;
         if (s.account === undefined) s.account = null;
         return s;
       }
@@ -1407,7 +1485,7 @@ function startGame(){
   hideAllScreens();
   clearVictoryAnimation();
   show("screen-game");
-  hide("btn-abandon");
+  show("btn-abandon");
   nextRound();
 }
 
@@ -1520,56 +1598,15 @@ function setBid(v){
   qs("bid-slider").value = String(v);
 }
 
-function renderBonusBar(){
-  var bar = qs("bonus-bar");
-  clear(bar);
-  for (var i=0;i<BONUSES.length;i++){
-    (function(b){
-      var count = store.bonus[b.id] || 0;
-      var used = usedBonus[b.id];
-      var btn = el("button","bonus-chip" + ((count < 1 || used) ? " bonus-off" : ""));
-      btn.appendChild(el("span","bonus-emoji", b.emoji));
-      btn.appendChild(el("span","bonus-lbl", used ? t("bonus_used") : (t("bonus_" + b.id) + " x" + count)));
-      btn.addEventListener("click", function(){ useBonus(b.id); });
-      bar.appendChild(btn);
-    })(BONUSES[i]);
-  }
-}
+function renderBonusBar(){}
 
-function useBonus(id){
-  if (usedBonus[id] || (store.bonus[id] || 0) < 1) return;
-  if (qs("bid-zone").classList.contains("hidden")) return;
-  if (id === "time"){
-    bidDeadline += 15000;
-  } else if (id === "cash"){
-    me().budget += 20;
-    if (MODE === "online"){
-      var u = {};
-      u["players.p" + state.myIdx + ".budget"] = firebase.firestore.FieldValue.increment(20);
-      online.ref.update(u).catch(function(){});
-    }
-    renderHUD();
-    qs("bid-slider").max = String(maxBidYou());
-    qs("bid-max-label").textContent = tf("max_bid", { m: maxBidYou(), p: Math.max(0, MAX_PASSES - me().passes) });
-  } else if (id === "star"){
-    me().boostPending = true;
-    if (MODE === "online"){
-      var u2 = {};
-      u2["players.p" + state.myIdx + ".boostPending"] = true;
-      online.ref.update(u2).catch(function(){});
-    }
-  }
-  usedBonus[id] = true;
-  store.bonus[id] = (store.bonus[id] || 0) - 1;
-  saveStore(store);
-  renderBonusBar();
-}
+function useBonus(id){}
 
 function renderRound(){
   renderHUD();
   hide("overlay-reveal");
   var p = PLAYERS[state.current];
-  qs("player-card").className = "player-card " + tierClass(p[2]);
+  qs("player-card").className = "player-card " + tierClass(p[2]) + (store.skinsPack ? " skinned skin-" + tierClass(p[2]).replace("tier-","") : "");
   qs("pc-note").textContent = p[2];
   qs("pc-name").textContent = p[0];
   qs("pc-pos").textContent = t("pos_" + p[1]);
@@ -1586,7 +1623,6 @@ function renderRound(){
   if (minBidYou() > 0){ pb.disabled = true; pb.textContent = t("no_pass"); }
   else { pb.disabled = false; pb.textContent = tf("pass", { n: passesLeft }); }
   qs("btn-bid").textContent = t("bid");
-  renderBonusBar();
 
   if (me().out){
     qs("bid-zone").classList.add("hidden");
@@ -1723,9 +1759,9 @@ function openSquads(){
 function giveCoins(outcome){
   if (rewardGiven) return 0;
   rewardGiven = true;
-  var gain = 20;
-  if (outcome === "win") gain = 100;
-  else if (outcome === "tie") gain = 50;
+  var gain = 0;
+  if (outcome === "win") gain = 30;
+  else if (outcome === "tie") gain = 15;
   store.coins += gain;
   saveStore(store);
   return gain;
@@ -2319,10 +2355,17 @@ function showOnlineEnd(d){
 }
 
 function abandonGame(){
-  if (MODE !== "online" || !online.ref || !online.data) return;
-  if (online.data.status !== "playing") return;
   var sure = window.confirm(t("confirm_abandon"));
   if (!sure) return;
+  if (MODE === "solo"){
+    if (!state || state.endReason !== null) return;
+    stopTimer();
+    me().out = true; me().forfeit = true;
+    endGame("forfeit");
+    return;
+  }
+  if (MODE !== "online" || !online.ref || !online.data) return;
+  if (online.data.status !== "playing") return;
   var u = {};
   u["players.p" + online.myIdx + ".out"] = true;
   u["players.p" + online.myIdx + ".forfeit"] = true;
@@ -2436,6 +2479,8 @@ function playAnim(id){
 function renderCoins(){
   qs("home-coins").textContent = store.coins;
   qs("shop-coins").textContent = store.coins;
+  var dg = qs("shop-duelgold");
+  if (dg) dg.textContent = store.duelgold || 0;
 }
 function isOwned(id){ return store.owned.indexOf(id) >= 0; }
 function renderShop(){
@@ -2477,27 +2522,42 @@ function renderShop(){
       grid.appendChild(card);
     })(ANIMS[i]);
   }
-  /* bonus consommables */
-  var bgrid = qs("shop-bonus-grid");
-  clear(bgrid);
-  for (var j=0;j<BONUSES.length;j++){
-    (function(b){
-      var count = store.bonus[b.id] || 0;
-      var card = el("div","shop-card");
-      card.appendChild(el("div","shop-emoji", b.emoji));
-      card.appendChild(el("div","shop-name", t("bonus_" + b.id)));
-      card.appendChild(el("div","shop-desc", t("bdesc_" + b.id)));
-      card.appendChild(el("div","shop-stock", tf("owned_n", { n: count })));
-      var buy = el("button","shop-btn shop-btn-buy" + (store.coins < b.price ? " shop-btn-poor" : ""), b.price + " 🪙");
-      buy.addEventListener("click", function(){
-        if (store.coins < b.price) return;
-        store.coins -= b.price;
-        store.bonus[b.id] = (store.bonus[b.id] || 0) + 1;
-        saveStore(store); renderShop();
-      });
-      card.appendChild(buy);
-      bgrid.appendChild(card);
-    })(BONUSES[j]);
+  renderSkinsShop();
+}
+function renderSkinsShop(){
+  var box = qs("shop-skins-grid");
+  if (!box) return;
+  clear(box);
+  var tiers = [
+    { cls:"gold", label:t("skin_gold"), note:91, name:"Mbappé" },
+    { cls:"pink", label:t("skin_pink"), note:88, name:"Saka" },
+    { cls:"cyan", label:t("skin_cyan"), note:85, name:"Lookman" },
+    { cls:"grey", label:t("skin_grey"), note:78, name:"Giroud" }
+  ];
+  for (var i=0;i<tiers.length;i++){
+    (function(tr){
+      var mini = el("div","skin-mini skin-" + tr.cls + (store.skinsPack ? " skinned" : ""));
+      mini.appendChild(el("div","skin-mini-note", String(tr.note)));
+      mini.appendChild(el("div","skin-mini-name", tr.name));
+      mini.appendChild(el("div","skin-mini-lbl", tr.label));
+      box.appendChild(mini);
+    })(tiers[i]);
+  }
+  var footer = qs("shop-skins-footer");
+  clear(footer);
+  if (store.skinsPack){
+    footer.appendChild(el("div","skin-owned", t("skin_owned")));
+  } else {
+    var buy = el("button","shop-btn shop-btn-buy" + (store.duelgold < SKINS_PACK_PRICE ? " shop-btn-poor" : ""),
+      t("skin_buy") + " · " + SKINS_PACK_PRICE + " 👑");
+    buy.addEventListener("click", function(){
+      if (store.duelgold < SKINS_PACK_PRICE){ window.alert(t("skin_need_gold")); return; }
+      store.duelgold -= SKINS_PACK_PRICE;
+      store.skinsPack = true;
+      saveStore(store);
+      renderShop();
+    });
+    footer.appendChild(buy);
   }
 }
 function openShop(){
@@ -2882,11 +2942,15 @@ function openRanks(){
   if (cbtn) cbtn.textContent = store.account ? countryLabel(store.account.country) : t("rk_country");
   loadRanks(rankTab);
 }
-function rankRow(pos, pseudo, flag, wins, games, isMe){
+function rankRow(pos, pseudo, flag, wins, games, isMe, userKey){
   var row = el("div","rank-row" + (isMe ? " rank-me" : ""));
   var medals = ["🥇","🥈","🥉"];
   row.appendChild(el("span","rank-medal", pos <= 3 ? medals[pos-1] : pos + "."));
-  row.appendChild(el("span","rank-name", flag + " " + pseudo + (isMe ? " · " + t("rk_me") : "")));
+  var nameEl = el("span","rank-name", flag + " " + pseudo + (isMe ? " · " + t("rk_me") : ""));
+  if (userKey && !isMe && store.account){
+    makeFriendNameClickable(nameEl, userKey, pseudo);
+  }
+  row.appendChild(nameEl);
   row.appendChild(el("span","rank-det", wins + " " + t("rk_v") + " · " + games + " " + t("rk_j")));
   return row;
 }
@@ -2906,7 +2970,7 @@ function renderRankList(users){
   for (var i=0;i<users.length && i<50;i++){
     var u = users[i];
     var isMe = store.account && u.key === store.account.key;
-    box.appendChild(rankRow(i+1, u.pseudo, countryFlag(u.country || "XX"), (u.stats && u.stats.wins) || 0, (u.stats && u.stats.games) || 0, isMe));
+    box.appendChild(rankRow(i+1, u.pseudo, countryFlag(u.country || "XX"), (u.stats && u.stats.wins) || 0, (u.stats && u.stats.games) || 0, isMe, u.key));
   }
 }
 function loadRanks(tab){
@@ -3118,7 +3182,7 @@ function renderLeagueDetail(d){
   } else {
     for (var i=0;i<arr.length;i++){
       var isMe = store.account && arr[i].key === store.account.key;
-      box.appendChild(rankRow(i+1, arr[i].pseudo, "", arr[i].wins, arr[i].games, isMe));
+      box.appendChild(rankRow(i+1, arr[i].pseudo, "", arr[i].wins, arr[i].games, isMe, arr[i].key));
     }
   }
 

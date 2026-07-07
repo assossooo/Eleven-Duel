@@ -1704,11 +1704,13 @@ function startGame(){
   MODE = "solo";
   var prof = chosenProfile;
   if (prof === "random") prof = PROFILE_KEYS[Math.floor(Math.random()*PROFILE_KEYS.length)];
+  var myRealName = store.account ? store.account.pseudo : t("you");
   state = {
-    players: [ newSide(store.pseudo || "Toi"), newSide("Ali " + PROFILES[prof].emoji) ],
+    players: [ newSide(myRealName), newSide("Ali " + PROFILES[prof].emoji) ],
     myIdx: 0, round: 0, current: -1, used: [],
     league: chosenLeague, profile: prof, endReason: null
   };
+  if (store.account) state.players[0].userKey = store.account.key;
   rewardGiven = false;
   endShownLocal = false;
   usedBonus = { time:false, cash:false, star:false };

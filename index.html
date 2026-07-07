@@ -1573,6 +1573,7 @@ function checkTriondaExpiry(){
       store.equippedSkin = store.skinsPack ? "tierpack" : "none";
     }
     saveStore(store);
+    pushShopStateToAccount();
   }
 }
 function cardSkinClass(note){
@@ -2164,6 +2165,7 @@ function giveCoins(outcome){
   else if (outcome === "tie") gain = 15;
   store.coins += gain;
   saveStore(store);
+  pushShopStateToAccount();
   return gain;
 }
 
@@ -2925,7 +2927,7 @@ function renderShop(){
         main.textContent = t("equip");
         main.className = "shop-btn shop-btn-own";
         main.addEventListener("click", function(){
-          store.equipped = a.id; saveStore(store); renderShop();
+          store.equipped = a.id; saveStore(store); pushShopStateToAccount(); renderShop();
         });
       } else {
         main.textContent = a.price + " 🪙";
@@ -2935,7 +2937,7 @@ function renderShop(){
           store.coins -= a.price;
           store.owned.push(a.id);
           store.equipped = a.id;
-          saveStore(store); renderShop(); playAnim(a.id);
+          saveStore(store); pushShopStateToAccount(); renderShop(); playAnim(a.id);
         });
       }
       btnRow.appendChild(main);
@@ -2945,9 +2947,41 @@ function renderShop(){
   }
   renderSkinsShop();
 }
+function shopStateSnapshot(){
+  return {
+    coins: store.coins, owned: store.owned, equipped: store.equipped,
+    skinsPack: store.skinsPack, triondaOwned: store.triondaOwned, equippedSkin: store.equippedSkin
+  };
+}
+function pushShopStateToAccount(){
+  if (!store.account) return;
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    myUserRef().update(cleanData(shopStateSnapshot())).catch(function(){});
+  });
+}
+function pullShopStateFromAccount(d){
+  var changed = false;
+  if (typeof d.coins === "number"){ store.coins = d.coins; changed = true; }
+  if (Array.isArray(d.owned)){ store.owned = d.owned; changed = true; }
+  if (typeof d.equipped === "string"){ store.equipped = d.equipped; changed = true; }
+  if (typeof d.skinsPack === "boolean"){ store.skinsPack = d.skinsPack; changed = true; }
+  if (typeof d.triondaOwned === "boolean"){ store.triondaOwned = d.triondaOwned; changed = true; }
+  if (typeof d.equippedSkin === "string"){ store.equippedSkin = d.equippedSkin; changed = true; }
+  if (typeof d.duelgold === "number"){ store.duelgold = d.duelgold; changed = true; }
+  if (changed){
+    saveStore(store);
+    renderCoins();
+    if (!qs("screen-shop").classList.contains("hidden")) renderShop();
+  } else {
+    /* compte cree avant cette maj : on pousse l'etat local actuel pour l'initialiser */
+    pushShopStateToAccount();
+  }
+}
 function equipSkin(id){
   store.equippedSkin = id;
   saveStore(store);
+  pushShopStateToAccount();
   renderShop();
 }
 function renderSkinSelector(){
@@ -3002,6 +3036,7 @@ function renderSkinsShop(){
       store.skinsPack = true;
       if (store.equippedSkin === "none") store.equippedSkin = "tierpack";
       saveStore(store);
+      pushShopStateToAccount();
       renderShop();
     });
     footer.appendChild(buy);
@@ -3048,6 +3083,7 @@ function renderTriondaShop(){
       store.triondaOwned = true;
       if (store.equippedSkin === "none") store.equippedSkin = "trionda";
       saveStore(store);
+      pushShopStateToAccount();
       renderShop();
       renderCoins();
     });
@@ -3229,7 +3265,10 @@ function registerAccount(){
         tx.set(ref, cleanData({
           pseudo: pseudo, codeHash: hashSecret(key, code), country: country,
           createdAt: Date.now(), leagues: [], stats: zeroStats(),
-          source: arrivalSource || "direct"
+          source: arrivalSource || "direct",
+          coins: store.coins, owned: store.owned, equipped: store.equipped,
+          skinsPack: store.skinsPack, triondaOwned: store.triondaOwned,
+          equippedSkin: store.equippedSkin, duelgold: store.duelgold || 0
         }));
       });
     }).then(function(){
@@ -3259,6 +3298,7 @@ function loginAccount(){
       var d = snap.data();
       store.account = { pseudo: d.pseudo, key: key, secret: code, country: d.country || "XX" };
       saveStore(store);
+      pullShopStateFromAccount(d);
       setAccStatus(tf("acc_hello", { p: d.pseudo }));
       renderProfile();
     }).catch(function(err){

@@ -3903,11 +3903,15 @@ function acceptFriendRequest(senderKey, senderPseudo){
       friends: firebase.firestore.FieldValue.arrayUnion(senderKey)
     };
     myUpdate["friendRequests." + senderKey] = firebase.firestore.FieldValue.delete();
-    myRef.update(myUpdate);
-    theirRef.update({
-      friends: firebase.firestore.FieldValue.arrayUnion(store.account.key)
+    Promise.all([
+      myRef.update(myUpdate),
+      theirRef.update({ friends: firebase.firestore.FieldValue.arrayUnion(store.account.key) })
+    ]).then(function(){
+      loadFriendsData();
+      if (!qs("screen-friends-requests").classList.contains("hidden")) renderFriendsRequests();
+    }).catch(function(){
+      window.alert(t("st_err"));
     });
-    loadFriendsData();
   });
 }
 
@@ -3916,8 +3920,12 @@ function rejectFriendRequest(senderKey){
   var myRef = myUserRef();
   var u = {};
   u["friendRequests." + senderKey] = firebase.firestore.FieldValue.delete();
-  myRef.update(u);
-  loadFriendsData();
+  myRef.update(u).then(function(){
+    loadFriendsData();
+    if (!qs("screen-friends-requests").classList.contains("hidden")) renderFriendsRequests();
+  }).catch(function(){
+    window.alert(t("st_err"));
+  });
 }
 
 function recordGameHistory(opponentKey, opponentPseudo, result, maxPlayers){

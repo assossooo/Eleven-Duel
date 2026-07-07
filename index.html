@@ -587,6 +587,75 @@ body.theme-genesis .player-card::after {
 .admin-src-bar { height:100%; background:linear-gradient(90deg, #27c3f5, #f5b31c); border-radius:5px; }
 .admin-src-pct { width:70px; text-align:right; font-size:0.75rem; color:#8b8fa8; font-weight:700; }
 
+
+/* ===================================================
+   V10 : SKIN TRIONDA (Coupe du Monde 2026, édition limitée)
+   Design v5 validé : panneaux en coin + grandes icônes nationales
+   =================================================== */
+.trionda-skin {
+  background:#ffffff !important;
+  border-color:#d4a017 !important; overflow:hidden; position:relative;
+}
+.trionda-skin .pc-note { color:#12233a !important; text-shadow:none !important; }
+.trionda-skin .pc-name { color:#1a1a2e !important; }
+.trionda-skin .pc-pos { color:#39405a !important; }
+.trionda-skin .pc-club { color:#5a6178 !important; }
+.trionda-skin .pc-note, .trionda-skin .pc-name, .trionda-skin .pc-pos, .trionda-skin .pc-club {
+  position:relative; z-index:5;
+}
+.trionda-skin .pc-name, .trionda-skin .pc-pos, .trionda-skin .pc-club {
+  background:#ffffffee; display:inline-block; border-radius:8px; padding:1px 6px;
+}
+
+.td-panel { position:absolute; z-index:1; }
+.td-panel-usa { background:#0066cc; }
+.td-panel-canada { background:#e31937; }
+.td-panel-mexico { background:#00a651; }
+.td-panel-icon {
+  position:absolute; z-index:3; top:50%; left:50%; transform:translate(-50%,-50%);
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  background-size:contain; background-repeat:no-repeat; background-position:center;
+}
+
+/* GREY : 1 panneau (USA) */
+.trionda-grey .td-panel.p1 { width:64%; height:64%; top:-14%; right:-14%; border-radius:0 0 0 100%; }
+.trionda-grey .p1 .td-panel-icon { width:44%; height:44%; top:32%; left:68%; }
+
+/* CYAN : 2 panneaux (USA + Mexique) */
+.trionda-cyan { box-shadow:0 0 16px #0066cc33 !important; }
+.trionda-cyan .td-panel.p1 { width:58%; height:58%; top:-12%; right:-12%; border-radius:0 0 0 100%; }
+.trionda-cyan .p1 .td-panel-icon { width:46%; height:46%; top:30%; left:68%; }
+.trionda-cyan .td-panel.p2 { width:56%; height:56%; bottom:-12%; left:-12%; border-radius:100% 0 0 0; }
+.trionda-cyan .p2 .td-panel-icon { width:46%; height:46%; top:70%; left:30%; }
+
+/* PINK : 2 panneaux (Canada + USA) */
+.trionda-pink { box-shadow:0 0 20px #e3193744 !important; }
+.trionda-pink .td-panel.p1 { width:58%; height:58%; top:-12%; left:-12%; border-radius:0 0 100% 0; }
+.trionda-pink .p1 .td-panel-icon { width:46%; height:46%; top:30%; left:30%; }
+.trionda-pink .td-panel.p2 { width:56%; height:56%; bottom:-12%; right:-12%; border-radius:100% 0 0 0; }
+.trionda-pink .p2 .td-panel-icon { width:46%; height:46%; top:70%; left:70%; }
+
+/* GOLD : 3 panneaux (Canada + USA + Mexique) + éclat animé */
+.trionda-gold { box-shadow:0 0 30px #ffc72c77, inset 0 0 20px #ffc72c22 !important; }
+.trionda-gold .td-panel.p1 { width:50%; height:50%; top:-10%; left:-10%; border-radius:0 0 100% 0; }
+.trionda-gold .p1 .td-panel-icon { width:44%; height:44%; top:26%; left:26%; }
+.trionda-gold .td-panel.p2 { width:50%; height:50%; top:-10%; right:-10%; border-radius:0 0 0 100%; }
+.trionda-gold .p2 .td-panel-icon { width:44%; height:44%; top:26%; left:74%; }
+.trionda-gold .td-panel.p3 { width:58%; height:44%; bottom:-8%; left:21%; border-radius:16px 16px 0 0; }
+.trionda-gold .p3 .td-panel-icon { width:36%; height:36%; top:82%; left:50%; }
+.trionda-gold .td-shine {
+  content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+  background:linear-gradient(115deg, transparent 20%, #ffffffaa 32%, transparent 44%);
+  animation:triondaShineMove 3s ease-in-out infinite;
+}
+@keyframes triondaShineMove { 0%,100%{ transform:translateX(-40%); opacity:0.3; } 50%{ transform:translateX(40%); opacity:0.85; } }
+.trionda-gold .pc-note { text-shadow:0 0 8px #ffc72c88 !important; }
+
+/* mini preview cards dans le shop (même structure, taille réduite) */
+.skin-mini.trionda-skin { color:#1a1a2e; }
+.skin-mini.trionda-skin .skin-mini-note { color:#12233a; position:relative; z-index:5; }
+.skin-mini.trionda-skin .skin-mini-lbl { color:#39405a; position:relative; z-index:5; background:#ffffffee; border-radius:6px; }
+
 </style>
 </head>
 <body>
@@ -757,6 +826,16 @@ body.theme-genesis .player-card::after {
   <p class="shop-sub" data-i18n="shop_skins_sub"></p>
   <div id="shop-skins-grid" class="skins-grid"></div>
   <div id="shop-skins-footer" class="shop-skins-footer"></div>
+
+  <div id="shop-trionda-section" class="hidden">
+    <div class="shop-section" data-i18n="shop_trionda_title"></div>
+    <p class="shop-sub" data-i18n="shop_trionda_sub"></p>
+    <div id="shop-trionda-grid" class="skins-grid"></div>
+    <div id="shop-trionda-footer" class="shop-skins-footer"></div>
+  </div>
+
+  <div class="shop-section" data-i18n="skin_select_title"></div>
+  <div id="shop-skin-selector" class="tab-row hidden"></div>
   <div class="end-btns">
     <button id="btn-shop-back" class="big-btn ghost" data-i18n="back"></button>
   </div>
@@ -1056,6 +1135,9 @@ fr: {
   lg_closed:"Saison clôturée ! Champion : {p} 🏆", lg_nogames:"Aucun duel joué cette saison.",
   lg_pick:"Compter la partie pour une ligue :", lg_free:"Aucune (partie libre)",
   lg_share:"Partage ce code pour inviter tes amis !",
+  skin_none:"Aucun", skin_tierpack_name:"Pack Premium", skin_trionda_name:"Trionda ⚽",
+  shop_trionda_title:"Skin Coupe du Monde — Édition limitée", shop_trionda_sub:"Inspiré du ballon officiel Trionda (USA 🇺🇸 Mexique 🇲🇽 Canada 🇨🇦). Disponible jusqu'au 1er août 2026 — après cette date, le skin disparaît automatiquement de ton inventaire.",
+  skin_select_title:"Skin équipé",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1167,6 +1249,9 @@ en: {
   lg_closed:"Season closed! Champion: {p} 🏆", lg_nogames:"No duel played this season.",
   lg_pick:"Count this game for a league:", lg_free:"None (casual game)",
   lg_share:"Share this code to invite your friends!",
+  skin_none:"None", skin_tierpack_name:"Premium Pack", skin_trionda_name:"Trionda ⚽",
+  shop_trionda_title:"World Cup Skin — Limited Edition", shop_trionda_sub:"Inspired by the official Trionda ball (USA 🇺🇸 Mexico 🇲🇽 Canada 🇨🇦). Available until August 1, 2026 — after that date, the skin disappears automatically from your inventory.",
+  skin_select_title:"Equipped skin",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -1278,6 +1363,9 @@ es: {
   lg_closed:"¡Temporada cerrada! Campeón: {p} 🏆", lg_nogames:"Ningún duelo jugado esta temporada.",
   lg_pick:"Contar esta partida para una liga:", lg_free:"Ninguna (partida libre)",
   lg_share:"¡Comparte este código para invitar a tus amigos!",
+  skin_none:"Ninguno", skin_tierpack_name:"Pack Premium", skin_trionda_name:"Trionda ⚽",
+  shop_trionda_title:"Skin Mundial — Edición limitada", shop_trionda_sub:"Inspirado en el balón oficial Trionda (USA 🇺🇸 México 🇲🇽 Canadá 🇨🇦). Disponible hasta el 1 de agosto de 2026 — después de esa fecha, el skin desaparece automáticamente de tu inventario.",
+  skin_select_title:"Skin equipado",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -1434,6 +1522,69 @@ function leagueLabel(id){
 
 var FORMATIONS = ["3-4-3","3-5-2","4-4-2","4-3-3","4-5-1","4-2-4","5-3-2","5-4-1"];
 var SKINS_PACK_PRICE = 2000;
+var TRIONDA_PRICE = 100;
+var TRIONDA_EXPIRY = new Date("2026-08-01T00:00:00Z").getTime();
+function triondaExpired(){ return Date.now() >= TRIONDA_EXPIRY; }
+function svgDataUrl(svgStr){ return "data:image/svg+xml;utf8," + encodeURIComponent(svgStr); }
+var TRIONDA_ICON_URLS = {
+  star: svgDataUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12,1 14.7,8.6 22.8,8.8 16.3,13.7 18.6,21.5 12,16.9 5.4,21.5 7.7,13.7 1.2,8.8 9.3,8.6" fill="#ffffff"/></svg>'),
+  leaf: svgDataUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 L13.2 5.5 L16.8 3 L15.5 7.3 L20 6.5 L16.8 10 L20.5 12.5 L16.3 12.8 L18 17 L14 15 L13.5 20 L12 16.5 L10.5 20 L10 15 L6 17 L7.7 12.8 L3.5 12.5 L7.2 10 L4 6.5 L8.5 7.3 L7.2 3 L10.8 5.5 Z M12 16.5 L12 23" fill="#ffffff" stroke="#ffffff" stroke-width="0.6" stroke-linejoin="round"/></svg>'),
+  eagle: svgDataUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 24"><path d="M16 5 C15 3 13 2 10 2.5 C12 3.5 12.5 4.5 12.5 5.5 C9 4 5 4.5 1 7 C5 7 7.5 8 9 9.5 C5.5 9.5 2.5 11 0 14 C4 12.5 7.5 12.5 10 14 C7 15 5 17.5 4 21 C7 18.5 10 17 13 16.5 C14 18 15 19.5 16 24 C17 19.5 18 18 19 16.5 C22 17 25 18.5 28 21 C27 17.5 25 15 22 14 C24.5 12.5 28 12.5 32 14 C29.5 11 26.5 9.5 23 9.5 C24.5 8 27 7 31 7 C27 4.5 23 4 19.5 5.5 C19.5 4.5 20 3.5 22 2.5 C19 2 17 3 16 5 Z" fill="#ffffff"/></svg>')
+};
+/* config des panneaux par tier : [{cls:"p1", country:"usa"|"canada"|"mexico"}, ...] */
+var TRIONDA_TIER_PANELS = {
+  grey: [{ cls:"p1", country:"usa" }],
+  cyan: [{ cls:"p1", country:"usa" }, { cls:"p2", country:"mexico" }],
+  pink: [{ cls:"p1", country:"canada" }, { cls:"p2", country:"usa" }],
+  gold: [{ cls:"p1", country:"canada" }, { cls:"p2", country:"usa" }, { cls:"p3", country:"mexico" }]
+};
+var COUNTRY_ICON = { usa:"star", canada:"leaf", mexico:"eagle" };
+function buildTriondaPanels(tierSuffix){
+  var config = TRIONDA_TIER_PANELS[tierSuffix] || TRIONDA_TIER_PANELS.grey;
+  var frag = [];
+  for (var i=0;i<config.length;i++){
+    var conf = config[i];
+    var panel = el("div","td-panel td-panel-" + conf.country + " " + conf.cls);
+    var icon = el("div","td-panel-icon");
+    icon.style.backgroundImage = "url(\"" + TRIONDA_ICON_URLS[COUNTRY_ICON[conf.country]] + "\")";
+    panel.appendChild(icon);
+    frag.push(panel);
+  }
+  if (tierSuffix === "gold"){
+    var shine = el("div","td-shine");
+    frag.push(shine);
+  }
+  return frag;
+}
+function injectTriondaPanels(cardEl, tierSuffix){
+  var old = cardEl.querySelectorAll(".td-panel, .td-shine");
+  for (var i=0;i<old.length;i++) old[i].parentNode.removeChild(old[i]);
+  var panels = buildTriondaPanels(tierSuffix);
+  for (var j=0;j<panels.length;j++) cardEl.insertBefore(panels[j], cardEl.firstChild);
+}
+function clearTriondaPanels(cardEl){
+  var old = cardEl.querySelectorAll(".td-panel, .td-shine");
+  for (var i=0;i<old.length;i++) old[i].parentNode.removeChild(old[i]);
+}
+function checkTriondaExpiry(){
+  if (triondaExpired() && store.triondaOwned){
+    store.triondaOwned = false;
+    if (store.equippedSkin === "trionda"){
+      store.equippedSkin = store.skinsPack ? "tierpack" : "none";
+    }
+    saveStore(store);
+  }
+}
+function cardSkinClass(note){
+  var tierSuffix = tierClass(note).replace("tier-","");
+  if (store.equippedSkin === "trionda" && store.triondaOwned && !triondaExpired()){
+    return " trionda-skin trionda-" + tierSuffix;
+  }
+  if (store.equippedSkin === "tierpack" && store.skinsPack){
+    return " skinned skin-" + tierSuffix;
+  }
+  return "";
+}
 var FORMATION_BONUS = 0.5;
 var TIMER_SECONDS = 12;
 var MAX_PASSES = 5;
@@ -1454,7 +1605,7 @@ var ANIMS = [
 /* ---------- STORAGE ---------- */
 var memStore = null;
 function loadStore(){
-  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false };
+  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none" };
   try {
     var raw = window.localStorage.getItem("elevenduel_store");
     if (raw){
@@ -1464,6 +1615,8 @@ function loadStore(){
         if (!s.lang) s.lang = "fr";
         if (typeof s.duelgold !== "number") s.duelgold = 0;
         if (s.skinsPack === undefined) s.skinsPack = false;
+        if (s.triondaOwned === undefined) s.triondaOwned = false;
+        if (s.equippedSkin === undefined) s.equippedSkin = s.skinsPack ? "tierpack" : "none";
         if (s.account === undefined) s.account = null;
         return s;
       }
@@ -1847,7 +2000,13 @@ function renderRound(){
   renderHUD();
   hide("overlay-reveal");
   var p = PLAYERS[state.current];
-  qs("player-card").className = "player-card " + tierClass(p[2]) + (store.skinsPack ? " skinned skin-" + tierClass(p[2]).replace("tier-","") : "");
+  var cardEl = qs("player-card");
+  cardEl.className = "player-card " + tierClass(p[2]) + cardSkinClass(p[2]);
+  if (store.equippedSkin === "trionda" && store.triondaOwned && !triondaExpired()){
+    injectTriondaPanels(cardEl, tierClass(p[2]).replace("tier-",""));
+  } else {
+    clearTriondaPanels(cardEl);
+  }
   qs("pc-note").textContent = p[2];
   qs("pc-name").textContent = p[0];
   qs("pc-pos").textContent = t("pos_" + p[1]);
@@ -2786,6 +2945,31 @@ function renderShop(){
   }
   renderSkinsShop();
 }
+function equipSkin(id){
+  store.equippedSkin = id;
+  saveStore(store);
+  renderShop();
+}
+function renderSkinSelector(){
+  var sel = qs("shop-skin-selector");
+  if (!sel) return;
+  clear(sel);
+  if (!store.skinsPack && !(store.triondaOwned && !triondaExpired())){
+    sel.classList.add("hidden");
+    return;
+  }
+  sel.classList.remove("hidden");
+  var opts = [{ id:"none", label:t("skin_none") }];
+  if (store.skinsPack) opts.push({ id:"tierpack", label:t("skin_tierpack_name") });
+  if (store.triondaOwned && !triondaExpired()) opts.push({ id:"trionda", label:t("skin_trionda_name") });
+  for (var i=0;i<opts.length;i++){
+    (function(o){
+      var btn = el("button","tab-chip" + (store.equippedSkin === o.id ? " tab-active" : ""), o.label);
+      btn.addEventListener("click", function(){ equipSkin(o.id); });
+      sel.appendChild(btn);
+    })(opts[i]);
+  }
+}
 function renderSkinsShop(){
   var box = qs("shop-skins-grid");
   if (!box) return;
@@ -2798,7 +2982,7 @@ function renderSkinsShop(){
   ];
   for (var i=0;i<tiers.length;i++){
     (function(tr){
-      var mini = el("div","skin-mini skin-" + tr.cls + (store.skinsPack ? " skinned" : ""));
+      var mini = el("div","skin-mini skin-" + tr.cls + (store.skinsPack && store.equippedSkin === "tierpack" ? " skinned" : ""));
       mini.appendChild(el("div","skin-mini-note", String(tr.note)));
       mini.appendChild(el("div","skin-mini-name", tr.name));
       mini.appendChild(el("div","skin-mini-lbl", tr.label));
@@ -2816,8 +3000,56 @@ function renderSkinsShop(){
       if (store.duelgold < SKINS_PACK_PRICE){ window.alert(t("skin_need_gold")); return; }
       store.duelgold -= SKINS_PACK_PRICE;
       store.skinsPack = true;
+      if (store.equippedSkin === "none") store.equippedSkin = "tierpack";
       saveStore(store);
       renderShop();
+    });
+    footer.appendChild(buy);
+  }
+  renderTriondaShop();
+  renderSkinSelector();
+}
+function renderTriondaShop(){
+  var section = qs("shop-trionda-section");
+  if (!section) return;
+  if (triondaExpired()){
+    section.classList.add("hidden");
+    return;
+  }
+  section.classList.remove("hidden");
+  var box = qs("shop-trionda-grid");
+  clear(box);
+  var tiers = [
+    { cls:"gold", label:t("skin_gold"), note:91 },
+    { cls:"pink", label:t("skin_pink"), note:88 },
+    { cls:"cyan", label:t("skin_cyan"), note:85 },
+    { cls:"grey", label:t("skin_grey"), note:78 }
+  ];
+  for (var i=0;i<tiers.length;i++){
+    (function(tr){
+      var mini = el("div","skin-mini trionda-skin trionda-" + tr.cls);
+      var panels = buildTriondaPanels(tr.cls);
+      for (var k=0;k<panels.length;k++) mini.appendChild(panels[k]);
+      mini.appendChild(el("div","skin-mini-note", String(tr.note)));
+      mini.appendChild(el("div","skin-mini-lbl", tr.label));
+      box.appendChild(mini);
+    })(tiers[i]);
+  }
+  var footer = qs("shop-trionda-footer");
+  clear(footer);
+  if (store.triondaOwned){
+    footer.appendChild(el("div","skin-owned", t("skin_owned")));
+  } else {
+    var buy = el("button","shop-btn shop-btn-buy" + (store.coins < TRIONDA_PRICE ? " shop-btn-poor" : ""),
+      t("skin_buy") + " · " + TRIONDA_PRICE + " 🪙");
+    buy.addEventListener("click", function(){
+      if (store.coins < TRIONDA_PRICE) return;
+      store.coins -= TRIONDA_PRICE;
+      store.triondaOwned = true;
+      if (store.equippedSkin === "none") store.equippedSkin = "trionda";
+      saveStore(store);
+      renderShop();
+      renderCoins();
     });
     footer.appendChild(buy);
   }
@@ -2844,6 +3076,7 @@ function bindChips(selector, activeClass, cb){
 
 function init(){
   computeArrivalSource();
+  checkTriondaExpiry();
   if (checkAdminRoute()){ initAdminScreen(); return; }
   showCreateAccountPopup();
   renderCoins();

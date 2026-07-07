@@ -560,6 +560,33 @@ body.theme-genesis .player-card::after {
   transform:rotate(25deg); animation:shine 3.5s ease-in-out infinite; pointer-events:none;
 }
 
+
+/* ===================================================
+   V9 : DASHBOARD ADMIN
+   =================================================== */
+.admin-summary { text-align:center; color:#f5b31c; font-weight:800; margin-bottom:12px; font-size:0.9rem; }
+.admin-row {
+  display:flex; align-items:center; gap:8px; padding:10px 8px; border-bottom:1px solid #1d1936; font-size:0.85rem;
+}
+.admin-row-pseudo { flex:1; font-weight:800; color:#eef0ff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.admin-row-country { font-size:1rem; }
+.admin-row-date { color:#8b8fa8; font-size:0.75rem; min-width:70px; text-align:right; }
+.admin-row-src { color:#27c3f5; font-weight:700; font-size:0.72rem; min-width:60px; text-align:right; }
+
+.admin-match-row {
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px; padding:10px 8px; border-bottom:1px solid #1d1936; font-size:0.8rem;
+}
+.admin-match-mode { background:#151228; border:1px solid #2c2750; border-radius:8px; padding:3px 8px; font-weight:800; font-size:0.7rem; color:#27c3f5; }
+.admin-match-names { flex:1; color:#cfd2ea; font-weight:700; min-width:120px; }
+.admin-match-date { color:#8b8fa8; font-size:0.7rem; width:100%; }
+.admin-match-winner { color:#f5b31c; font-weight:800; font-size:0.75rem; }
+
+.admin-src-row { display:flex; align-items:center; gap:10px; padding:8px 0; }
+.admin-src-label { width:80px; font-weight:800; font-size:0.82rem; color:#cfd2ea; }
+.admin-src-barwrap { flex:1; height:10px; background:#151228; border-radius:5px; overflow:hidden; }
+.admin-src-bar { height:100%; background:linear-gradient(90deg, #27c3f5, #f5b31c); border-radius:5px; }
+.admin-src-pct { width:70px; text-align:right; font-size:0.75rem; color:#8b8fa8; font-weight:700; }
+
 </style>
 </head>
 <body>
@@ -896,6 +923,37 @@ body.theme-genesis .player-card::after {
     <button id="btn-fh-back" class="big-btn ghost" data-i18n="back"></button>
   </div>
 </div>
+
+<!-- ================= ADMIN LOGIN ================= -->
+<div id="screen-admin-login" class="screen hidden">
+  <div class="lang-row">
+    <button class="lang-chip" data-lang="fr">FR</button>
+    <button class="lang-chip" data-lang="en">EN</button>
+    <button class="lang-chip" data-lang="es">ES</button>
+  </div>
+  <div class="brush shop-title" style="text-align:center; margin:20px 0 14px;" data-i18n="admin_title"></div>
+  <div class="online-block">
+    <input id="admin-email" class="text-input" type="email" autocapitalize="off" autocomplete="off" data-i18n-ph="admin_email" style="margin-bottom:8px;">
+    <input id="admin-pass" class="text-input" type="password" autocapitalize="off" autocomplete="off" data-i18n-ph="admin_pass" style="margin-bottom:10px;">
+    <button id="btn-admin-login" class="mid-btn gold full" data-i18n="admin_login"></button>
+  </div>
+  <div id="admin-status" class="online-status"></div>
+</div>
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+<div id="screen-admin" class="screen hidden">
+  <div class="brush shop-title" style="text-align:center; margin-bottom:14px;" data-i18n="admin_title"></div>
+  <div class="tab-row">
+    <button class="admin-tab-chip tab-chip tab-active" data-admintab="accounts" data-i18n="admin_tab_accounts"></button>
+    <button class="admin-tab-chip tab-chip" data-admintab="matches" data-i18n="admin_tab_matches"></button>
+    <button class="admin-tab-chip tab-chip" data-admintab="sources" data-i18n="admin_tab_sources"></button>
+  </div>
+  <div id="admin-body"></div>
+  <div class="end-btns">
+    <button id="btn-admin-logout" class="big-btn ghost" data-i18n="admin_logout"></button>
+  </div>
+</div>
+
 <script>
 /* ELEVEN DUEL - v4 - championnats, 1v1v1v1, FR/EN/ES, bonus */
 /* Contraintes iOS Safari : pas de spread, pas d'optional chaining, pas de quotes imbriquees dans onclick */
@@ -998,6 +1056,13 @@ fr: {
   lg_closed:"Saison clôturée ! Champion : {p} 🏆", lg_nogames:"Aucun duel joué cette saison.",
   lg_pick:"Compter la partie pour une ligue :", lg_free:"Aucune (partie libre)",
   lg_share:"Partage ce code pour inviter tes amis !",
+  admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
+  admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
+  admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
+  admin_none:"Aucune donnée", admin_total_accounts:"{n} comptes créés", admin_total_matches:"{n} matchs enregistrés",
+  admin_logout:"Déconnexion admin",
+  src_direct:"Direct", src_twitter:"Twitter", src_whatsapp:"WhatsApp", src_other:"Autre site", src_unknown:"Inconnu",
+  mode_solo:"Solo vs Ali", mode_online_public:"Matchmaking", mode_online_private:"Partie privée", mode_league:"Ligue",
   season1_title:"La Saison Genesis", season_generic_title:"Saison {n}",
   season_starts_in:"DÉMARRE DANS", season_ends_in:"SAISON EN COURS · FIN DANS",
   season_next_title:"Saison {n}", season_pause_msg:"PROCHAINE SAISON DANS",
@@ -1102,6 +1167,13 @@ en: {
   lg_closed:"Season closed! Champion: {p} 🏆", lg_nogames:"No duel played this season.",
   lg_pick:"Count this game for a league:", lg_free:"None (casual game)",
   lg_share:"Share this code to invite your friends!",
+  admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
+  admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
+  admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
+  admin_none:"No data", admin_total_accounts:"{n} accounts created", admin_total_matches:"{n} matches logged",
+  admin_logout:"Sign out of admin",
+  src_direct:"Direct", src_twitter:"Twitter", src_whatsapp:"WhatsApp", src_other:"Other site", src_unknown:"Unknown",
+  mode_solo:"Solo vs Ali", mode_online_public:"Matchmaking", mode_online_private:"Private game", mode_league:"League",
   season1_title:"The Genesis Season", season_generic_title:"Season {n}",
   season_starts_in:"STARTS IN", season_ends_in:"SEASON ACTIVE · ENDS IN",
   season_next_title:"Season {n}", season_pause_msg:"NEXT SEASON IN",
@@ -1206,6 +1278,13 @@ es: {
   lg_closed:"¡Temporada cerrada! Campeón: {p} 🏆", lg_nogames:"Ningún duelo jugado esta temporada.",
   lg_pick:"Contar esta partida para una liga:", lg_free:"Ninguna (partida libre)",
   lg_share:"¡Comparte este código para invitar a tus amigos!",
+  admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
+  admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
+  admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
+  admin_none:"Sin datos", admin_total_accounts:"{n} cuentas creadas", admin_total_matches:"{n} partidas registradas",
+  admin_logout:"Cerrar sesión admin",
+  src_direct:"Directo", src_twitter:"Twitter", src_whatsapp:"WhatsApp", src_other:"Otro sitio", src_unknown:"Desconocido",
+  mode_solo:"Solo vs Ali", mode_online_public:"Emparejamiento", mode_online_private:"Partida privada", mode_league:"Liga",
   season1_title:"La Temporada Genesis", season_generic_title:"Temporada {n}",
   season_starts_in:"EMPIEZA EN", season_ends_in:"TEMPORADA ACTIVA · TERMINA EN",
   season_next_title:"Temporada {n}", season_pause_msg:"PRÓXIMA TEMPORADA EN",
@@ -1713,6 +1792,15 @@ function endGame(reason){
   hideAllScreens();
   show("screen-end");
   renderEnd(reason);
+  var winner = winnerPseudoFromRanking(state.players, reason);
+  writeMatchLog({
+    mode: "solo",
+    playersCount: state.players.length,
+    players: playerLogEntries(state.players),
+    winnerPseudo: winner,
+    league: state.league,
+    leagueCode: null
+  });
 }
 
 /* ---------- RENDU ---------- */
@@ -2318,21 +2406,34 @@ function hostStartFirstRound(d){
 function hostFinish(d){
   online.hostBusy = true;
   var ref = online.ref;
+  var logCapture = null;
   fb.db.runTransaction(function(tx){
     return tx.get(ref).then(function(snap){
       if (!snap.exists) return;
       var dd = snap.data();
       if (dd.status !== "playing") return;
       tx.update(ref, cleanData({ status: "finished", endReason: dd.endReason || "forfeit" }));
+      logCapture = { dd: dd };
     });
-  }).then(function(){ online.hostBusy = false; })
-    .catch(function(){ online.hostBusy = false; });
+  }).then(function(){
+    online.hostBusy = false;
+    if (logCapture){
+      var arr = docPlayersArr(logCapture.dd);
+      var mode = logCapture.dd.isPublic ? "online-public" : (logCapture.dd.leagueCode ? "league" : "online-private");
+      writeMatchLog({
+        mode: mode, playersCount: arr.length, players: playerLogEntries(arr),
+        winnerPseudo: winnerPseudoFromRanking(arr, "forfeit"),
+        league: logCapture.dd.league, leagueCode: logCapture.dd.leagueCode || null
+      });
+    }
+  }).catch(function(){ online.hostBusy = false; });
 }
 
 function hostResolve(d){
   if (online.hostBusy) return;
   online.hostBusy = true;
   var ref = online.ref;
+  var logCapture = null;
   fb.db.runTransaction(function(tx){
     return tx.get(ref).then(function(snap){
       if (!snap.exists) return;
@@ -2416,6 +2517,12 @@ function hostResolve(d){
       if (finished){
         upd.status = "finished";
         upd.endReason = endReason;
+        var mode = dd.isPublic ? "online-public" : (dd.leagueCode ? "league" : "online-private");
+        logCapture = {
+          mode: mode, playersCount: newPlayers.length, players: playerLogEntries(newPlayers),
+          winnerPseudo: winnerPseudoFromRanking(newPlayers, endReason),
+          league: dd.league, leagueCode: dd.leagueCode || null
+        };
       } else {
         var nextIdx = weightedPick(avail);
         var newUsed = dd.used.slice();
@@ -2426,8 +2533,10 @@ function hostResolve(d){
       }
       tx.update(ref, cleanData(upd));
     });
-  }).then(function(){ online.hostBusy = false; })
-    .catch(function(){ online.hostBusy = false; });
+  }).then(function(){
+    online.hostBusy = false;
+    if (logCapture) writeMatchLog(logCapture);
+  }).catch(function(){ online.hostBusy = false; });
 }
 
 function submitOnlineBid(v){
@@ -2732,6 +2841,8 @@ function bindChips(selector, activeClass, cb){
 }
 
 function init(){
+  computeArrivalSource();
+  if (checkAdminRoute()){ initAdminScreen(); return; }
   showCreateAccountPopup();
   renderCoins();
   loadSeasonConfig();
@@ -2882,7 +2993,8 @@ function registerAccount(){
         if (snap.exists) throw new Error("taken");
         tx.set(ref, cleanData({
           pseudo: pseudo, codeHash: hashSecret(key, code), country: country,
-          createdAt: Date.now(), leagues: [], stats: zeroStats()
+          createdAt: Date.now(), leagues: [], stats: zeroStats(),
+          source: arrivalSource || "direct"
         }));
       });
     }).then(function(){
@@ -4073,6 +4185,221 @@ function renderSeasonProfileSection(data){
       box.appendChild(row);
     }
   }
+}
+
+/* =========================================================
+   V9 : DASHBOARD ADMIN (matchLog, sources, comptes)
+   ========================================================= */
+var ADMIN_UID = "rB6wgA6QWDT8L7iGTAZC6uzNMt52";
+var arrivalSource = null;
+
+function computeArrivalSource(){
+  try {
+    var ref = document.referrer || "";
+    if (!ref) { arrivalSource = "direct"; return; }
+    var host = "";
+    try { host = new URL(ref).hostname.toLowerCase(); } catch(e){ host = ""; }
+    if (host.indexOf("elevenduel.com") >= 0 || host.indexOf("github.io") >= 0){ arrivalSource = "direct"; return; }
+    if (host.indexOf("t.co") >= 0 || host.indexOf("twitter.com") >= 0 || host.indexOf("x.com") >= 0){ arrivalSource = "twitter"; return; }
+    if (host.indexOf("whatsapp") >= 0){ arrivalSource = "whatsapp"; return; }
+    arrivalSource = "other:" + (host || "unknown");
+  } catch(e){ arrivalSource = "direct"; }
+}
+
+/* ---------- ECRITURE DU LOG DE MATCH (matchLog) ---------- */
+function writeMatchLog(entry){
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    entry.timestamp = Date.now();
+    fb.db.collection("matchLog").add(cleanData(entry)).catch(function(){});
+  });
+}
+function playerLogEntries(players, myIdxIsHost){
+  var arr = [];
+  for (var i=0;i<players.length;i++){
+    var p = players[i];
+    arr.push({ key: p.userKey || null, pseudo: p.name || "?" });
+  }
+  return arr;
+}
+function winnerPseudoFromRanking(players, reason){
+  var ranking = rankPlayers(players);
+  if (!ranking.length) return null;
+  var top = players[ranking[0]];
+  if (top.forfeit || top.out) return null;
+  return top.name;
+}
+
+/* ---------- ADMIN AUTH ---------- */
+var adminSignedIn = false;
+function setAdminStatus(msg, isError){
+  var e = qs("admin-status");
+  if (!e) return;
+  e.textContent = msg || "";
+  e.className = "online-status" + (isError ? " online-error" : "");
+}
+function adminSignIn(){
+  var email = qs("admin-email").value.trim();
+  var pass = qs("admin-pass").value;
+  if (!email || !pass){ setAdminStatus(t("admin_missing"), true); return; }
+  setAdminStatus(t("rk_loading"));
+  initFirebase().then(function(ok){
+    if (!ok){ setAdminStatus(t("st_noconfig"), true); return; }
+    firebase.auth().signInWithEmailAndPassword(email, pass).then(function(cred){
+      if (cred.user.uid !== ADMIN_UID){
+        firebase.auth().signOut();
+        setAdminStatus(t("admin_denied"), true);
+        return;
+      }
+      fb.uid = cred.user.uid;
+      adminSignedIn = true;
+      setAdminStatus("");
+      showAdminDashboard();
+    }).catch(function(){
+      setAdminStatus(t("admin_denied"), true);
+    });
+  });
+}
+function adminSignOut(){
+  adminSignedIn = false;
+  if (typeof firebase !== "undefined"){
+    firebase.auth().signOut().then(function(){
+      firebase.auth().signInAnonymously().then(function(cred){
+        fb.uid = cred.user.uid;
+      });
+    });
+  }
+  hideAllScreens();
+  show("screen-home");
+  window.location.hash = "";
+}
+
+function checkAdminRoute(){
+  if (window.location.hash === "#admin"){
+    hideAllScreens();
+    show("screen-admin-login");
+    return true;
+  }
+  return false;
+}
+
+/* ---------- DASHBOARD ---------- */
+var adminTab = "accounts";
+function showAdminDashboard(){
+  hideAllScreens();
+  show("screen-admin");
+  loadAdminTab(adminTab);
+}
+function loadAdminTab(tabId){
+  adminTab = tabId;
+  var box = qs("admin-body");
+  clear(box);
+  box.appendChild(el("div","rk-empty", t("rk_loading")));
+  if (tabId === "accounts") renderAdminAccounts(box);
+  else if (tabId === "matches") renderAdminMatches(box);
+  else if (tabId === "sources") renderAdminSources(box);
+}
+
+function renderAdminAccounts(box){
+  fb.db.collection("users").orderBy("createdAt","desc").limit(300).get().then(function(qsnap){
+    clear(box);
+    if (qsnap.empty){ box.appendChild(el("div","rk-empty", t("admin_none"))); return; }
+    var summary = el("div","admin-summary", tf("admin_total_accounts", { n: qsnap.size }));
+    box.appendChild(summary);
+    qsnap.forEach(function(doc){
+      var d = doc.data();
+      var row = el("div","admin-row");
+      row.appendChild(el("span","admin-row-pseudo", d.pseudo || doc.id));
+      row.appendChild(el("span","admin-row-country", countryFlag(d.country || "XX")));
+      var date = d.createdAt ? new Date(d.createdAt).toLocaleDateString(store.lang==="fr"?"fr-FR":(store.lang==="es"?"es-ES":"en-US")) : "—";
+      row.appendChild(el("span","admin-row-date", date));
+      var src = d.source || "—";
+      var srcLabel = src === "direct" ? t("src_direct") : (src === "twitter" ? t("src_twitter") : (src === "whatsapp" ? t("src_whatsapp") : (src.indexOf("other:")===0 ? t("src_other") : "—")));
+      row.appendChild(el("span","admin-row-src", srcLabel));
+      box.appendChild(row);
+    });
+  }).catch(function(err){
+    clear(box);
+    box.appendChild(el("div","rk-empty", (err && err.code === "permission-denied") ? t("admin_denied") : t("st_err")));
+  });
+}
+
+function renderAdminMatches(box){
+  fb.db.collection("matchLog").orderBy("timestamp","desc").limit(200).get().then(function(qsnap){
+    clear(box);
+    if (qsnap.empty){ box.appendChild(el("div","rk-empty", t("admin_none"))); return; }
+    var summary = el("div","admin-summary", tf("admin_total_matches", { n: qsnap.size }));
+    box.appendChild(summary);
+    qsnap.forEach(function(doc){
+      var d = doc.data();
+      var row = el("div","admin-match-row");
+      var modeLabel = t("mode_" + (d.mode || "solo").replace("-","_"));
+      row.appendChild(el("span","admin-match-mode", modeLabel));
+      var names = (d.players || []).map(function(p){ return p.pseudo; }).join(" vs ");
+      row.appendChild(el("span","admin-match-names", names || "—"));
+      var date = d.timestamp ? new Date(d.timestamp).toLocaleString(store.lang==="fr"?"fr-FR":(store.lang==="es"?"es-ES":"en-US")) : "—";
+      row.appendChild(el("span","admin-match-date", date));
+      if (d.winnerPseudo){
+        row.appendChild(el("span","admin-match-winner", "🏆 " + d.winnerPseudo));
+      }
+      box.appendChild(row);
+    });
+  }).catch(function(err){
+    clear(box);
+    box.appendChild(el("div","rk-empty", (err && err.code === "permission-denied") ? t("admin_denied") : t("st_err")));
+  });
+}
+
+function initAdminScreen(){
+  applyI18n();
+  var langBtns = document.querySelectorAll(".lang-chip");
+  for (var i=0;i<langBtns.length;i++){
+    if (langBtns[i].getAttribute("data-lang") === store.lang) langBtns[i].classList.add("lang-active");
+  }
+  bindChips(".lang-chip", "lang-active", function(btn){
+    store.lang = btn.getAttribute("data-lang"); saveStore(store); applyI18n();
+  });
+  qs("btn-admin-login").addEventListener("click", adminSignIn);
+  qs("btn-admin-logout").addEventListener("click", adminSignOut);
+  bindChips(".admin-tab-chip", "tab-active", function(btn){ loadAdminTab(btn.getAttribute("data-admintab")); });
+}
+function renderAdminSources(box){
+  fb.db.collection("users").limit(1000).get().then(function(qsnap){
+    clear(box);
+    var counts = { direct:0, twitter:0, whatsapp:0, other:0, unknown:0 };
+    qsnap.forEach(function(doc){
+      var src = doc.data().source;
+      if (!src) counts.unknown++;
+      else if (src === "direct") counts.direct++;
+      else if (src === "twitter") counts.twitter++;
+      else if (src === "whatsapp") counts.whatsapp++;
+      else counts.other++;
+    });
+    var total = qsnap.size || 1;
+    var items = [
+      { key:"direct", label:t("src_direct"), n:counts.direct },
+      { key:"twitter", label:t("src_twitter"), n:counts.twitter },
+      { key:"whatsapp", label:t("src_whatsapp"), n:counts.whatsapp },
+      { key:"other", label:t("src_other"), n:counts.other },
+      { key:"unknown", label:t("src_unknown"), n:counts.unknown }
+    ];
+    for (var i=0;i<items.length;i++){
+      var it = items[i];
+      var pct = Math.round(it.n / total * 100);
+      var row = el("div","admin-src-row");
+      row.appendChild(el("span","admin-src-label", it.label));
+      var barWrap = el("div","admin-src-barwrap");
+      var bar = el("div","admin-src-bar");
+      bar.style.width = pct + "%";
+      barWrap.appendChild(bar);
+      row.appendChild(barWrap);
+      row.appendChild(el("span","admin-src-pct", it.n + " (" + pct + "%)"));
+      box.appendChild(row);
+    }
+  }).catch(function(err){
+    clear(box);
+    box.appendChild(el("div","rk-empty", (err && err.code === "permission-denied") ? t("admin_denied") : t("st_err")));
+  });
 }
 
 </script>

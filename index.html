@@ -443,11 +443,133 @@ body {
   background:repeating-linear-gradient(45deg, #ffffff06 0 1px, transparent 1px 10px);
 }
 
+
+/* ===================================================
+   V8 : BANNIERE SAISON + THEME GENESIS
+   =================================================== */
+.season-banner {
+  max-width:520px; margin:10px auto 0; padding:12px 14px; border-radius:16px;
+  background:linear-gradient(135deg, #1d1936cc, #241c4fcc);
+  border:1px solid #f5b31c44; box-shadow:0 0 20px #27c3f522;
+  position:relative; overflow:hidden; z-index:5;
+}
+.season-banner-title {
+  font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:0.5px;
+  font-size:0.95rem; text-align:center;
+  background:linear-gradient(90deg, #f5d76e, #ffd700, #f5b31c);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  margin-bottom:4px;
+}
+.season-banner-sub { text-align:center; color:#8b8fa8; font-size:0.65rem; font-weight:800; letter-spacing:0.5px; margin-bottom:8px; }
+.countdown-row { display:flex; justify-content:center; gap:6px; }
+.cd-unit { background:#0a0817aa; border:1px solid #f5b31c44; border-radius:8px; padding:5px 8px; text-align:center; min-width:40px; }
+.cd-num { font-size:1.05rem; font-weight:900; color:#f5b31c; line-height:1; }
+.cd-lbl { font-size:0.55rem; color:#8b8fa8; font-weight:700; text-transform:uppercase; }
+
+/* ---- Popup récompense fin de saison ---- */
+.season-reward-line { text-align:center; color:#cfd2ea; font-size:0.9rem; margin:4px 0; }
+.season-reward-gold { text-align:center; color:#f5b31c; font-weight:900; font-size:1.3rem; margin:10px 0; }
+
+/* ---- Section saison dans le profil ---- */
+.pf-season-section { margin-bottom:12px; }
+.season-elo-card {
+  border-radius:16px; padding:16px; text-align:center; margin-bottom:10px; border:2px solid;
+}
+.season-elo-value { font-size:2rem; font-weight:900; line-height:1; }
+.season-elo-tier { font-weight:800; text-transform:uppercase; letter-spacing:1px; font-size:0.85rem; margin-top:4px; }
+.season-tier-district { border-color:#8b8fa8; background:#151228; } .season-tier-district .season-elo-value, .season-tier-district .season-elo-tier { color:#b8bce0; }
+.season-tier-regional { border-color:#27c3f5; background:#08202a; } .season-tier-regional .season-elo-value, .season-tier-regional .season-elo-tier { color:#27c3f5; }
+.season-tier-national { border-color:#8b3df5; background:#1c0f38; } .season-tier-national .season-elo-value, .season-tier-national .season-elo-tier { color:#b489f8; }
+.season-tier-continental { border-color:#f52c8c; background:#2a0818; } .season-tier-continental .season-elo-value, .season-tier-continental .season-elo-tier { color:#f52c8c; }
+.season-tier-mondial { border-color:#f5b31c; background:#2a2008; box-shadow:0 0 20px #f5b31c44; } .season-tier-mondial .season-elo-value, .season-tier-mondial .season-elo-tier { color:#f5b31c; }
+
+.badge-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+.badge-chip { background:#151228; border:1px solid #2c2750; border-radius:20px; padding:5px 10px; font-size:0.72rem; font-weight:800; color:#cfd2ea; }
+.badge-chip.badge-gold { border-color:#f5b31c; color:#f5b31c; background:#241c10; }
+.badge-chip.badge-silver { border-color:#c0c0d0; color:#d8dae8; background:#1a1a26; }
+.badge-chip.badge-bronze { border-color:#cd7f32; color:#e0a868; background:#2a1a10; }
+
+.season-hist-row { display:flex; gap:8px; align-items:center; padding:8px; border-bottom:1px solid #1d1936; font-size:0.82rem; }
+.season-hist-title { flex:1; font-weight:800; color:#cfd2ea; }
+.season-hist-tier { color:#8b8fa8; font-weight:700; }
+.season-hist-gold { color:#f5b31c; font-weight:900; }
+
+/* ===================================================
+   THEME GENESIS (Saison 1 active) — refonte visuelle complète
+   =================================================== */
+body.theme-genesis {
+  background:
+    radial-gradient(circle at 20% 10%, #3a1a6b33 0%, transparent 40%),
+    radial-gradient(circle at 85% 25%, #f5b31c22 0%, transparent 35%),
+    radial-gradient(circle at 50% 90%, #6b1a9944 0%, transparent 45%),
+    linear-gradient(160deg, #120a2e 0%, #0a0620 50%, #060312 100%) !important;
+}
+body.theme-genesis .genesis-fx { display:block !important; }
+.genesis-fx { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.genesis-fx .g-star {
+  position:absolute; border-radius:50%; background:#fff; animation:gTwinkle 3s ease-in-out infinite;
+}
+.genesis-fx .g-star.big { background:#ffd75e; box-shadow:0 0 6px 1px #ffd75e; }
+@keyframes gTwinkle { 0%,100%{ opacity:0.1; } 50%{ opacity:0.9; } }
+.genesis-fx .g-comet {
+  position:absolute; width:2px; height:2px; border-radius:50%; background:#fff;
+  box-shadow:0 0 8px 2px #fff; animation:gComet 7s linear infinite; opacity:0;
+}
+@keyframes gComet {
+  0% { transform:translate(0,0); opacity:0; }
+  5% { opacity:1; }
+  25% { transform:translate(-160px,160px); opacity:0; }
+  100% { opacity:0; }
+}
+body.theme-genesis .genesis-constellation {
+  position:fixed; inset:0; z-index:0; opacity:0.3; pointer-events:none;
+  background-image:radial-gradient(circle, #a855f755 1px, transparent 1.5px);
+  background-size:40px 40px;
+}
+body.theme-genesis .season-banner {
+  background:linear-gradient(135deg, #2a1454cc, #4a1f7acc) !important;
+  border-color:#a855f766 !important; box-shadow:0 0 30px #a855f733, inset 0 0 40px #f5b31c11 !important;
+}
+body.theme-genesis .cd-unit { background:#0a0620aa !important; border-color:#f5b31c55 !important; }
+body.theme-genesis .cd-num { color:#ffd75e !important; text-shadow:0 0 12px #f5b31c88; }
+body.theme-genesis .season-banner-sub { color:#c9b8f0 !important; }
+body.theme-genesis .big-btn {
+  background:linear-gradient(135deg, #f5d76e, #f5b31c) !important; color:#0a0620 !important;
+  box-shadow:0 4px 20px #f5b31c44 !important;
+}
+body.theme-genesis .big-btn.pink, body.theme-genesis .big-btn.gold {
+  background:linear-gradient(135deg, #f5d76e, #f5b31c) !important; color:#0a0620 !important;
+}
+body.theme-genesis .big-btn.ghost {
+  background:#150a30 !important; color:#e4d9ff !important; border-color:#a855f755 !important;
+}
+body.theme-genesis .player-card {
+  background:linear-gradient(160deg, #2a1454 0%, #150a30 60%, #0a0620 100%) !important;
+  border-color:#f5b31c !important; box-shadow:0 0 30px #a855f755, inset 0 0 40px #f5b31c11 !important;
+}
+body.theme-genesis .player-card::after {
+  content:""; position:absolute; top:-40%; left:-60%; width:220%; height:60%;
+  background:linear-gradient(90deg, transparent, #ffffff44, transparent);
+  transform:rotate(25deg); animation:shine 3.5s ease-in-out infinite; pointer-events:none;
+}
+
 </style>
 </head>
 <body>
 
 <div id="victory-animation"></div>
+<div id="genesis-fx" class="genesis-fx hidden"></div>
+
+<div id="season-banner" class="season-banner hidden">
+  <div id="season-banner-title" class="season-banner-title"></div>
+  <div id="season-banner-sub" class="season-banner-sub"></div>
+  <div class="countdown-row">
+    <div class="cd-unit"><div class="cd-num" id="cd-d">00</div><div class="cd-lbl">j</div></div>
+    <div class="cd-unit"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">h</div></div>
+    <div class="cd-unit"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">m</div></div>
+    <div class="cd-unit"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">s</div></div>
+  </div>
+</div>
 
 <!-- ================= HOME ================= -->
 <div id="screen-home" class="screen">
@@ -481,8 +603,8 @@ body {
   </div>
 
   <div class="home-btns">
-    <button id="btn-play" class="big-btn" data-i18n="btn_solo"></button>
     <button id="btn-online" class="big-btn pink" data-i18n="btn_online"></button>
+    <button id="btn-play" class="big-btn" data-i18n="btn_solo"></button>
     <button id="btn-shop" class="big-btn gold" data-i18n="btn_shop"></button>
     <button id="btn-rules" class="big-btn ghost" data-i18n="btn_rules"></button>
     <div class="home-mini-row">
@@ -679,6 +801,7 @@ body {
       <div id="pf-pseudo" class="pf-pseudo"></div>
     </div>
     <div id="pf-loading" class="rk-empty hidden" data-i18n="rk_loading"></div>
+    <div id="pf-season-section" class="pf-season-section"></div>
     <div id="pf-grid" class="stat-grid"></div>
     <div class="pf-note" data-i18n="pf_note"></div>
     <div class="online-block" style="margin-top:12px;">
@@ -868,6 +991,13 @@ fr: {
   lg_closed:"Saison clôturée ! Champion : {p} 🏆", lg_nogames:"Aucun duel joué cette saison.",
   lg_pick:"Compter la partie pour une ligue :", lg_free:"Aucune (partie libre)",
   lg_share:"Partage ce code pour inviter tes amis !",
+  season1_title:"La Saison Genesis", season_generic_title:"Saison {n}",
+  season_starts_in:"DÉMARRE DANS", season_ends_in:"SAISON EN COURS · FIN DANS",
+  season_next_title:"Saison {n}", season_pause_msg:"PROCHAINE SAISON DANS",
+  tier_district:"District", tier_regional:"Régional", tier_national:"National",
+  tier_continental:"Continental", tier_mondial:"Mondial",
+  season_reward_title:"Fin de saison !", season_rank_mondial:"Rang mondial",
+  season_history_title:"Historique des saisons",
   skin_gold:"Or", skin_pink:"Élite", skin_cyan:"Rare", skin_grey:"Commun",
   skin_buy:"Débloquer les skins", skin_owned:"✅ Skins débloqués", skin_need_gold:"Pas assez de DuelGold 👑",
   shop_skins:"Skins de cartes", shop_skins_sub:"Un pack unique qui applique un style premium aux cartes selon leur niveau. Achat en DuelGold 👑 (gagnés en fin de saison).",
@@ -965,6 +1095,13 @@ en: {
   lg_closed:"Season closed! Champion: {p} 🏆", lg_nogames:"No duel played this season.",
   lg_pick:"Count this game for a league:", lg_free:"None (casual game)",
   lg_share:"Share this code to invite your friends!",
+  season1_title:"The Genesis Season", season_generic_title:"Season {n}",
+  season_starts_in:"STARTS IN", season_ends_in:"SEASON ACTIVE · ENDS IN",
+  season_next_title:"Season {n}", season_pause_msg:"NEXT SEASON IN",
+  tier_district:"District", tier_regional:"Regional", tier_national:"National",
+  tier_continental:"Continental", tier_mondial:"World",
+  season_reward_title:"Season over!", season_rank_mondial:"World rank",
+  season_history_title:"Season history",
   skin_gold:"Gold", skin_pink:"Elite", skin_cyan:"Rare", skin_grey:"Common",
   skin_buy:"Unlock skins", skin_owned:"✅ Skins unlocked", skin_need_gold:"Not enough DuelGold 👑",
   shop_skins:"Card skins", shop_skins_sub:"A single pack that applies a premium style to cards based on their tier. Buy with DuelGold 👑 (earned at season end).",
@@ -1062,6 +1199,13 @@ es: {
   lg_closed:"¡Temporada cerrada! Campeón: {p} 🏆", lg_nogames:"Ningún duelo jugado esta temporada.",
   lg_pick:"Contar esta partida para una liga:", lg_free:"Ninguna (partida libre)",
   lg_share:"¡Comparte este código para invitar a tus amigos!",
+  season1_title:"La Temporada Genesis", season_generic_title:"Temporada {n}",
+  season_starts_in:"EMPIEZA EN", season_ends_in:"TEMPORADA ACTIVA · TERMINA EN",
+  season_next_title:"Temporada {n}", season_pause_msg:"PRÓXIMA TEMPORADA EN",
+  tier_district:"Distrito", tier_regional:"Regional", tier_national:"Nacional",
+  tier_continental:"Continental", tier_mondial:"Mundial",
+  season_reward_title:"¡Fin de temporada!", season_rank_mondial:"Rango mundial",
+  season_history_title:"Historial de temporadas",
   skin_gold:"Oro", skin_pink:"Élite", skin_cyan:"Raro", skin_grey:"Común",
   skin_buy:"Desbloquear skins", skin_owned:"✅ Skins desbloqueados", skin_need_gold:"DuelGold insuficiente 👑",
   shop_skins:"Skins de cartas", shop_skins_sub:"Un pack único que aplica un estilo premium a las cartas según su nivel. Compra con DuelGold 👑 (ganados al final de temporada).",
@@ -2583,6 +2727,7 @@ function bindChips(selector, activeClass, cb){
 function init(){
   showCreateAccountPopup();
   renderCoins();
+  loadSeasonConfig();
   applyI18n();
   var langBtns = document.querySelectorAll(".lang-chip");
   for (var i=0;i<langBtns.length;i++){
@@ -2806,7 +2951,8 @@ function recordGlobalStats(outcome, side){
     fb.db.runTransaction(function(tx){
       return tx.get(ref).then(function(snap){
         if (!snap.exists) return;
-        var st = snap.data().stats || zeroStats();
+        var fullData = snap.data();
+        var st = fullData.stats || zeroStats();
         st.games = (st.games || 0) + 1;
         if (outcome === "win"){
           st.wins = (st.wins || 0) + 1;
@@ -2831,7 +2977,9 @@ function recordGlobalStats(outcome, side){
           st.buys[nm].n += 1;
           st.buys[nm].spent += side.paid[i];
         }
-        tx.update(ref, cleanData({ stats: st }));
+        var updates = { stats: st };
+        applyEloForGame(outcome, ref, tx, fullData, updates);
+        tx.update(ref, cleanData(updates));
       });
     }).catch(function(){});
   });
@@ -2889,7 +3037,9 @@ function renderProfile(){
     myUserRef().get().then(function(snap){
       qs("pf-loading").classList.add("hidden");
       if (!snap.exists) return;
-      var st = snap.data().stats || zeroStats();
+      var profileData = snap.data();
+      var st = profileData.stats || zeroStats();
+      renderSeasonProfileSection(profileData);
       var grid = qs("pf-grid");
       clear(grid);
       var rate = st.games > 0 ? Math.round((st.wins || 0) / st.games * 100) + "%" : "—";
@@ -3577,6 +3727,345 @@ function showCreateAccountPopup(){
   box.appendChild(btns);
   overlay.appendChild(box);
   document.body.appendChild(overlay);
+}
+
+/* =========================================================
+   V8 : SAISONS MONDIALES, ELO, DUELGOLD, THEME GENESIS
+   ========================================================= */
+
+var SEASON_ACTIVE_DAYS = 90;
+var SEASON_PAUSE_DAYS = 3;
+var SEASON_ACTIVE_MS = SEASON_ACTIVE_DAYS * 24 * 60 * 60 * 1000;
+var SEASON_CYCLE_MS = (SEASON_ACTIVE_DAYS + SEASON_PAUSE_DAYS) * 24 * 60 * 60 * 1000;
+
+var ELO_TIERS = [
+  { id:"district", min:0, max:300 },
+  { id:"regional", min:301, max:800 },
+  { id:"national", min:801, max:1500 },
+  { id:"continental", min:1501, max:3000 },
+  { id:"mondial", min:3001, max:Infinity }
+];
+var TIER_REWARDS = { district:100, regional:250, national:500, continental:1000, mondial:2000 };
+
+/* thèmes définis par saison. Saison 1 = Genesis (validé). Saisons futures : à ajouter ici au fur et à mesure. */
+var SEASON_THEMES = {
+  1: { id:"genesis", titleKey:"season1_title" }
+};
+
+var seasonConfig = null;   /* contenu brut du doc Firestore config/seasons */
+var seasonState = null;    /* état calculé : {phase, seasonNumber, msToStart|msToEnd|msToNext} */
+var seasonTickerId = null;
+var seasonClaimChecked = false;
+
+function eloTier(elo){
+  for (var i=0;i<ELO_TIERS.length;i++){
+    if (elo >= ELO_TIERS[i].min && elo <= ELO_TIERS[i].max) return ELO_TIERS[i].id;
+  }
+  return "district";
+}
+function getSeasonThemeId(seasonNumber){
+  var conf = SEASON_THEMES[seasonNumber];
+  return conf ? conf.id : "default";
+}
+function seasonTitle(seasonNumber){
+  var conf = SEASON_THEMES[seasonNumber];
+  if (conf) return t(conf.titleKey);
+  return tf("season_generic_title", { n: seasonNumber });
+}
+
+function computeSeasonState(){
+  if (!seasonConfig || !seasonConfig.startDate){
+    seasonState = { phase:"idle" };
+    return;
+  }
+  var start = new Date(seasonConfig.startDate).getTime();
+  var now = Date.now();
+  if (isNaN(start)){
+    seasonState = { phase:"idle" };
+    return;
+  }
+  if (now < start){
+    seasonState = { phase:"before", seasonNumber:1, msToStart: start - now };
+    return;
+  }
+  var elapsed = now - start;
+  var cycleIndex = Math.floor(elapsed / SEASON_CYCLE_MS);
+  var seasonNumber = cycleIndex + 1;
+  var posInCycle = elapsed - cycleIndex * SEASON_CYCLE_MS;
+  if (posInCycle < SEASON_ACTIVE_MS){
+    seasonState = { phase:"active", seasonNumber:seasonNumber, msToEnd: SEASON_ACTIVE_MS - posInCycle };
+  } else {
+    seasonState = { phase:"pause", seasonNumber:seasonNumber, nextSeasonNumber:seasonNumber+1, msToNext: SEASON_CYCLE_MS - posInCycle };
+  }
+}
+
+function loadSeasonConfig(){
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    fb.db.collection("config").doc("seasons").get().then(function(snap){
+      seasonConfig = snap.exists ? snap.data() : null;
+      computeSeasonState();
+      applySeasonTheme();
+      renderSeasonBanner();
+      maybeClaimSeasonRewards();
+      startSeasonTicker();
+    }).catch(function(){
+      seasonConfig = null;
+      seasonState = { phase:"idle" };
+      renderSeasonBanner();
+    });
+  });
+}
+
+function startSeasonTicker(){
+  if (seasonTickerId) clearInterval(seasonTickerId);
+  seasonTickerId = setInterval(function(){
+    var prevPhase = seasonState ? seasonState.phase : null;
+    var prevNum = seasonState ? seasonState.seasonNumber : null;
+    computeSeasonState();
+    renderSeasonBanner();
+    if (seasonState && (seasonState.phase !== prevPhase || seasonState.seasonNumber !== prevNum)){
+      applySeasonTheme();
+      maybeClaimSeasonRewards();
+    }
+  }, 1000);
+}
+
+function fmtCountdown(ms){
+  if (ms < 0) ms = 0;
+  var s = Math.floor(ms / 1000);
+  var d = Math.floor(s / 86400); s -= d * 86400;
+  var h = Math.floor(s / 3600); s -= h * 3600;
+  var m = Math.floor(s / 60); s -= m * 60;
+  return { d:d, h:h, m:m, s:s };
+}
+
+function renderSeasonBanner(){
+  var box = qs("season-banner");
+  if (!box) return;
+  if (!seasonState || seasonState.phase === "idle"){
+    box.classList.add("hidden");
+    return;
+  }
+  box.classList.remove("hidden");
+  var titleEl = qs("season-banner-title");
+  var subEl = qs("season-banner-sub");
+  var cd;
+  if (seasonState.phase === "before"){
+    titleEl.textContent = seasonTitle(1);
+    subEl.textContent = t("season_starts_in");
+    cd = fmtCountdown(seasonState.msToStart);
+  } else if (seasonState.phase === "active"){
+    titleEl.textContent = seasonTitle(seasonState.seasonNumber);
+    subEl.textContent = t("season_ends_in");
+    cd = fmtCountdown(seasonState.msToEnd);
+  } else {
+    titleEl.textContent = tf("season_next_title", { n: seasonState.nextSeasonNumber });
+    subEl.textContent = t("season_pause_msg");
+    cd = fmtCountdown(seasonState.msToNext);
+  }
+  qs("cd-d").textContent = String(cd.d).padStart(2,"0");
+  qs("cd-h").textContent = String(cd.h).padStart(2,"0");
+  qs("cd-m").textContent = String(cd.m).padStart(2,"0");
+  qs("cd-s").textContent = String(cd.s).padStart(2,"0");
+}
+
+var genesisFxBuilt = false;
+function buildGenesisFx(){
+  if (genesisFxBuilt) return;
+  genesisFxBuilt = true;
+  var box = qs("genesis-fx");
+  if (!box) return;
+  var constellation = el("div","genesis-constellation");
+  box.appendChild(constellation);
+  for (var i=0;i<70;i++){
+    var big = Math.random() < 0.15;
+    var star = el("div","g-star" + (big ? " big" : ""));
+    star.style.left = Math.random() * 100 + "vw";
+    star.style.top = Math.random() * 100 + "vh";
+    star.style.animationDelay = (Math.random() * 3) + "s";
+    var size = big ? (Math.random() * 2 + 2) : (Math.random() * 1.5 + 0.5);
+    star.style.width = size + "px";
+    star.style.height = size + "px";
+    box.appendChild(star);
+  }
+  for (var j=0;j<3;j++){
+    var comet = el("div","g-comet");
+    comet.style.top = (10 + j * 25) + "%";
+    comet.style.animationDelay = (j * 2.3) + "s";
+    box.appendChild(comet);
+  }
+}
+function applySeasonTheme(){
+  var themeId = "default";
+  if (seasonState && (seasonState.phase === "active")){
+    themeId = getSeasonThemeId(seasonState.seasonNumber);
+  }
+  document.body.classList.remove("theme-genesis");
+  if (themeId === "genesis"){
+    document.body.classList.add("theme-genesis");
+    buildGenesisFx();
+  }
+}
+
+/* ---------- CLAIM DES RECOMPENSES DE FIN DE SAISON ---------- */
+function maybeClaimSeasonRewards(){
+  if (!store.account || !seasonState || seasonClaimChecked) return;
+  if (seasonState.phase === "idle" || seasonState.phase === "before") return;
+  var currentSeasonNumber = seasonState.seasonNumber;
+  seasonClaimChecked = true;
+  initFirebase().then(function(ok){
+    if (!ok){ seasonClaimChecked = false; return; }
+    var ref = myUserRef();
+    ref.get().then(function(snap){
+      if (!snap.exists) return;
+      var d = snap.data();
+      var userSeasonNum = d.seasonNumber || 0;
+      if (userSeasonNum >= currentSeasonNumber) return;
+      var oldElo = d.elo || 0;
+      var closedSeasonNumber = userSeasonNum > 0 ? userSeasonNum : currentSeasonNumber;
+      if (oldElo <= 0){
+        /* rien à réclamer, juste avancer le compteur de saison */
+        ref.update({ seasonNumber: currentSeasonNumber, elo: 0 }).catch(function(){});
+        return;
+      }
+      var tier = eloTier(oldElo);
+      var reward = TIER_REWARDS[tier] || 0;
+      finalizeTop50Bonus(oldElo, tier, function(bonus, rank){
+        var totalReward = reward + bonus;
+        var histEntry = {
+          season: closedSeasonNumber, title: seasonTitle(closedSeasonNumber),
+          tier: tier, elo: oldElo, duelGoldEarned: totalReward,
+          rankMondial: rank || null, closedAt: Date.now()
+        };
+        var updates = {
+          elo: 0, seasonNumber: currentSeasonNumber,
+          duelgold: firebase.firestore.FieldValue.increment(totalReward),
+          seasonHistory: firebase.firestore.FieldValue.arrayUnion(histEntry)
+        };
+        if (rank && rank <= 50){
+          updates["badges.mondialTop50"] = firebase.firestore.FieldValue.arrayUnion(closedSeasonNumber);
+        }
+        if (rank && rank <= 3){
+          var u2 = {};
+          u2["badges.mondialTop3." + closedSeasonNumber] = rank;
+          updates["badges.mondialTop3"] = Object.assign({}, d.badges && d.badges.mondialTop3 ? d.badges.mondialTop3 : {});
+          updates["badges.mondialTop3"][closedSeasonNumber] = rank;
+        }
+        ref.update(cleanData(updates)).then(function(){
+          store.duelgold = (store.duelgold || 0) + totalReward;
+          saveStore(store);
+          showSeasonRewardPopup(histEntry);
+        }).catch(function(){});
+      });
+    });
+  });
+}
+
+function finalizeTop50Bonus(elo, tier, callback){
+  if (tier !== "mondial"){ callback(0, null); return; }
+  fb.db.collection("users").where("elo", ">=", 3000).orderBy("elo","desc").limit(50).get()
+    .then(function(qsnap){
+      var rank = null, idx = 0;
+      qsnap.forEach(function(doc){
+        idx++;
+        if (doc.id === store.account.key) rank = idx;
+      });
+      var bonus = 0;
+      if (rank === 1) bonus = 3000;
+      else if (rank === 2) bonus = 2000;
+      else if (rank === 3) bonus = 1000;
+      else if (rank && rank <= 10) bonus = 500;
+      else if (rank && rank <= 50) bonus = 200;
+      callback(bonus, rank);
+    }).catch(function(){ callback(0, null); });
+}
+
+function showSeasonRewardPopup(entry){
+  var overlay = el("div","overlay");
+  var box = el("div","overlay-box");
+  box.appendChild(el("div","brush rules-title", t("season_reward_title")));
+  box.appendChild(el("p","season-reward-line", entry.title));
+  box.appendChild(el("p","season-reward-line", t("tier_" + entry.tier) + " · Elo " + entry.elo));
+  var goldLine = el("p","season-reward-gold", "+" + entry.duelGoldEarned + " 👑 DuelGold");
+  box.appendChild(goldLine);
+  if (entry.rankMondial){
+    box.appendChild(el("p","season-reward-line", "🏵 " + t("season_rank_mondial") + " #" + entry.rankMondial));
+  }
+  var closeBtn = el("button","big-btn gold", t("got_it"));
+  closeBtn.style.marginTop = "14px";
+  closeBtn.addEventListener("click", function(){
+    document.body.removeChild(overlay);
+    renderCoins();
+    if (!qs("screen-profile").classList.contains("hidden")) renderProfile();
+  });
+  box.appendChild(closeBtn);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+}
+
+/* ---------- INTEGRATION ELO DANS LES STATS ---------- */
+function applyEloForGame(outcome, ref, tx, data, updates){
+  if (!seasonState || seasonState.phase !== "active") return;
+  var currentSeasonNumber = seasonState.seasonNumber;
+  var userSeasonNum = data.seasonNumber || 0;
+  var baseElo = (userSeasonNum >= currentSeasonNumber) ? (data.elo || 0) : 0;
+  var delta = 0;
+  if (outcome === "win") delta = 30;
+  else if (outcome === "loss" || outcome === "lose") delta = -10;
+  var newElo = baseElo + delta;
+  if (newElo < 0) newElo = 0;
+  updates.elo = newElo;
+  updates.seasonNumber = currentSeasonNumber;
+}
+
+/* ---------- AFFICHAGE PROFIL : ELO + HISTORIQUE + BADGES ---------- */
+function renderSeasonProfileSection(data){
+  var box = qs("pf-season-section");
+  if (!box) return;
+  clear(box);
+  var elo = data.elo || 0;
+  var tier = eloTier(elo);
+  var showElo = seasonState && (seasonState.phase === "active" || seasonState.phase === "pause");
+
+  if (showElo){
+    var eloCard = el("div","season-elo-card season-tier-" + tier);
+    eloCard.appendChild(el("div","season-elo-value", String(elo)));
+    eloCard.appendChild(el("div","season-elo-tier", t("tier_" + tier)));
+    box.appendChild(eloCard);
+  }
+
+  var badges = data.badges || {};
+  var top50List = badges.mondialTop50 || [];
+  var top3Map = badges.mondialTop3 || {};
+  if (top50List.length){
+    var badgeRow = el("div","badge-row");
+    for (var i=0;i<top50List.length;i++){
+      var seasonNum = top50List[i];
+      var rank = top3Map[seasonNum];
+      var cls = "badge-chip";
+      var label = "🏵 S" + seasonNum;
+      if (rank === 1){ cls += " badge-gold"; label = "🥇 S" + seasonNum; }
+      else if (rank === 2){ cls += " badge-silver"; label = "🥈 S" + seasonNum; }
+      else if (rank === 3){ cls += " badge-bronze"; label = "🥉 S" + seasonNum; }
+      badgeRow.appendChild(el("span", cls, label));
+    }
+    box.appendChild(badgeRow);
+  }
+
+  var history = data.seasonHistory || [];
+  if (history.length){
+    box.appendChild(el("div","shop-section", t("season_history_title")));
+    var sorted = history.slice().sort(function(a,b){ return b.season - a.season; });
+    for (var j=0;j<sorted.length;j++){
+      var hEntry = sorted[j];
+      var row = el("div","season-hist-row");
+      row.appendChild(el("span","season-hist-title", hEntry.title));
+      row.appendChild(el("span","season-hist-tier", t("tier_" + hEntry.tier)));
+      row.appendChild(el("span","season-hist-gold", "+" + hEntry.duelGoldEarned + " 👑"));
+      box.appendChild(row);
+    }
+  }
 }
 
 </script>

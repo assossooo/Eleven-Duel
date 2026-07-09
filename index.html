@@ -656,12 +656,54 @@ body.theme-genesis .player-card::after {
 .skin-mini.trionda-skin .skin-mini-note { color:#12233a; position:relative; z-index:5; }
 .skin-mini.trionda-skin .skin-mini-lbl { color:#39405a; position:relative; z-index:5; background:#ffffffee; border-radius:6px; }
 
+
+/* ===== V11 : squad en attente + emojis ===== */
+.rv-squad-wait { margin-top:14px; text-align:left; max-height:40vh; overflow-y:auto; }
+.rv-squad-title { font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#8b8fa8; margin-bottom:6px; text-align:center; }
+.rv-squad-row { display:flex; align-items:center; gap:8px; padding:6px 8px; border-bottom:1px solid #1d1936; font-size:0.82rem; }
+.rv-squad-name { flex:1; font-weight:800; color:#eef0ff; }
+.rv-squad-price { color:#f5b31c; font-weight:800; font-size:0.75rem; }
+
+.emoji-bar {
+  position:fixed; bottom:12px; left:50%; transform:translateX(-50%);
+  display:flex; gap:6px; justify-content:center; z-index:8000;
+  background:#0a0817dd; border:1px solid #2c2750; border-radius:16px; padding:6px 8px;
+  backdrop-filter:blur(6px);
+}
+.emoji-btn {
+  background:#151228; border:1px solid #2c2750; border-radius:12px;
+  font-size:1.3rem; padding:6px 9px; cursor:pointer;
+}
+.emoji-btn:active { transform:scale(1.2); }
+.emoji-fly {
+  position:fixed; z-index:9999; font-size:2.2rem; pointer-events:none;
+  animation:emojiFly 2.4s ease-out forwards;
+}
+@keyframes emojiFly {
+  0% { transform:translateY(0) scale(0.6) rotate(0deg); opacity:0; }
+  10% { opacity:1; transform:translateY(-8vh) scale(1.15) rotate(-8deg); }
+  100% { transform:translateY(-70vh) scale(1) rotate(10deg); opacity:0; }
+}
+
+
+/* ===== V11 : Duel Classe ===== */
+.ranked-btn {
+  background:linear-gradient(135deg, #8b3df5, #a855f7); color:#fff;
+  box-shadow:0 4px 18px #8b3df544; border:1px solid #a855f766;
+}
+.ranked-btn.btn-disabled {
+  opacity:0.4; filter:grayscale(0.7); pointer-events:auto;
+}
+.ranked-note { text-align:center; color:#9a7fd4; font-size:0.72rem; font-weight:700; margin-top:6px; }
+
 </style>
 </head>
 <body>
 
 <div id="victory-animation"></div>
 <div id="genesis-fx" class="genesis-fx hidden"></div>
+
+<div id="emoji-bar" class="emoji-bar hidden"></div>
 
 <div id="season-banner" class="season-banner hidden">
   <div id="season-banner-title" class="season-banner-title"></div>
@@ -775,6 +817,7 @@ body.theme-genesis .player-card::after {
     <div id="rv-grid" class="rv-grid"></div>
     <div id="rv-result" class="rv-result"></div>
     <div id="rv-waiting" class="rv-waiting hidden"></div>
+    <div id="rv-squad-wait" class="rv-squad-wait hidden"></div>
     <button id="btn-next" class="rv-next"></button>
   </div>
 </div>
@@ -872,6 +915,8 @@ body.theme-genesis .player-card::after {
   <div class="online-block">
     <div class="online-label" data-i18n="random_label"></div>
     <button id="btn-random-match" class="mid-btn gold full" style="margin-top:4px;" data-i18n="random_btn"></button>
+    <button id="btn-ranked-match" class="mid-btn full ranked-btn" style="margin-top:8px;" data-i18n="ranked_btn"></button>
+    <div id="ranked-unavailable-note" class="ranked-note hidden" data-i18n="ranked_unavailable"></div>
   </div>
 
   <div id="online-status" class="online-status"></div>
@@ -889,6 +934,7 @@ body.theme-genesis .player-card::after {
     <div id="wait-players" class="wait-players"></div>
     <div class="wait-spinner"></div>
     <div id="wait-msg" class="wait-msg"></div>
+    <button id="btn-share-link" class="mid-btn gold hidden" data-i18n="share_link_btn"></button>
     <button id="btn-wait-cancel" class="big-btn ghost" data-i18n="cancel"></button>
   </div>
 </div>
@@ -1138,6 +1184,11 @@ fr: {
   skin_none:"Aucun", skin_tierpack_name:"Pack Premium", skin_trionda_name:"Trionda ⚽",
   shop_trionda_title:"Skin Coupe du Monde — Édition limitée", shop_trionda_sub:"Inspiré du ballon officiel Trionda (USA 🇺🇸 Mexique 🇲🇽 Canada 🇨🇦). Disponible jusqu'au 1er août 2026 — après cette date, le skin disparaît automatiquement de ton inventaire.",
   skin_select_title:"Skin équipé",
+  share_link_btn:"🔗 Partager le lien", share_join_text:"Rejoins ma partie Eleven Duel !",
+  share_copied:"Lien copié !", share_copy_manual:"Copie ce lien :",
+  wait_my_squad:"Ton équipe ({n}/11)",
+  ranked_btn:"⚔️ Duel Classé", ranked_unavailable:"⏳ Disponible quand la saison sera lancée",
+  mode_ranked:"Duel Classé",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1252,6 +1303,11 @@ en: {
   skin_none:"None", skin_tierpack_name:"Premium Pack", skin_trionda_name:"Trionda ⚽",
   shop_trionda_title:"World Cup Skin — Limited Edition", shop_trionda_sub:"Inspired by the official Trionda ball (USA 🇺🇸 Mexico 🇲🇽 Canada 🇨🇦). Available until August 1, 2026 — after that date, the skin disappears automatically from your inventory.",
   skin_select_title:"Equipped skin",
+  share_link_btn:"🔗 Share link", share_join_text:"Join my Eleven Duel game!",
+  share_copied:"Link copied!", share_copy_manual:"Copy this link:",
+  wait_my_squad:"Your squad ({n}/11)",
+  ranked_btn:"⚔️ Ranked Duel", ranked_unavailable:"⏳ Available when the season starts",
+  mode_ranked:"Ranked Duel",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -1366,6 +1422,11 @@ es: {
   skin_none:"Ninguno", skin_tierpack_name:"Pack Premium", skin_trionda_name:"Trionda ⚽",
   shop_trionda_title:"Skin Mundial — Edición limitada", shop_trionda_sub:"Inspirado en el balón oficial Trionda (USA 🇺🇸 México 🇲🇽 Canadá 🇨🇦). Disponible hasta el 1 de agosto de 2026 — después de esa fecha, el skin desaparece automáticamente de tu inventario.",
   skin_select_title:"Skin equipado",
+  share_link_btn:"🔗 Compartir enlace", share_join_text:"Únete a mi partida de Eleven Duel!",
+  share_copied:"¡Enlace copiado!", share_copy_manual:"Copia este enlace:",
+  wait_my_squad:"Tu equipo ({n}/11)",
+  ranked_btn:"⚔️ Duelo Clasificatorio", ranked_unavailable:"⏳ Disponible cuando empiece la temporada",
+  mode_ranked:"Duelo Clasificatorio",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -1525,7 +1586,7 @@ var SKINS_PACK_PRICE = 2000;
 var TRIONDA_PRICE = 100;
 var TRIONDA_EXPIRY = new Date("2026-08-01T00:00:00Z").getTime();
 function triondaExpired(){ return Date.now() >= TRIONDA_EXPIRY; }
-function svgDataUrl(svgStr){ return "data:image/svg+xml;utf8," + encodeURIComponent(svgStr); }
+function svgDataUrl(svgStr){ return "data:image/svg+xml;base64," + btoa(svgStr); }
 var TRIONDA_ICON_URLS = {
   star: svgDataUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12,1 14.7,8.6 22.8,8.8 16.3,13.7 18.6,21.5 12,16.9 5.4,21.5 7.7,13.7 1.2,8.8 9.3,8.6" fill="#ffffff"/></svg>'),
   leaf: svgDataUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 L13.2 5.5 L16.8 3 L15.5 7.3 L20 6.5 L16.8 10 L20.5 12.5 L16.3 12.8 L18 17 L14 15 L13.5 20 L12 16.5 L10.5 20 L10 15 L6 17 L7.7 12.8 L3.5 12.5 L7.2 10 L4 6.5 L8.5 7.3 L7.2 3 L10.8 5.5 Z M12 16.5 L12 23" fill="#ffffff" stroke="#ffffff" stroke-width="0.6" stroke-linejoin="round"/></svg>'),
@@ -2046,8 +2107,14 @@ function renderRound(){
 
 function syncFromSlider(){ qs("bid-input").value = qs("bid-slider").value; }
 function syncFromInput(){
-  var v = parseInt(qs("bid-input").value, 10);
-  setBid(isNaN(v) ? 0 : v);
+  var raw = qs("bid-input").value;
+  if (raw === "" || raw === "-"){ return; } /* laisser effacer librement */
+  var v = parseInt(raw, 10);
+  if (isNaN(v)) return;
+  var maxB = maxBidYou();
+  if (v > maxB){ v = maxB; qs("bid-input").value = String(v); }
+  var minS = parseInt(qs("bid-slider").min, 10) || 0;
+  qs("bid-slider").value = String(Math.max(minS, Math.min(maxB, v)));
 }
 function bumpBid(n){
   var v = parseInt(qs("bid-input").value, 10);
@@ -2055,6 +2122,26 @@ function bumpBid(n){
   setBid(v + n);
 }
 
+function renderWaitSquad(){
+  var box = qs("rv-squad-wait");
+  if (!box) return;
+  clear(box);
+  if (!state || !me() || !me().squad || !me().squad.length){
+    box.classList.add("hidden");
+    return;
+  }
+  box.classList.remove("hidden");
+  box.appendChild(el("div","rv-squad-title", tf("wait_my_squad", { n: me().squad.length })));
+  var mySquad = me().squad, myPaid = me().paid;
+  for (var i=0;i<mySquad.length;i++){
+    var pl = PLAYERS[mySquad[i]];
+    var row = el("div","rv-squad-row");
+    row.appendChild(el("span","squad-note " + tierClass(pl[2]), String(pl[2])));
+    row.appendChild(el("span","rv-squad-name", pl[0] + " · " + t("pos_" + pl[1])));
+    row.appendChild(el("span","rv-squad-price", myPaid[i] + "M"));
+    box.appendChild(row);
+  }
+}
 function setRevealWaiting(w, msg){
   if (w){
     qs("rv-grid").classList.add("hidden");
@@ -2062,11 +2149,13 @@ function setRevealWaiting(w, msg){
     qs("btn-next").classList.add("hidden");
     qs("rv-waiting").classList.remove("hidden");
     qs("rv-waiting").textContent = msg || t("rv_wait");
+    renderWaitSquad();
   } else {
     qs("rv-grid").classList.remove("hidden");
     qs("rv-result").classList.remove("hidden");
     qs("btn-next").classList.remove("hidden");
     qs("rv-waiting").classList.add("hidden");
+    qs("rv-squad-wait").classList.add("hidden");
   }
 }
 
@@ -2311,6 +2400,7 @@ function newDocSide(name, uid){
 function resetOnlineSession(){
   if (online.unsub){ online.unsub(); }
   online.ref = null; online.unsub = null; online.myIdx = -1; online.code = null; online.data = null;
+  if (typeof setEmojiBarVisible === "function") setEmojiBarVisible(false);
   online.submittedRound = 0; online.revealShownRound = 0; online.renderedRound = 0;
   online.revealWrittenRound = 0; online.pendingBid = null; online.hostBusy = false;
 }
@@ -2426,10 +2516,61 @@ function cancelWaiting(){
   setOnlineStatus("");
 }
 
+var EMOJI_LIST = ["😂","😭","💸","🔥","🏆","🤯","🫨","🖕"];
+var lastEmojiShown = 0;
+var lastEmojiSent = 0;
+function buildEmojiBar(){
+  var bar = qs("emoji-bar");
+  if (!bar || bar.childNodes.length) return;
+  for (var i=0;i<EMOJI_LIST.length;i++){
+    (function(em){
+      var b = el("button","emoji-btn", em);
+      b.addEventListener("click", function(){ sendEmoji(em); });
+      bar.appendChild(b);
+    })(EMOJI_LIST[i]);
+  }
+}
+function setEmojiBarVisible(v){
+  var bar = qs("emoji-bar");
+  if (!bar) return;
+  if (v){ buildEmojiBar(); bar.classList.remove("hidden"); }
+  else bar.classList.add("hidden");
+}
+function sendEmoji(em){
+  if (MODE !== "online" || !online.ref) return;
+  var now = Date.now();
+  if (now - lastEmojiSent < 1200) return; /* anti-spam 1 emoji / 1.2s */
+  lastEmojiSent = now;
+  flyEmoji(em); /* feedback local immediat */
+  online.ref.update(cleanData({
+    lastEmoji: { em: em, from: online.myIdx, ts: now }
+  })).catch(function(){});
+}
+function flyEmoji(em){
+  var e = el("div","emoji-fly", em);
+  var side = Math.random() < 0.5;
+  e.style.left = (side ? (8 + Math.random()*15) : (75 + Math.random()*15)) + "vw";
+  e.style.bottom = "12vh";
+  document.body.appendChild(e);
+  setTimeout(function(){ if (e.parentNode) e.parentNode.removeChild(e); }, 2500);
+}
+function handleEmojiUpdate(d){
+  if (!d.lastEmoji || typeof d.lastEmoji.ts !== "number") return;
+  if (d.lastEmoji.ts <= lastEmojiShown) return;
+  var isFirstSync = (lastEmojiShown === 0);
+  lastEmojiShown = d.lastEmoji.ts;
+  if (isFirstSync && Date.now() - d.lastEmoji.ts > 5000) return; /* vieux emoji a l arrivee */
+  if (d.lastEmoji.from === online.myIdx) return; /* deja affiche localement */
+  flyEmoji(d.lastEmoji.em);
+}
 function listenGame(){
   MODE = "online";
   rewardGiven = false;
   endShownLocal = false;
+  lastEmojiShown = 0;
+  lastEmojiSent = 0;
+  botState.committedRound = 0; botState.revealedRound = 0; botState.pending = null;
+  if (botFallbackTimer){ clearTimeout(botFallbackTimer); botFallbackTimer = null; }
   statsRecorded = false;
   usedBonus = { time:false, cash:false, star:false };
   online.unsub = online.ref.onSnapshot(onGameUpdate, function(){
@@ -2485,6 +2626,8 @@ function onGameUpdate(snap){
   }
   var d = snap.data();
   online.data = d;
+  handleEmojiUpdate(d);
+  setEmojiBarVisible(d.status === "playing" && !endShownLocal);
   var arr = docPlayersArr(d);
 
   /* devoirs de l'hote (p0) */
@@ -2501,6 +2644,7 @@ function onGameUpdate(snap){
       hostFinish(d);
       return;
     }
+    hostBotTick(d, arr);
     if (d.round > 0 && allNeededRevealed(d, arr) && allNeededCommitted(d, arr) && !(d.lastResult && d.lastResult.round === d.round)){
       hostResolve(d);
     }
@@ -2526,6 +2670,7 @@ function onGameUpdate(snap){
     qs("wait-players").textContent = tf("wait_players", { a: d.joined, b: d.maxPlayers });
     qs("wait-msg").textContent = d.isPublic ? t("wait_random_msg") : t("wait_share");
     qs("btn-wait-cancel").classList.toggle("hidden", online.myIdx !== 0);
+    qs("btn-share-link").classList.toggle("hidden", !!d.isPublic);
     return;
   }
 
@@ -2582,7 +2727,7 @@ function hostFinish(d){
     online.hostBusy = false;
     if (logCapture){
       var arr = docPlayersArr(logCapture.dd);
-      var mode = logCapture.dd.isPublic ? "online-public" : (logCapture.dd.leagueCode ? "league" : "online-private");
+      var mode = logCapture.dd.isRanked ? "ranked" : (logCapture.dd.isPublic ? "online-public" : (logCapture.dd.leagueCode ? "league" : "online-private"));
       writeMatchLog({
         mode: mode, playersCount: arr.length, players: playerLogEntries(arr),
         winnerPseudo: winnerPseudoFromRanking(arr, "forfeit"),
@@ -2680,7 +2825,7 @@ function hostResolve(d){
       if (finished){
         upd.status = "finished";
         upd.endReason = endReason;
-        var mode = dd.isPublic ? "online-public" : (dd.leagueCode ? "league" : "online-private");
+        var mode = dd.isRanked ? "ranked" : (dd.isPublic ? "online-public" : (dd.leagueCode ? "league" : "online-private"));
         logCapture = {
           mode: mode, playersCount: newPlayers.length, players: playerLogEntries(newPlayers),
           winnerPseudo: winnerPseudoFromRanking(newPlayers, endReason),
@@ -2770,6 +2915,7 @@ function onlineNextRound(){
 function showOnlineEnd(d){
   if (endShownLocal) return;
   endShownLocal = true;
+  setEmojiBarVisible(false);
   stopTimer();
   syncOnlineToState(d);
   hideAllScreens();
@@ -3114,6 +3260,7 @@ function init(){
   computeArrivalSource();
   checkTriondaExpiry();
   if (checkAdminRoute()){ initAdminScreen(); return; }
+  var pendingJoin = /^#join=/.test(window.location.hash || "");
   showCreateAccountPopup();
   renderCoins();
   loadSeasonConfig();
@@ -3135,6 +3282,7 @@ function init(){
     hideAllScreens();
     show("screen-online");
     renderOnlineAccount();
+    updateRankedButtonState();
     setOnlineStatus(fbConfigured() ? "" : t("st_noconfig"), !fbConfigured());
   });
   qs("btn-online-back").addEventListener("click", function(){
@@ -3145,13 +3293,18 @@ function init(){
   qs("btn-create-private").addEventListener("click", function(){ createPrivateGame(false); });
   qs("btn-join-private").addEventListener("click", joinPrivateGame);
   qs("btn-random-match").addEventListener("click", findRandomGame);
+  qs("btn-ranked-match").addEventListener("click", findRankedGame);
   qs("btn-wait-cancel").addEventListener("click", cancelWaiting);
+  qs("btn-share-link").addEventListener("click", sharePrivateLink);
   qs("btn-abandon").addEventListener("click", abandonGame);
+  if (pendingJoin) setTimeout(checkJoinRoute, 100);
 
   qs("btn-bid").addEventListener("click", function(){
-    syncFromInput();
     var v = parseInt(qs("bid-input").value, 10);
     if (isNaN(v) || v < 0) v = 0;
+    if (v < minBidYou()) v = minBidYou();
+    if (v > maxBidYou()) v = maxBidYou();
+    qs("bid-input").value = String(v);
     submitBid(v);
   });
   qs("btn-pass").addEventListener("click", function(){
@@ -3332,13 +3485,13 @@ function maybeRecordOnline(outcome){
   statsRecorded = true;
   var d = online.data;
   var mySide = state.players[state.myIdx];
-  if (d.isPublic){
-    recordGlobalStats(outcome, mySide);
+  if (d.isPublic || d.isRanked){
+    recordGlobalStats(outcome, mySide, !!d.isRanked);
   } else if (d.leagueCode){
     recordLeagueGame(d.leagueCode, outcome);
   }
 }
-function recordGlobalStats(outcome, side){
+function recordGlobalStats(outcome, side, ranked){
   initFirebase().then(function(ok){
     if (!ok) return;
     var ref = myUserRef();
@@ -3372,7 +3525,7 @@ function recordGlobalStats(outcome, side){
           st.buys[nm].spent += side.paid[i];
         }
         var updates = { stats: st };
-        applyEloForGame(outcome, ref, tx, fullData, updates);
+        if (ranked) applyEloForGame(outcome, ref, tx, fullData, updates);
         tx.update(ref, cleanData(updates));
       });
     }).catch(function(){});
@@ -4211,6 +4364,7 @@ function loadSeasonConfig(){
       renderSeasonBanner();
       maybeClaimSeasonRewards();
       startSeasonTicker();
+      updateRankedButtonState();
     }).catch(function(){
       seasonConfig = null;
       seasonState = { phase:"idle" };
@@ -4229,6 +4383,7 @@ function startSeasonTicker(){
     if (seasonState && (seasonState.phase !== prevPhase || seasonState.seasonNumber !== prevNum)){
       applySeasonTheme();
       maybeClaimSeasonRewards();
+      updateRankedButtonState();
     }
   }, 1000);
 }
@@ -4557,6 +4712,36 @@ function adminSignOut(){
   window.location.hash = "";
 }
 
+function sharePrivateLink(){
+  if (!online.code) return;
+  var url = "https://elevenduel.com/#join=" + online.code;
+  if (navigator.share){
+    navigator.share({ title: "Eleven Duel", text: t("share_join_text"), url: url }).catch(function(){});
+  } else if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(function(){
+      window.alert(t("share_copied"));
+    }).catch(function(){ window.prompt(t("share_copy_manual"), url); });
+  } else {
+    window.prompt(t("share_copy_manual"), url);
+  }
+}
+function checkJoinRoute(){
+  var h = window.location.hash || "";
+  var m = h.match(/^#join=([A-Za-z0-9]{5})$/);
+  if (!m) return false;
+  var code = m[1].toUpperCase();
+  window.location.hash = "";
+  hideAllScreens();
+  show("screen-online");
+  renderOnlineAccount();
+  qs("join-code-input").value = code;
+  if (store.account){
+    joinPrivateGame();
+  } else {
+    setOnlineStatus(t("acc_need"), true);
+  }
+  return true;
+}
 function checkAdminRoute(){
   if (window.location.hash === "#admin"){
     hideAllScreens();
@@ -4683,6 +4868,227 @@ function renderAdminSources(box){
     clear(box);
     box.appendChild(el("div","rk-empty", (err && err.code === "permission-denied") ? t("admin_denied") : t("st_err")));
   });
+}
+
+/* =========================================================
+   V11 : DUEL CLASSE (Elo) + BOT FALLBACK
+   ========================================================= */
+var BOT_WAIT_MS = 15000;
+var BOT_UID = "RANKED_BOT";
+var BOT_PSEUDOS = [
+  "Leo_Fut94","MattiaCalcio","Karim_du_13","FutKing_Ali","DiegoTactico","MaxiGoleador",
+  "Sofian_Zidane10","ToniBallon","EnzoDribble","PabloElMister","LuchoFutbolero","JojoStriker",
+  "Mehdi_CR7Fan","NicoPanenka","SamiLibero","VictorVolley","AdriTikiTaka","IlanZlatanien",
+  "TheoCrampons","YanisNumero10","MarcoRabona","LucasCorner","RayanLucarne","HugoPressing",
+  "DavidCoachito","OmarCaptain","BrunoMilieu","AntoFinisseur","GabiGardien","RomainContre",
+  "AlexisPivot","NolanTransversale","EliasChilena","MattVeloce","KhalilRush","DylanNutmeg",
+  "FabioTrivela","IsmaCurva","NathanRemontada","TiagoSombrero"
+];
+function pickBotPseudo(){
+  return BOT_PSEUDOS[Math.floor(Math.random() * BOT_PSEUDOS.length)];
+}
+function pickBotProfile(){
+  return PROFILE_KEYS[Math.floor(Math.random() * PROFILE_KEYS.length)];
+}
+
+/* ---------- UI : etat du bouton selon la saison ---------- */
+function updateRankedButtonState(){
+  var btn = qs("btn-ranked-match");
+  var note = qs("ranked-unavailable-note");
+  if (!btn) return;
+  var active = seasonState && seasonState.phase === "active";
+  btn.classList.toggle("btn-disabled", !active);
+  if (note) note.classList.toggle("hidden", !!active);
+}
+
+/* ---------- MATCHMAKING CLASSE ---------- */
+function findRankedGame(){
+  if (!store.account){ setOnlineStatus(t("acc_need"), true); return; }
+  if (!seasonState || seasonState.phase !== "active"){
+    setOnlineStatus(t("ranked_unavailable"), true);
+    return;
+  }
+  setOnlineStatus(t("st_searching"));
+  initFirebase().then(function(ok){
+    if (!ok) return setOnlineStatus(t("st_noconfig"), true);
+    fb.db.collection("duels")
+      .where("isRanked", "==", true)
+      .where("status", "==", "waiting")
+      .limit(5).get()
+      .then(function(qsnap){
+        var candidate = null;
+        var now = Date.now();
+        qsnap.forEach(function(docSnap){
+          var d = docSnap.data();
+          if (candidate) return;
+          if (d.players && d.players.p0 && d.players.p0.uid === fb.uid) return;
+          if (now - d.createdAt > 5 * 60 * 1000) return;
+          candidate = docSnap.id;
+        });
+        if (!candidate){ createRankedGame(); return; }
+        resetOnlineSession();
+        var ref = fb.db.collection("duels").doc(candidate);
+        tryJoin(ref, candidate).then(function(slot){
+          online.code = candidate; online.myIdx = slot; online.ref = ref;
+          listenGame();
+        }).catch(function(){ createRankedGame(); });
+      })
+      .catch(function(){ setOnlineStatus(t("st_err"), true); });
+  });
+}
+
+function createRankedGame(){
+  initFirebase().then(function(ok){
+    if (!ok) return setOnlineStatus(t("st_noconfig"), true);
+    resetOnlineSession();
+    online.code = makeCode();
+    online.myIdx = 0;
+    online.ref = fb.db.collection("duels").doc(online.code);
+    var doc = {
+      code: online.code, isPublic: false, isRanked: true, status: "waiting", createdAt: Date.now(),
+      league: "ALL", maxPlayers: 2, joined: 1,
+      players: { p0: newDocSide(myPseudo(), fb.uid) },
+      round: 0, currentIdx: -1, used: [], bids: {},
+      leagueCode: null, lastResult: null, endReason: null,
+      botIdx: null, botProfile: null
+    };
+    online.ref.set(cleanData(doc)).then(function(){
+      listenGame();
+      scheduleBotFallback(online.code);
+    }).catch(function(){ setOnlineStatus(t("st_err"), true); });
+  });
+}
+
+/* ---------- BOT FALLBACK APRES 15s ---------- */
+var botFallbackTimer = null;
+function scheduleBotFallback(code){
+  if (botFallbackTimer) clearTimeout(botFallbackTimer);
+  botFallbackTimer = setTimeout(function(){
+    if (!online.ref || online.code !== code) return;
+    if (!online.data || online.data.status !== "waiting") return;
+    if (online.myIdx !== 0) return;
+    injectBot();
+  }, BOT_WAIT_MS);
+}
+function injectBot(){
+  var ref = online.ref;
+  if (!ref) return;
+  var botName = pickBotPseudo();
+  var botProfile = pickBotProfile();
+  fb.db.runTransaction(function(tx){
+    return tx.get(ref).then(function(snap){
+      if (!snap.exists) return;
+      var d = snap.data();
+      if (d.status !== "waiting" || d.joined >= d.maxPlayers) return;
+      var bot = newDocSide(botName, BOT_UID);
+      bot.userKey = null;
+      tx.update(ref, cleanData({
+        "players.p1": bot,
+        joined: 2,
+        status: "playing",
+        botIdx: 1,
+        botProfile: botProfile
+      }));
+    });
+  }).catch(function(){});
+}
+
+/* ---------- MISE DU BOT (adapte des profils IA solo) ---------- */
+function botBidFromDoc(d, botIdx, profile){
+  var arr = docPlayersArr(d);
+  var bot = arr[botIdx];
+  var opp = arr[1 - botIdx];
+  var pIdx = d.currentIdx;
+  var note = PLAYERS[pIdx][2];
+  var pos = PLAYERS[pIdx][1];
+  var slotsLeft = 11 - bot.squad.length;
+  if (slotsLeft <= 0) return 0;
+  var maxAllowed = bot.budget - (slotsLeft - 1);
+  if (maxAllowed < 1) return 0;
+  if (opp.squad.length >= 11 || opp.out) return 1;
+  var mustBid = bot.passes >= MAX_PASSES;
+
+  var fairShare = bot.budget / slotsLeft;
+  var pace = fairShare / 22;
+  if (pace < 0.45) pace = 0.45;
+  if (pace > 1.7) pace = 1.7;
+
+  var rnd = 0.75 + Math.random() * 0.6;
+  var mult = 1;
+  var c = posCounts(bot.squad);
+
+  if (profile === "prudent"){
+    mult = 0.8;
+    if (note <= 83 && Math.random() < 0.5) return mustBid ? 1 : 0;
+  }
+  else if (profile === "agressif"){
+    if (note >= 87) mult = 1.55;
+    else mult = 0.7;
+    if (note >= 84 && note <= 86 && Math.random() < 0.12) mult = 1.9;
+  }
+  else if (profile === "malin"){
+    var target = { G:1, D:4, M:4, A:2 };
+    if (pos === "G"){
+      if (c.G >= 1) return mustBid ? 1 : ((Math.random() < 0.85) ? 0 : 1);
+      mult = 1.6;
+    } else {
+      mult = (c[pos] < target[pos]) ? 1.25 : 0.45;
+    }
+  }
+
+  var bid = Math.round(aiValue(note) * pace * mult * rnd);
+  if (profile === "prudent"){
+    var cap = Math.round(fairShare * 1.4);
+    if (bid > cap) bid = cap;
+  }
+  if (profile === "malin"){
+    var smart = opp.budget + 1;
+    if (bid > smart) bid = smart;
+  }
+  var avail = availableIdxs(d.league || "ALL", d.used || []).length;
+  if (avail < slotsLeft * 2 + 4 && bid < 2) bid = 2;
+  if (bid < 1) return mustBid ? 1 : ((Math.random() < 0.45) ? 0 : 1);
+  if (bid > maxAllowed) bid = maxAllowed;
+  return bid;
+}
+
+/* ---------- SIMULATION DU BOT PAR L'HOTE (commit puis reveal) ---------- */
+var botState = { committedRound: 0, revealedRound: 0, pending: null };
+function hostBotTick(d, arr){
+  if (online.myIdx !== 0) return;
+  if (typeof d.botIdx !== "number" || d.botIdx === null) return;
+  if (d.status !== "playing" || d.round <= 0) return;
+  var bIdx = d.botIdx;
+  var bot = arr[bIdx];
+  if (!bot || !needsBid(bot)) return;
+
+  var bbid = d.bids && d.bids["b" + bIdx];
+
+  /* 1. commit de la mise du bot (petit delai humain simule) */
+  if ((!bbid || !bbid.hash) && botState.committedRound < d.round){
+    botState.committedRound = d.round;
+    var v = botBidFromDoc(d, bIdx, d.botProfile || "prudent");
+    var salt = randomSalt();
+    botState.pending = { round: d.round, v: v, salt: salt };
+    var delay = 1500 + Math.random() * 4000;
+    setTimeout(function(){
+      if (!online.ref || !online.data || online.data.round !== botState.pending.round) return;
+      var u = {};
+      u["bids.b" + bIdx] = { hash: hashBid(botState.pending.v, botState.pending.salt) };
+      online.ref.update(u).catch(function(){ botState.committedRound = 0; });
+    }, delay);
+    return;
+  }
+
+  /* 2. reveal quand tous les hash attendus sont la */
+  if (bbid && bbid.hash && typeof bbid.value !== "number" && allNeededCommitted(d, arr) && botState.revealedRound < d.round){
+    if (!botState.pending || botState.pending.round !== d.round) return;
+    botState.revealedRound = d.round;
+    var u2 = {};
+    u2["bids.b" + bIdx + ".value"] = botState.pending.v;
+    u2["bids.b" + bIdx + ".salt"] = botState.pending.salt;
+    online.ref.update(u2).catch(function(){ botState.revealedRound = 0; });
+  }
 }
 
 </script>

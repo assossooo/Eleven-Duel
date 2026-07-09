@@ -660,6 +660,12 @@ body.theme-genesis .player-card::after {
 /* ===== V11 : squad en attente + emojis ===== */
 .rv-squad-wait { margin-top:14px; text-align:left; max-height:40vh; overflow-y:auto; }
 .rv-squad-title { font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#8b8fa8; margin-bottom:6px; text-align:center; }
+.rv-squad-toggle {
+  display:block; width:100%; background:#151228; border:1px solid #2c2750; border-radius:12px;
+  color:#cfd2ea; font-weight:800; font-size:0.8rem; padding:10px; text-align:center; cursor:pointer;
+}
+.rv-squad-toggle:active { background:#1d1936; }
+.rv-squad-list { margin-top:8px; }
 .rv-squad-row { display:flex; align-items:center; gap:8px; padding:6px 8px; border-bottom:1px solid #1d1936; font-size:0.82rem; }
 .rv-squad-name { flex:1; font-weight:800; color:#eef0ff; }
 .rv-squad-price { color:#f5b31c; font-weight:800; font-size:0.75rem; }
@@ -2122,6 +2128,7 @@ function bumpBid(n){
   setBid(v + n);
 }
 
+var waitSquadOpen = false;
 function renderWaitSquad(){
   var box = qs("rv-squad-wait");
   if (!box) return;
@@ -2131,7 +2138,16 @@ function renderWaitSquad(){
     return;
   }
   box.classList.remove("hidden");
-  box.appendChild(el("div","rv-squad-title", tf("wait_my_squad", { n: me().squad.length })));
+  var toggle = el("button","rv-squad-toggle",
+    (waitSquadOpen ? "▼ " : "▶ ") + tf("wait_my_squad", { n: me().squad.length }) +
+    " · " + me().budget + "M 💰");
+  toggle.addEventListener("click", function(){
+    waitSquadOpen = !waitSquadOpen;
+    renderWaitSquad();
+  });
+  box.appendChild(toggle);
+  if (!waitSquadOpen) return;
+  var list = el("div","rv-squad-list");
   var mySquad = me().squad, myPaid = me().paid;
   for (var i=0;i<mySquad.length;i++){
     var pl = PLAYERS[mySquad[i]];
@@ -2139,8 +2155,9 @@ function renderWaitSquad(){
     row.appendChild(el("span","squad-note " + tierClass(pl[2]), String(pl[2])));
     row.appendChild(el("span","rv-squad-name", pl[0] + " · " + t("pos_" + pl[1])));
     row.appendChild(el("span","rv-squad-price", myPaid[i] + "M"));
-    box.appendChild(row);
+    list.appendChild(row);
   }
+  box.appendChild(list);
 }
 function setRevealWaiting(w, msg){
   if (w){

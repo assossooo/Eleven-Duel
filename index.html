@@ -718,10 +718,37 @@ body.theme-genesis .player-card::after {
 }
 .ranked-note { text-align:center; color:#9a7fd4; font-size:0.72rem; font-weight:700; margin-top:6px; }
 
+
+/* ===== V12 : MAILLOTS ===== */
+.kit-svg { flex:0 0 auto; display:block; }
+.sq-head .kit-svg { margin-right:6px; }
+.squad-row .kit-svg { margin-right:2px; }
+.sq-budget { color:#f5b31c; font-weight:900; font-size:0.78rem; margin-left:auto; margin-right:8px; }
+
+.kit-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:8px; }
+.kit-card {
+  background:#12101f; border:2px solid #221d3d; border-radius:14px;
+  padding:12px 6px 10px; text-align:center; position:relative; cursor:pointer;
+}
+.kit-card:active { transform:scale(0.97); }
+.kit-card.equipped { border-color:#f5b31c; box-shadow:0 0 14px #f5b31c33; }
+.kit-card.locked { opacity:0.75; }
+.kit-big { margin:0 auto 6px; display:block; }
+.kit-name { font-weight:900; font-size:0.72rem; font-style:italic; text-transform:uppercase; color:#eef0ff; line-height:1.1; }
+.kit-price { font-size:0.68rem; color:#f5b31c; font-weight:800; margin-top:3px; }
+.kit-tag {
+  position:absolute; top:5px; right:5px; font-size:0.5rem; font-weight:800;
+  text-transform:uppercase; letter-spacing:0.3px; padding:2px 5px; border-radius:20px;
+}
+.tag-equipped { background:#f5b31c; color:#241c10; }
+.tag-owned { background:#1d4a2a; color:#57e08a; }
+.tag-locked { background:#2c2750; color:#9a9ec0; }
+
 </style>
 </head>
 <body>
 
+<svg id="kit-defs" width="0" height="0" style="position:absolute"><symbol id="kit-classic" viewBox="0 0 64 64"><defs><clipPath id="cp-classic"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-classic)"><rect x="0" y="0" width="64" height="64" fill="#27c3f5"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-whiteblue" viewBox="0 0 64 64"><defs><clipPath id="cp-whiteblue"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-whiteblue)"><rect x="0" y="0" width="64" height="64" fill="#ffffff"/><rect x="0" y="6" width="64" height="3" fill="#2FAEE0"/><rect x="0" y="52" width="64" height="4" fill="#2FAEE0"/><rect x="8" y="0" width="3" height="64" fill="#2FAEE0"/><rect x="53" y="0" width="3" height="64" fill="#2FAEE0"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-rednavy" viewBox="0 0 64 64"><defs><clipPath id="cp-rednavy"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-rednavy)"><rect x="0" y="0" width="64" height="64" fill="#C8102E"/><rect x="24" y="0" width="16" height="64" fill="#0B2A5B"/><rect x="21" y="0" width="3" height="64" fill="#ffffff"/><rect x="40" y="0" width="3" height="64" fill="#ffffff"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-bluecoq" viewBox="0 0 64 64"><defs><clipPath id="cp-bluecoq"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-bluecoq)"><rect x="0" y="0" width="64" height="64" fill="#1B2C5E"/><rect x="0" y="50" width="64" height="3" fill="#ffffff"/><rect x="0" y="53" width="64" height="3" fill="#C8102E"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-skywhite" viewBox="0 0 64 64"><defs><clipPath id="cp-skywhite"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-skywhite)"><rect x="0" y="0" width="64" height="64" fill="#ffffff"/><rect x="8" y="0" width="9" height="64" fill="#6CACE4"/><rect x="26" y="0" width="9" height="64" fill="#6CACE4"/><rect x="44" y="0" width="9" height="64" fill="#6CACE4"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-yellowgreen" viewBox="0 0 64 64"><defs><clipPath id="cp-yellowgreen"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-yellowgreen)"><rect x="0" y="0" width="64" height="64" fill="#FFDF00"/><rect x="0" y="49" width="64" height="4" fill="#009B3A"/><rect x="0" y="6" width="64" height="3" fill="#009B3A"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol></svg>
 <div id="victory-animation"></div>
 <div id="genesis-fx" class="genesis-fx hidden"></div>
 
@@ -887,6 +914,10 @@ body.theme-genesis .player-card::after {
   <p class="shop-sub" data-i18n="shop_sub"></p>
   <div class="shop-section" data-i18n="shop_anims"></div>
   <div id="shop-grid" class="shop-grid"></div>
+  <div class="shop-section" data-i18n="shop_kits"></div>
+  <p class="shop-sub" data-i18n="shop_kits_sub"></p>
+  <div id="shop-kits-grid" class="kit-grid"></div>
+
   <div class="shop-section" data-i18n="shop_skins"></div>
   <p class="shop-sub" data-i18n="shop_skins_sub"></p>
   <div id="shop-skins-grid" class="skins-grid"></div>
@@ -1211,6 +1242,10 @@ fr: {
   wait_my_squad:"Ton équipe ({n}/11)",
   ranked_btn:"⚔️ Duel Classé", ranked_unavailable:"⏳ Disponible quand la saison sera lancée",
   mode_ranked:"Duel Classé",
+  shop_kits:"Maillots", shop_kits_sub:"Ton maillot habille toute ton équipe dans \"Voir les effectifs\". Achat en pièces 🪙.",
+  kit_classic:"Classique", kit_whiteblue:"Blanc & Ciel", kit_rednavy:"Rouge & Marine",
+  kit_bluecoq:"Bleu Coq", kit_skywhite:"Ciel & Blanc", kit_yellowgreen:"Jaune Vert",
+  kit_equipped:"Équipé", kit_owned:"Possédé", kit_free:"Gratuit", kit_need_coins:"Pas assez de pièces 🪙",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1330,6 +1365,10 @@ en: {
   wait_my_squad:"Your squad ({n}/11)",
   ranked_btn:"⚔️ Ranked Duel", ranked_unavailable:"⏳ Available when the season starts",
   mode_ranked:"Ranked Duel",
+  shop_kits:"Jerseys", shop_kits_sub:"Your jersey dresses your whole squad in \"View squads\". Buy with coins 🪙.",
+  kit_classic:"Classic", kit_whiteblue:"White & Sky", kit_rednavy:"Red & Navy",
+  kit_bluecoq:"Blue Rooster", kit_skywhite:"Sky & White", kit_yellowgreen:"Yellow Green",
+  kit_equipped:"Equipped", kit_owned:"Owned", kit_free:"Free", kit_need_coins:"Not enough coins 🪙",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -1449,6 +1488,10 @@ es: {
   wait_my_squad:"Tu equipo ({n}/11)",
   ranked_btn:"⚔️ Duelo Clasificatorio", ranked_unavailable:"⏳ Disponible cuando empiece la temporada",
   mode_ranked:"Duelo Clasificatorio",
+  shop_kits:"Camisetas", shop_kits_sub:"Tu camiseta viste a todo tu equipo en \"Ver plantillas\". Compra con monedas 🪙.",
+  kit_classic:"Clásica", kit_whiteblue:"Blanco & Cielo", kit_rednavy:"Rojo & Marino",
+  kit_bluecoq:"Azul Gallo", kit_skywhite:"Cielo & Blanco", kit_yellowgreen:"Amarillo Verde",
+  kit_equipped:"Equipada", kit_owned:"En posesión", kit_free:"Gratis", kit_need_coins:"Monedas insuficientes 🪙",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -1605,6 +1648,33 @@ function leagueLabel(id){
 
 var FORMATIONS = ["3-4-3","3-5-2","4-4-2","4-3-3","4-5-1","4-2-4","5-3-2","5-4-1"];
 var SKINS_PACK_PRICE = 2000;
+var KIT_PRICE = 100;
+var KITS = [
+  { id:"classic", free:true },
+  { id:"whiteblue" },
+  { id:"rednavy" },
+  { id:"bluecoq" },
+  { id:"skywhite" },
+  { id:"yellowgreen" }
+];
+function kitOwned(id){
+  if (id === "classic") return true;
+  return store.ownedKits.indexOf(id) >= 0;
+}
+function myKit(){ return store.equippedKit || "classic"; }
+function kitSvg(kitId, size){
+  var s = size || 30;
+  var svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+  svg.setAttribute("class","kit-svg");
+  svg.setAttribute("viewBox","0 0 64 64");
+  svg.setAttribute("width", String(s));
+  svg.setAttribute("height", String(s));
+  var use = document.createElementNS("http://www.w3.org/2000/svg","use");
+  use.setAttributeNS("http://www.w3.org/1999/xlink","href","#kit-" + kitId);
+  use.setAttribute("href","#kit-" + kitId);
+  svg.appendChild(use);
+  return svg;
+}
 var TRIONDA_PRICE = 100;
 var TRIONDA_EXPIRY = new Date("2026-08-01T00:00:00Z").getTime();
 function triondaExpired(){ return Date.now() >= TRIONDA_EXPIRY; }
@@ -1689,7 +1759,7 @@ var ANIMS = [
 /* ---------- STORAGE ---------- */
 var memStore = null;
 function loadStore(){
-  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none" };
+  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none", ownedKits:[], equippedKit:"classic" };
   try {
     var raw = window.localStorage.getItem("elevenduel_store");
     if (raw){
@@ -1700,6 +1770,8 @@ function loadStore(){
         if (typeof s.duelgold !== "number") s.duelgold = 0;
         if (s.skinsPack === undefined) s.skinsPack = false;
         if (s.triondaOwned === undefined) s.triondaOwned = false;
+        if (!Array.isArray(s.ownedKits)) s.ownedKits = [];
+        if (typeof s.equippedKit !== "string") s.equippedKit = "classic";
         if (s.equippedSkin === undefined) s.equippedSkin = s.skinsPack ? "tierpack" : "none";
         if (s.account === undefined) s.account = null;
         return s;
@@ -1728,8 +1800,8 @@ var usedBonus = { time:false, cash:false, star:false };   /* par duel */
 var endShownLocal = false;
 var statsRecorded = false;
 
-function newSide(name){
-  return { name:name, budget:250, squad:[], paid:[], passes:0, out:false, forfeit:false, boostPending:false, boosted:-1 };
+function newSide(name, kit){
+  return { name:name, kit:(kit || "classic"), budget:250, squad:[], paid:[], passes:0, out:false, forfeit:false, boostPending:false, boosted:-1 };
 }
 
 /* ---------- OUTILS ---------- */
@@ -1943,7 +2015,7 @@ function startGame(){
   if (prof === "random") prof = PROFILE_KEYS[Math.floor(Math.random()*PROFILE_KEYS.length)];
   var myRealName = store.account ? store.account.pseudo : t("you");
   state = {
-    players: [ newSide(myRealName), newSide("Ali " + PROFILES[prof].emoji) ],
+    players: [ newSide(myRealName, myKit()), newSide("Ali " + PROFILES[prof].emoji, "classic") ],
     myIdx: 0, round: 0, current: -1, used: [],
     league: chosenLeague, profile: prof, endReason: null
   };
@@ -2248,6 +2320,7 @@ function renderSquadList(container, p){
     (function(item){
       var pl = PLAYERS[item.idx];
       var row = el("div","squad-row");
+      row.appendChild(kitSvg(p.kit || "classic", 26));
       row.appendChild(el("span","squad-pos pos-" + pl[1], pl[1]));
       var nm = pl[0] + (item.idx === p.boosted ? " ⭐" : "");
       row.appendChild(el("span","squad-name", nm));
@@ -2265,7 +2338,9 @@ function renderAllSquads(container){
     var p = state.players[i];
     var head = el("div","sq-head");
     var cls = (i === state.myIdx) ? "you" : "ai";
+    head.appendChild(kitSvg(p.kit || "classic", 30));
     head.appendChild(el("span","sq-title " + cls, (i === state.myIdx) ? t("sq_you") : p.name));
+    head.appendChild(el("span","sq-budget", p.budget + "M 💰"));
     head.appendChild(el("span","sq-avg", t("avg_short") + " " + (p.squad.length ? avgOf(p).toFixed(2) : "-")));
     container.appendChild(head);
     var list = el("div","");
@@ -2427,7 +2502,7 @@ function setOnlineStatus(msg, isError){
 }
 
 function newDocSide(name, uid){
-  return { uid: uid, userKey: (store.account ? store.account.key : null), name: name, budget: 250, squad: [], paid: [], passes: 0, out: false, forfeit: false, boostPending: false, boosted: -1 };
+  return { uid: uid, userKey: (store.account ? store.account.key : null), name: name, kit: myKit(), budget: 250, squad: [], paid: [], passes: 0, out: false, forfeit: false, boostPending: false, boosted: -1 };
 }
 
 function resetOnlineSession(){
@@ -3125,11 +3200,56 @@ function renderShop(){
     })(ANIMS[i]);
   }
   renderSkinsShop();
+  renderKitsShop();
+}
+function renderKitsShop(){
+  var box = qs("shop-kits-grid");
+  if (!box) return;
+  clear(box);
+  for (var i=0;i<KITS.length;i++){
+    (function(k){
+      var owned = kitOwned(k.id);
+      var equipped = (myKit() === k.id);
+      var card = el("div","kit-card" + (equipped ? " equipped" : "") + (owned ? "" : " locked"));
+
+      var tagCls = equipped ? "tag-equipped" : (owned ? "tag-owned" : "tag-locked");
+      var tagTxt = equipped ? t("kit_equipped") : (owned ? t("kit_owned") : "🔒");
+      card.appendChild(el("span","kit-tag " + tagCls, tagTxt));
+
+      var big = kitSvg(k.id, 58);
+      big.classList.add("kit-big");
+      card.appendChild(big);
+
+      card.appendChild(el("div","kit-name", t("kit_" + k.id)));
+      card.appendChild(el("div","kit-price", k.free ? t("kit_free") : (owned ? "—" : KIT_PRICE + " 🪙")));
+
+      card.addEventListener("click", function(){
+        if (equipped) return;
+        if (owned){
+          store.equippedKit = k.id;
+          saveStore(store);
+          pushShopStateToAccount();
+          renderShop();
+          return;
+        }
+        if (store.coins < KIT_PRICE){ window.alert(t("kit_need_coins")); return; }
+        store.coins -= KIT_PRICE;
+        store.ownedKits.push(k.id);
+        store.equippedKit = k.id;
+        saveStore(store);
+        pushShopStateToAccount();
+        renderShop();
+        renderCoins();
+      });
+      box.appendChild(card);
+    })(KITS[i]);
+  }
 }
 function shopStateSnapshot(){
   return {
     coins: store.coins, owned: store.owned, equipped: store.equipped,
-    skinsPack: store.skinsPack, triondaOwned: store.triondaOwned, equippedSkin: store.equippedSkin
+    skinsPack: store.skinsPack, triondaOwned: store.triondaOwned, equippedSkin: store.equippedSkin,
+    ownedKits: store.ownedKits, equippedKit: store.equippedKit
   };
 }
 function pushShopStateToAccount(){
@@ -3147,6 +3267,8 @@ function pullShopStateFromAccount(d){
   if (typeof d.skinsPack === "boolean"){ store.skinsPack = d.skinsPack; changed = true; }
   if (typeof d.triondaOwned === "boolean"){ store.triondaOwned = d.triondaOwned; changed = true; }
   if (typeof d.equippedSkin === "string"){ store.equippedSkin = d.equippedSkin; changed = true; }
+  if (Array.isArray(d.ownedKits)){ store.ownedKits = d.ownedKits; changed = true; }
+  if (typeof d.equippedKit === "string"){ store.equippedKit = d.equippedKit; changed = true; }
   if (typeof d.duelgold === "number"){ store.duelgold = d.duelgold; changed = true; }
   if (changed){
     saveStore(store);
@@ -3454,7 +3576,8 @@ function registerAccount(){
           source: arrivalSource || "direct",
           coins: store.coins, owned: store.owned, equipped: store.equipped,
           skinsPack: store.skinsPack, triondaOwned: store.triondaOwned,
-          equippedSkin: store.equippedSkin, duelgold: store.duelgold || 0
+          equippedSkin: store.equippedSkin, duelgold: store.duelgold || 0,
+          ownedKits: store.ownedKits, equippedKit: store.equippedKit
         }));
       });
     }).then(function(){
@@ -5015,6 +5138,7 @@ function injectBot(){
       if (d.status !== "waiting" || d.joined >= d.maxPlayers) return;
       var bot = newDocSide(botName, BOT_UID);
       bot.userKey = null;
+      bot.kit = KITS[Math.floor(Math.random() * KITS.length)].id;
       tx.update(ref, cleanData({
         "players.p1": bot,
         joined: 2,

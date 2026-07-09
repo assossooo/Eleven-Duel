@@ -163,7 +163,8 @@ body {
 /* ------ OVERLAYS ------ */
 .overlay {
   position:fixed; inset:0; background:#0a0817ee; z-index:50;
-  display:flex; align-items:center; justify-content:center; padding:18px;
+  display:flex; align-items:center; justify-content:center;
+  padding:18px 18px calc(84px + env(safe-area-inset-bottom, 0px));
 }
 .overlay-box {
   background:#151228; border:1px solid #2c2750; border-radius:20px;
@@ -671,16 +672,31 @@ body.theme-genesis .player-card::after {
 .rv-squad-price { color:#f5b31c; font-weight:800; font-size:0.75rem; }
 
 .emoji-bar {
-  position:fixed; bottom:12px; left:50%; transform:translateX(-50%);
-  display:flex; gap:6px; justify-content:center; z-index:8000;
-  background:#0a0817dd; border:1px solid #2c2750; border-radius:16px; padding:6px 8px;
-  backdrop-filter:blur(6px);
+  position:fixed; bottom:calc(10px + env(safe-area-inset-bottom, 0px));
+  left:6px; right:6px; z-index:8000;
+  display:flex; gap:4px; justify-content:space-between; align-items:center;
+  background:#0a0817ee; border:1px solid #2c2750; border-radius:16px; padding:5px;
+  box-sizing:border-box;
+  overflow-x:auto; overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none; touch-action:pan-x;
 }
+.emoji-bar::-webkit-scrollbar { display:none; }
 .emoji-btn {
-  background:#151228; border:1px solid #2c2750; border-radius:12px;
-  font-size:1.3rem; padding:6px 9px; cursor:pointer;
+  flex:1 1 0; min-width:0; box-sizing:border-box;
+  background:#151228; border:1px solid #2c2750; border-radius:11px;
+  font-size:clamp(0.95rem, 5vw, 1.35rem);
+  line-height:1; padding:9px 0; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  -webkit-tap-highlight-color:transparent;
 }
-.emoji-btn:active { transform:scale(1.2); }
+.emoji-btn:active { transform:scale(1.15); }
+/* fallback ecrans ultra etroits : defilement horizontal plutot qu ecrasement */
+@media (max-width:330px){
+  .emoji-bar { justify-content:flex-start; }
+  .emoji-btn { flex:0 0 auto; min-width:38px; }
+}
+#screen-game { padding-bottom:84px; }
 .emoji-fly {
   position:fixed; z-index:9999; font-size:2.2rem; pointer-events:none;
   animation:emojiFly 2.4s ease-out forwards;

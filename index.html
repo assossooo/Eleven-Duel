@@ -772,6 +772,17 @@ body.theme-genesis .player-card::after {
 
 .pp-actions { margin-top:14px; display:flex; flex-direction:column; gap:8px; }
 
+
+.friends-head { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+.add-friend-btn {
+  flex:0 0 auto; width:38px; height:38px; border-radius:50%;
+  background:linear-gradient(135deg, #f5d76e, #f5b31c); color:#0a0817;
+  border:none; font-size:1.5rem; font-weight:900; line-height:1;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  box-shadow:0 3px 12px #f5b31c44;
+}
+.add-friend-btn:active { transform:scale(0.92); }
+
 </style>
 </head>
 <body>
@@ -1116,7 +1127,10 @@ body.theme-genesis .player-card::after {
 
 <!-- ================= FRIEND REQUESTS ================= -->
 <div id="screen-friends-requests" class="screen hidden">
-  <div class="brush shop-title" style="text-align:center; margin-bottom:14px;" data-i18n="fr_title"></div>
+  <div class="friends-head">
+    <div class="brush shop-title" style="flex:1; text-align:center;" data-i18n="fr_title"></div>
+    <button id="btn-add-friend" class="add-friend-btn" aria-label="+">+</button>
+  </div>
   <div class="tab-row">
     <button id="friends-tab-requests" class="friends-tab-chip tab-chip tab-active" data-friendstab="requests"></button>
     <button class="friends-tab-chip tab-chip" data-friendstab="list" data-i18n="fr_tab_list"></button>
@@ -1318,7 +1332,8 @@ fr: {
   country_label:"Pays",
   acc_rules:"Accès refusé par Firebase — mets à jour les règles Firestore (users + leagues)."
 },
-  fr_add:"Ajouter en ami", fr_remove:"Retirer", fr_history:"Historique", fr_none:"Aucune demande en attente",
+  fr_add:"Ajouter en ami", fr_remove:"Retirer", fr_history:"Historique", fr_none:"Aucune demande d'ami",
+  fr_add_prompt:"Pseudo de la personne à ajouter :", fr_not_found:"Aucun joueur avec ce pseudo",
   fr_no_games:"Aucun duel joué ensemble", already_friend:"Vous êtes déjà amis",
   request_pending:"Une demande est déjà en attente", cant_add_yourself:"Tu ne peux pas t'ajouter toi-même",
   request_sent:"Demande d'ami envoyée !",
@@ -1423,7 +1438,8 @@ en: {
   kit_equipped:"Equipped", kit_owned:"Owned", kit_free:"Free", kit_need_coins:"Not enough coins 🪙",
   fr_title:"Friends", fr_tab_requests:"Requests", fr_tab_list:"My friends",
   fr_list_none:"No friends yet", fr_sent:"Request sent ✓",
-  fr_add:"Add friend", fr_remove:"Remove", fr_history:"History", fr_none:"No pending requests",
+  fr_add:"Add friend", fr_remove:"Remove", fr_history:"History", fr_none:"No friend requests",
+  fr_add_prompt:"Username of the person to add:", fr_not_found:"No player with that username",
   fr_no_games:"No duels played together",
   pp_notfound:"Profile not found",
   pf_modes_title:"Breakdown by mode", pf_mode_solo:"Duels vs Ali", pf_mode_random:"Random matchmaking",
@@ -1553,7 +1569,8 @@ es: {
   kit_equipped:"Equipada", kit_owned:"En posesión", kit_free:"Gratis", kit_need_coins:"Monedas insuficientes 🪙",
   fr_title:"Amigos", fr_tab_requests:"Solicitudes", fr_tab_list:"Mis amigos",
   fr_list_none:"Aún no tienes amigos", fr_sent:"Solicitud enviada ✓",
-  fr_add:"Añadir amigo", fr_remove:"Quitar", fr_history:"Historial", fr_none:"Sin solicitudes pendientes",
+  fr_add:"Añadir amigo", fr_remove:"Quitar", fr_history:"Historial", fr_none:"Sin solicitudes de amistad",
+  fr_add_prompt:"Nombre del jugador a añadir:", fr_not_found:"No hay ningún jugador con ese nombre",
   fr_no_games:"Ningún duelo jugado juntos",
   pp_notfound:"Perfil no encontrado",
   pf_modes_title:"Detalle por modo", pf_mode_solo:"Duelos vs Ali", pf_mode_random:"Emparejamiento aleatorio",
@@ -3544,6 +3561,7 @@ function init(){
   qs("bid-slider").addEventListener("input", syncFromSlider);
   qs("bid-input").addEventListener("input", syncFromInput);
   qs("btn-friends").addEventListener("click", function(){ openFriendsScreen("requests"); });
+  qs("btn-add-friend").addEventListener("click", promptAddFriend);
   qs("btn-pp-back").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
   bindChips(".friends-tab-chip", "tab-active", function(btn){
     friendsTab = btn.getAttribute("data-friendstab");
@@ -4339,6 +4357,23 @@ function updateFriendsNotification(){
   }
 }
 
+function promptAddFriend(){
+  if (!store.account){ window.alert(t("acc_need")); return; }
+  var input = window.prompt(t("fr_add_prompt"), "");
+  if (input === null) return;
+  var raw = String(input).trim();
+  if (!raw) return;
+  var key = pseudoKey(raw);
+  if (!key) return;
+  if (key === store.account.key){ window.alert(t("cant_add_yourself")); return; }
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    fb.db.collection("users").doc(key).get().then(function(snap){
+      if (!snap.exists){ window.alert(t("fr_not_found")); return; }
+      sendFriendRequest(key, snap.data().pseudo);
+    }).catch(function(){ window.alert(t("st_err")); });
+  });
+}
 function sendFriendRequest(targetKey, targetPseudo){
   if (!store.account) return;
   if (friendsModule.friendsList.indexOf(targetKey) >= 0){

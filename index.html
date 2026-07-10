@@ -744,6 +744,34 @@ body.theme-genesis .player-card::after {
 .tag-owned { background:#1d4a2a; color:#57e08a; }
 .tag-locked { background:#2c2750; color:#9a9ec0; }
 
+
+/* ===== V12 : profil public, amis, stats par mode ===== */
+.friends-badge {
+  position:absolute; top:4px; right:6px; background:#f52c8c; color:#fff;
+  font-size:0.6rem; font-weight:900; border-radius:20px; padding:1px 5px; min-width:16px;
+}
+.mini-btn { position:relative; }
+
+.mode-row {
+  display:flex; align-items:center; gap:8px; padding:9px 10px;
+  border-bottom:1px solid #1d1936; font-size:0.84rem;
+}
+.mode-icon { font-size:1rem; }
+.mode-label { flex:1; font-weight:800; color:#cfd2ea; }
+.mode-games { color:#8b8fa8; font-weight:700; font-size:0.78rem; }
+.mode-rate { color:#f5b31c; font-weight:900; font-size:0.82rem; min-width:44px; text-align:right; }
+
+.friend-row {
+  display:flex; align-items:center; gap:10px; padding:11px 10px;
+  border-bottom:1px solid #1d1936; cursor:pointer;
+}
+.friend-row:active { background:#151228; }
+.friend-flag { font-size:1.1rem; }
+.friend-name { flex:1; font-weight:800; color:#eef0ff; font-size:0.9rem; }
+.friend-stats { color:#f5b31c; font-weight:800; font-size:0.78rem; }
+
+.pp-actions { margin-top:14px; display:flex; flex-direction:column; gap:8px; }
+
 </style>
 </head>
 <body>
@@ -805,6 +833,7 @@ body.theme-genesis .player-card::after {
       <button id="btn-profile" class="mini-btn"><span class="mini-emoji">👑</span><span data-i18n="pf_title"></span></button>
       <button id="btn-ranks" class="mini-btn"><span class="mini-emoji">🏆</span><span data-i18n="rk_title"></span></button>
       <button id="btn-leagues" class="mini-btn"><span class="mini-emoji">👥</span><span data-i18n="lg_title"></span></button>
+      <button id="btn-friends" class="mini-btn"><span class="mini-emoji">🤝</span><span data-i18n="fr_title"></span><span id="friends-badge" class="friends-badge hidden"></span></button>
     </div>
   </div>
 </div>
@@ -1015,6 +1044,7 @@ body.theme-genesis .player-card::after {
     <div id="pf-loading" class="rk-empty hidden" data-i18n="rk_loading"></div>
     <div id="pf-season-section" class="pf-season-section"></div>
     <div id="pf-grid" class="stat-grid"></div>
+    <div id="pf-modes"></div>
     <div class="pf-note" data-i18n="pf_note"></div>
     <div class="online-block" style="margin-top:12px;">
       <div class="online-label" data-i18n="country_label"></div>
@@ -1086,10 +1116,27 @@ body.theme-genesis .player-card::after {
 
 <!-- ================= FRIEND REQUESTS ================= -->
 <div id="screen-friends-requests" class="screen hidden">
-  <div class="brush shop-title" style="text-align:center; margin-bottom:14px;">Demandes d'ami</div>
+  <div class="brush shop-title" style="text-align:center; margin-bottom:14px;" data-i18n="fr_title"></div>
+  <div class="tab-row">
+    <button id="friends-tab-requests" class="friends-tab-chip tab-chip tab-active" data-friendstab="requests"></button>
+    <button class="friends-tab-chip tab-chip" data-friendstab="list" data-i18n="fr_tab_list"></button>
+  </div>
   <div id="fr-list"></div>
   <div class="end-btns">
     <button id="btn-fr-back" class="big-btn ghost" data-i18n="back"></button>
+  </div>
+</div>
+
+<!-- ================= PROFIL PUBLIC ================= -->
+<div id="screen-public-profile" class="screen hidden">
+  <div id="pp-pseudo" class="brush shop-title" style="text-align:center; margin-bottom:14px;"></div>
+  <div id="pp-loading" class="rk-empty hidden" data-i18n="rk_loading"></div>
+  <div id="pp-season" class="pf-season-section"></div>
+  <div id="pp-grid" class="stat-grid"></div>
+  <div id="pp-modes"></div>
+  <div id="pp-actions" class="pp-actions"></div>
+  <div class="end-btns">
+    <button id="btn-pp-back" class="big-btn ghost" data-i18n="back"></button>
   </div>
 </div>
 
@@ -1246,6 +1293,11 @@ fr: {
   kit_classic:"Classique", kit_whiteblue:"Blanc & Ciel", kit_rednavy:"Rouge & Marine",
   kit_bluecoq:"Bleu Coq", kit_skywhite:"Ciel & Blanc", kit_yellowgreen:"Jaune Vert",
   kit_equipped:"Équipé", kit_owned:"Possédé", kit_free:"Gratuit", kit_need_coins:"Pas assez de pièces 🪙",
+  fr_title:"Amis", fr_tab_requests:"Demandes", fr_tab_list:"Mes amis",
+  fr_list_none:"Aucun ami pour l'instant", fr_sent:"Demande envoyée ✓",
+  pp_notfound:"Profil introuvable",
+  pf_modes_title:"Détail par mode", pf_mode_solo:"Duels vs Ali", pf_mode_random:"Matchmaking aléatoire",
+  pf_mode_private:"Parties privées", pf_mode_ranked:"Duel Classé",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1369,6 +1421,13 @@ en: {
   kit_classic:"Classic", kit_whiteblue:"White & Sky", kit_rednavy:"Red & Navy",
   kit_bluecoq:"Blue Rooster", kit_skywhite:"Sky & White", kit_yellowgreen:"Yellow Green",
   kit_equipped:"Equipped", kit_owned:"Owned", kit_free:"Free", kit_need_coins:"Not enough coins 🪙",
+  fr_title:"Friends", fr_tab_requests:"Requests", fr_tab_list:"My friends",
+  fr_list_none:"No friends yet", fr_sent:"Request sent ✓",
+  fr_add:"Add friend", fr_remove:"Remove", fr_history:"History", fr_none:"No pending requests",
+  fr_no_games:"No duels played together",
+  pp_notfound:"Profile not found",
+  pf_modes_title:"Breakdown by mode", pf_mode_solo:"Duels vs Ali", pf_mode_random:"Random matchmaking",
+  pf_mode_private:"Private games", pf_mode_ranked:"Ranked Duel",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -1492,6 +1551,13 @@ es: {
   kit_classic:"Clásica", kit_whiteblue:"Blanco & Cielo", kit_rednavy:"Rojo & Marino",
   kit_bluecoq:"Azul Gallo", kit_skywhite:"Cielo & Blanco", kit_yellowgreen:"Amarillo Verde",
   kit_equipped:"Equipada", kit_owned:"En posesión", kit_free:"Gratis", kit_need_coins:"Monedas insuficientes 🪙",
+  fr_title:"Amigos", fr_tab_requests:"Solicitudes", fr_tab_list:"Mis amigos",
+  fr_list_none:"Aún no tienes amigos", fr_sent:"Solicitud enviada ✓",
+  fr_add:"Añadir amigo", fr_remove:"Quitar", fr_history:"Historial", fr_none:"Sin solicitudes pendientes",
+  fr_no_games:"Ningún duelo jugado juntos",
+  pp_notfound:"Perfil no encontrado",
+  pf_modes_title:"Detalle por modo", pf_mode_solo:"Duelos vs Ali", pf_mode_random:"Emparejamiento aleatorio",
+  pf_mode_private:"Partidas privadas", pf_mode_ranked:"Duelo Clasificatorio",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -1819,6 +1885,7 @@ function hideAllScreens(){
   hide("screen-home"); hide("screen-game"); hide("screen-end");
   hide("screen-shop"); hide("screen-online"); hide("screen-wait");
   hide("screen-profile"); hide("screen-ranks"); hide("screen-leagues"); hide("screen-league-detail");
+  hide("screen-friends-requests"); hide("screen-friends-history"); hide("screen-public-profile");
   hide("overlay-reveal");
 }
 function cleanData(o){
@@ -2022,6 +2089,7 @@ function startGame(){
   if (store.account) state.players[0].userKey = store.account.key;
   rewardGiven = false;
   endShownLocal = false;
+  soloStatsRecorded = false;
   usedBonus = { time:false, cash:false, star:false };
   hideAllScreens();
   clearVictoryAnimation();
@@ -2354,6 +2422,7 @@ function openSquads(){
   show("overlay-squads");
 }
 
+var soloStatsRecorded = false;
 function giveCoins(outcome){
   if (rewardGiven) return 0;
   rewardGiven = true;
@@ -2436,6 +2505,7 @@ function renderEnd(reason){
     rank.appendChild(row);
   }
 
+  if (MODE === "solo" && !soloStatsRecorded){ soloStatsRecorded = true; bumpModeStats("solo", outcome); }
   var gain = giveCoins(outcome);
   qs("end-coins").textContent = tf("coins_gain", { g: gain, t: store.coins });
   maybeRecordOnline(outcome);
@@ -3414,6 +3484,7 @@ function bindChips(selector, activeClass, cb){
 function init(){
   computeArrivalSource();
   checkTriondaExpiry();
+  if (store.account) loadFriendsData();
   if (checkAdminRoute()){ initAdminScreen(); return; }
   var pendingJoin = /^#join=/.test(window.location.hash || "");
   showCreateAccountPopup();
@@ -3472,6 +3543,12 @@ function init(){
   });
   qs("bid-slider").addEventListener("input", syncFromSlider);
   qs("bid-input").addEventListener("input", syncFromInput);
+  qs("btn-friends").addEventListener("click", function(){ openFriendsScreen("requests"); });
+  qs("btn-pp-back").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
+  bindChips(".friends-tab-chip", "tab-active", function(btn){
+    friendsTab = btn.getAttribute("data-friendstab");
+    renderFriendsScreen();
+  });
   qs("btn-squads").addEventListener("click", openSquads);
   qs("btn-squads-close").addEventListener("click", function(){ hide("overlay-squads"); });
   qs("btn-replay").addEventListener("click", function(){
@@ -3536,6 +3613,27 @@ function countryFlag(code){
   return l.split(" ")[0];
 }
 
+function bumpModeStats(mode, outcome){
+  if (!store.account || !mode) return;
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    var inc = firebase.firestore.FieldValue.increment(1);
+    var u = {};
+    u["statsBy." + mode + ".games"] = inc;
+    if (outcome === "win") u["statsBy." + mode + ".wins"] = inc;
+    myUserRef().update(u).catch(function(){});
+  });
+}
+function modeStat(profileData, mode, field){
+  var sb = profileData.statsBy || {};
+  var m = sb[mode] || {};
+  return m[field] || 0;
+}
+function modeRate(profileData, mode){
+  var g = modeStat(profileData, mode, "games");
+  if (!g) return "—";
+  return Math.round(modeStat(profileData, mode, "wins") / g * 100) + "%";
+}
 function zeroStats(){
   return { games:0, wins:0, losses:0, ties:0, streak:0, bestStreak:0, totalSpent:0, biggestBid:0, trophies:0, buys:{} };
 }
@@ -3641,6 +3739,11 @@ function maybeRecordOnline(outcome){
   statsRecorded = true;
   var d = online.data;
   var mySide = state.players[state.myIdx];
+  if (d.isRanked) bumpModeStats("ranked", outcome);
+  else if (d.isPublic) bumpModeStats("random", outcome);
+  else if (d.leagueCode) bumpModeStats("league", outcome);
+  else bumpModeStats("private", outcome);
+
   if (d.isPublic || d.isRanked){
     recordGlobalStats(outcome, mySide, !!d.isRanked);
   } else if (d.leagueCode){
@@ -3772,8 +3875,34 @@ function renderProfile(){
         c.appendChild(el("div","stat-value", String(cells[i][2])));
         grid.appendChild(c);
       }
+      renderModeStats(qs("pf-modes"), profileData);
     }).catch(function(){ qs("pf-loading").classList.add("hidden"); });
   });
+}
+
+/* ---------- STATS PAR MODE ---------- */
+function renderModeStats(box, profileData){
+  if (!box) return;
+  clear(box);
+  box.appendChild(el("div","shop-section", t("pf_modes_title")));
+  var rows = [
+    { icon:"⚽", label:t("pf_mode_solo"),    mode:"solo",    showRate:false },
+    { icon:"🌐", label:t("pf_mode_random"),  mode:"random",  showRate:false },
+    { icon:"🔒", label:t("pf_mode_private"), mode:"private", showRate:true },
+    { icon:"⚔️", label:t("pf_mode_ranked"),  mode:"ranked",  showRate:false }
+  ];
+  for (var i=0;i<rows.length;i++){
+    var r = rows[i];
+    var games = modeStat(profileData, r.mode, "games");
+    var row = el("div","mode-row");
+    row.appendChild(el("span","mode-icon", r.icon));
+    row.appendChild(el("span","mode-label", r.label));
+    row.appendChild(el("span","mode-games", games + " " + t("rk_j")));
+    if (r.showRate){
+      row.appendChild(el("span","mode-rate", modeRate(profileData, r.mode)));
+    }
+    box.appendChild(row);
+  }
 }
 function changeCountry(){
   if (!store.account) return;
@@ -4257,7 +4386,7 @@ function acceptFriendRequest(senderKey, senderPseudo){
       theirRef.update({ friends: firebase.firestore.FieldValue.arrayUnion(store.account.key) })
     ]).then(function(){
       loadFriendsData();
-      if (!qs("screen-friends-requests").classList.contains("hidden")) renderFriendsRequests();
+      if (!qs("screen-friends-requests").classList.contains("hidden")) setTimeout(renderFriendsScreen, 300);
     }).catch(function(){
       window.alert(t("st_err"));
     });
@@ -4271,7 +4400,7 @@ function rejectFriendRequest(senderKey){
   u["friendRequests." + senderKey] = firebase.firestore.FieldValue.delete();
   myRef.update(u).then(function(){
     loadFriendsData();
-    if (!qs("screen-friends-requests").classList.contains("hidden")) renderFriendsRequests();
+    if (!qs("screen-friends-requests").classList.contains("hidden")) setTimeout(renderFriendsScreen, 300);
   }).catch(function(){
     window.alert(t("st_err"));
   });
@@ -4309,10 +4438,74 @@ function getGameHistory(friendKey, callback){
   });
 }
 
-function openFriendsRequests(){
+var friendsTab = "requests";
+function openFriendsScreen(tab){
+  if (tab) friendsTab = tab;
   hideAllScreens();
   show("screen-friends-requests");
-  renderFriendsRequests();
+  loadFriendsData();
+  renderFriendsScreen();
+}
+function openFriendsRequests(){ openFriendsScreen("requests"); }
+
+function renderFriendsScreen(){
+  var chips = document.querySelectorAll(".friends-tab-chip");
+  for (var i=0;i<chips.length;i++){
+    var isActive = chips[i].getAttribute("data-friendstab") === friendsTab;
+    chips[i].classList.toggle("tab-active", isActive);
+  }
+  var reqChip = qs("friends-tab-requests");
+  if (reqChip){
+    var n = friendsModule.pendingRequests.length;
+    reqChip.textContent = t("fr_tab_requests") + (n ? " (" + n + ")" : "");
+  }
+  if (friendsTab === "requests") renderFriendsRequests();
+  else renderFriendsList();
+}
+
+function renderFriendsList(){
+  var box = qs("fr-list");
+  clear(box);
+  if (!store.account){
+    box.appendChild(el("div","rk-empty", t("acc_need")));
+    return;
+  }
+  var keys = friendsModule.friendsList || [];
+  if (!keys.length){
+    box.appendChild(el("div","rk-empty", t("fr_list_none")));
+    return;
+  }
+  box.appendChild(el("div","rk-empty", t("rk_loading")));
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    var jobs = [];
+    for (var i=0;i<keys.length;i++){
+      jobs.push(fb.db.collection("users").doc(keys[i]).get());
+    }
+    Promise.all(jobs).then(function(snaps){
+      clear(box);
+      var any = false;
+      for (var j=0;j<snaps.length;j++){
+        if (!snaps[j].exists) continue;
+        any = true;
+        (function(snap){
+          var d = snap.data();
+          var st = d.stats || {};
+          var row = el("div","friend-row");
+          row.appendChild(el("span","friend-flag", countryFlag(d.country || "XX")));
+          var nameEl = el("span","friend-name", d.pseudo);
+          row.appendChild(nameEl);
+          row.appendChild(el("span","friend-stats", (st.wins || 0) + " " + t("rk_v")));
+          row.addEventListener("click", function(){ openPublicProfile(snap.id, d.pseudo); });
+          box.appendChild(row);
+        })(snaps[j]);
+      }
+      if (!any) box.appendChild(el("div","rk-empty", t("fr_list_none")));
+    }).catch(function(){
+      clear(box);
+      box.appendChild(el("div","rk-empty", t("st_err")));
+    });
+  });
 }
 
 function renderFriendsRequests(){
@@ -4384,7 +4577,80 @@ function makeFriendNameClickable(nameEl, friendKey, friendPseudo){
   nameEl.style.textDecoration = "underline";
   nameEl.addEventListener("click", function(e){
     e.stopPropagation();
-    showFriendMenu(friendKey, friendPseudo);
+    openPublicProfile(friendKey, friendPseudo);
+  });
+}
+
+function openPublicProfile(userKey, pseudo){
+  if (!userKey) return;
+  hideAllScreens();
+  show("screen-public-profile");
+  qs("pp-pseudo").textContent = pseudo || "—";
+  qs("pp-loading").classList.remove("hidden");
+  clear(qs("pp-grid"));
+  clear(qs("pp-season"));
+  clear(qs("pp-modes"));
+  clear(qs("pp-actions"));
+
+  initFirebase().then(function(ok){
+    if (!ok){ qs("pp-loading").classList.add("hidden"); return; }
+    fb.db.collection("users").doc(userKey).get().then(function(snap){
+      qs("pp-loading").classList.add("hidden");
+      if (!snap.exists){
+        qs("pp-grid").appendChild(el("div","rk-empty", t("pp_notfound")));
+        return;
+      }
+      var d = snap.data();
+      qs("pp-pseudo").textContent = d.pseudo + " " + countryFlag(d.country || "XX");
+      renderSeasonProfileSectionInto(qs("pp-season"), d);
+
+      var st = d.stats || zeroStats();
+      var rate = st.games > 0 ? Math.round((st.wins || 0) / st.games * 100) + "%" : "—";
+      var most = "—", bestN = 0;
+      if (st.buys){
+        for (var k in st.buys){
+          if (st.buys[k].n > bestN){ bestN = st.buys[k].n; most = k + " (x" + st.buys[k].n + ")"; }
+        }
+      }
+      var cells = [
+        ["⚔️", t("pf_games"), st.games || 0],
+        ["🏆", t("pf_wins"), st.wins || 0],
+        ["📈", t("pf_rate"), rate],
+        ["⚡", t("pf_best"), st.bestStreak || 0],
+        ["🏵", t("pf_troph"), st.trophies || 0],
+        ["💸", t("pf_bid"), (st.biggestBid || 0) + "M"],
+        ["🛒", t("pf_most"), most]
+      ];
+      var grid = qs("pp-grid");
+      for (var i=0;i<cells.length;i++){
+        var c = el("div","stat-cell");
+        c.appendChild(el("div","stat-emoji", cells[i][0]));
+        c.appendChild(el("div","stat-label", cells[i][1]));
+        c.appendChild(el("div","stat-value", String(cells[i][2])));
+        grid.appendChild(c);
+      }
+      renderModeStats(qs("pp-modes"), d);
+
+      var actions = qs("pp-actions");
+      if (store.account && userKey !== store.account.key){
+        if (friendsModule.friendsList.indexOf(userKey) >= 0){
+          var histBtn = el("button","mid-btn full", "📊 " + t("fr_history"));
+          histBtn.addEventListener("click", function(){ openFriendsHistory(userKey, d.pseudo); });
+          actions.appendChild(histBtn);
+        } else {
+          var addBtn = el("button","mid-btn gold full", "👥 " + t("fr_add"));
+          addBtn.addEventListener("click", function(){
+            sendFriendRequest(userKey, d.pseudo);
+            addBtn.disabled = true;
+            addBtn.textContent = t("fr_sent");
+          });
+          actions.appendChild(addBtn);
+        }
+      }
+    }).catch(function(){
+      qs("pp-loading").classList.add("hidden");
+      qs("pp-grid").appendChild(el("div","rk-empty", t("st_err")));
+    });
   });
 }
 
@@ -4734,7 +5000,9 @@ function applyEloForGame(outcome, ref, tx, data, updates){
 
 /* ---------- AFFICHAGE PROFIL : ELO + HISTORIQUE + BADGES ---------- */
 function renderSeasonProfileSection(data){
-  var box = qs("pf-season-section");
+  renderSeasonProfileSectionInto(qs("pf-season-section"), data);
+}
+function renderSeasonProfileSectionInto(box, data){
   if (!box) return;
   clear(box);
   var elo = data.elo || 0;

@@ -783,11 +783,18 @@ body.theme-genesis .player-card::after {
 }
 .add-friend-btn:active { transform:scale(0.92); }
 
+
+/* ===== V13 : onglets Shop ===== */
+.shop-pane { animation:fadeIn 0.25s ease; }
+.shop-pane.hidden { display:none; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+.shop-tab-chip { font-size:0.74rem; }
+
 </style>
 </head>
 <body>
 
-<svg id="kit-defs" width="0" height="0" style="position:absolute"><symbol id="kit-classic" viewBox="0 0 64 64"><defs><clipPath id="cp-classic"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-classic)"><rect x="0" y="0" width="64" height="64" fill="#27c3f5"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-whiteblue" viewBox="0 0 64 64"><defs><clipPath id="cp-whiteblue"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-whiteblue)"><rect x="0" y="0" width="64" height="64" fill="#ffffff"/><rect x="0" y="6" width="64" height="3" fill="#2FAEE0"/><rect x="0" y="52" width="64" height="4" fill="#2FAEE0"/><rect x="8" y="0" width="3" height="64" fill="#2FAEE0"/><rect x="53" y="0" width="3" height="64" fill="#2FAEE0"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-rednavy" viewBox="0 0 64 64"><defs><clipPath id="cp-rednavy"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-rednavy)"><rect x="0" y="0" width="64" height="64" fill="#C8102E"/><rect x="24" y="0" width="16" height="64" fill="#0B2A5B"/><rect x="21" y="0" width="3" height="64" fill="#ffffff"/><rect x="40" y="0" width="3" height="64" fill="#ffffff"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-bluecoq" viewBox="0 0 64 64"><defs><clipPath id="cp-bluecoq"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-bluecoq)"><rect x="0" y="0" width="64" height="64" fill="#1B2C5E"/><rect x="0" y="50" width="64" height="3" fill="#ffffff"/><rect x="0" y="53" width="64" height="3" fill="#C8102E"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-skywhite" viewBox="0 0 64 64"><defs><clipPath id="cp-skywhite"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-skywhite)"><rect x="0" y="0" width="64" height="64" fill="#ffffff"/><rect x="8" y="0" width="9" height="64" fill="#6CACE4"/><rect x="26" y="0" width="9" height="64" fill="#6CACE4"/><rect x="44" y="0" width="9" height="64" fill="#6CACE4"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol><symbol id="kit-yellowgreen" viewBox="0 0 64 64"><defs><clipPath id="cp-yellowgreen"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-yellowgreen)"><rect x="0" y="0" width="64" height="64" fill="#FFDF00"/><rect x="0" y="49" width="64" height="4" fill="#009B3A"/><rect x="0" y="6" width="64" height="3" fill="#009B3A"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#0a0817" stroke-width="2.5" stroke-linejoin="round"/></symbol></svg>
+<svg id="kit-defs" width="0" height="0" style="position:absolute"><defs><linearGradient id="sh-classic" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5ee0ff"/><stop offset="100%" stop-color="#0f8fd4"/></linearGradient><linearGradient id="sh-white" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#d6ecf7"/></linearGradient><linearGradient id="sh-red" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff2f4e"/><stop offset="100%" stop-color="#a80d22"/></linearGradient><linearGradient id="sh-navy" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a4d9e"/><stop offset="100%" stop-color="#0b1c47"/></linearGradient><linearGradient id="sh-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8fd6ff"/><stop offset="100%" stop-color="#3ea3e0"/></linearGradient><linearGradient id="sh-yellow" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffe94d"/><stop offset="100%" stop-color="#e0a800"/></linearGradient><linearGradient id="sh-shine" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/><stop offset="45%" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><symbol id="kit-classic" viewBox="0 0 64 64"><defs><clipPath id="cp-classic"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-classic)"><rect x="0" y="0" width="64" height="64" fill="url(#sh-classic)"/><path d="M32 14 L24 32 h6 l-4 16 14 -20 h-7 z" fill="#0a2a3d" opacity="0.35"/><rect x="0" y="49" width="64" height="2.4" fill="#0a2a3d" opacity="0.5"/><rect x="0" y="0" width="64" height="64" fill="url(#sh-shine)"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#05040c" stroke-width="3.4" stroke-linejoin="round"/><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#ffffff" stroke-width="0.9" opacity="0.28" stroke-linejoin="round"/></symbol><symbol id="kit-whiteblue" viewBox="0 0 64 64"><defs><clipPath id="cp-whiteblue"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-whiteblue)"><rect x="0" y="0" width="64" height="64" fill="url(#sh-white)"/><rect x="0" y="4" width="64" height="2.6" fill="#0f8fd4"/><rect x="0" y="50" width="64" height="4.5" fill="#0f8fd4"/><rect x="0" y="55" width="64" height="1.4" fill="#5ee0ff"/><path d="M9 0 V64" stroke="#5ee0ff" stroke-width="2.2"/><path d="M55 0 V64" stroke="#5ee0ff" stroke-width="2.2"/><path d="M20 8 L44 8 L38 14 L26 14 Z" fill="#0f8fd4" opacity="0.25"/><rect x="0" y="0" width="64" height="64" fill="url(#sh-shine)"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#05040c" stroke-width="3.4" stroke-linejoin="round"/><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#ffffff" stroke-width="0.9" opacity="0.28" stroke-linejoin="round"/></symbol><symbol id="kit-rednavy" viewBox="0 0 64 64"><defs><clipPath id="cp-rednavy"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-rednavy)"><rect x="0" y="0" width="64" height="64" fill="url(#sh-red)"/><rect x="23" y="0" width="18" height="64" fill="url(#sh-navy)"/><rect x="21.2" y="0" width="2" height="64" fill="#ffffff"/><rect x="40.8" y="0" width="2" height="64" fill="#ffffff"/><rect x="23" y="0" width="18" height="64" fill="none" stroke="#ff8a9c" stroke-width="0.6" opacity="0.5"/><rect x="0" y="52" width="64" height="2" fill="#ffffff" opacity="0.5"/><rect x="0" y="0" width="64" height="64" fill="url(#sh-shine)"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#05040c" stroke-width="3.4" stroke-linejoin="round"/><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#ffffff" stroke-width="0.9" opacity="0.28" stroke-linejoin="round"/></symbol><symbol id="kit-bluecoq" viewBox="0 0 64 64"><defs><clipPath id="cp-bluecoq"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-bluecoq)"><rect x="0" y="0" width="64" height="64" fill="url(#sh-navy)"/><path d="M8 26 L16 30 L16 40 L8 36 Z" fill="#4a6fd0" opacity="0.35"/><path d="M56 26 L48 30 L48 40 L56 36 Z" fill="#4a6fd0" opacity="0.35"/><rect x="0" y="47" width="64" height="2.6" fill="#ffffff"/><rect x="0" y="49.6" width="64" height="2.6" fill="#ff2f4e"/><rect x="0" y="52.2" width="64" height="1.2" fill="#5ee0ff" opacity="0.7"/><path d="M20 8 L44 8 L38.5 13 L25.5 13 Z" fill="#ffffff" opacity="0.14"/><rect x="0" y="0" width="64" height="64" fill="url(#sh-shine)"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#05040c" stroke-width="3.4" stroke-linejoin="round"/><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#ffffff" stroke-width="0.9" opacity="0.28" stroke-linejoin="round"/></symbol><symbol id="kit-skywhite" viewBox="0 0 64 64"><defs><clipPath id="cp-skywhite"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-skywhite)"><rect x="0" y="0" width="64" height="64" fill="url(#sh-white)"/><rect x="7" y="0" width="9" height="64" fill="url(#sh-sky)"/><rect x="25" y="0" width="9" height="64" fill="url(#sh-sky)"/><rect x="43" y="0" width="9" height="64" fill="url(#sh-sky)"/><g stroke="#0f8fd4" stroke-width="0.5" opacity="0.45"><path d="M7 0 V64"/><path d="M16 0 V64"/><path d="M25 0 V64"/><path d="M34 0 V64"/><path d="M43 0 V64"/><path d="M52 0 V64"/></g><rect x="0" y="51" width="64" height="3" fill="#0f8fd4"/><rect x="0" y="0" width="64" height="64" fill="url(#sh-shine)"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#05040c" stroke-width="3.4" stroke-linejoin="round"/><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#ffffff" stroke-width="0.9" opacity="0.28" stroke-linejoin="round"/></symbol><symbol id="kit-yellowgreen" viewBox="0 0 64 64"><defs><clipPath id="cp-yellowgreen"><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z"/></clipPath></defs><g clip-path="url(#cp-yellowgreen)"><rect x="0" y="0" width="64" height="64" fill="url(#sh-yellow)"/><path d="M0 46 Q32 38 64 46 L64 51 Q32 43 0 51 Z" fill="#00b348"/><path d="M0 51 Q32 43 64 51 L64 53 Q32 45 0 53 Z" fill="#0b6b3a"/><rect x="0" y="5" width="64" height="2.4" fill="#00b348"/><path d="M20 8 L44 8 L38.5 13 L25.5 13 Z" fill="#00b348" opacity="0.3"/><rect x="0" y="0" width="64" height="64" fill="url(#sh-shine)"/></g><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#05040c" stroke-width="3.4" stroke-linejoin="round"/><path d="M20 8 L12 14 L8 26 L16 30 L16 56 L48 56 L48 30 L56 26 L52 14 L44 8 L38 12 A8 6 0 0 1 26 12 Z" fill="none" stroke="#ffffff" stroke-width="0.9" opacity="0.28" stroke-linejoin="round"/></symbol></svg>
 <div id="victory-animation"></div>
 <div id="genesis-fx" class="genesis-fx hidden"></div>
 
@@ -951,14 +958,23 @@ body.theme-genesis .player-card::after {
     <div class="coins-pill">🪙 <span id="shop-coins">100</span></div>
   </div>
   <div class="dg-pill-row"><div class="dg-pill">👑 <span id="shop-duelgold">0</span> DuelGold</div></div>
-  <p class="shop-sub" data-i18n="shop_sub"></p>
-  <div class="shop-section" data-i18n="shop_anims"></div>
-  <div id="shop-grid" class="shop-grid"></div>
-  <div class="shop-section" data-i18n="shop_kits"></div>
-  <p class="shop-sub" data-i18n="shop_kits_sub"></p>
-  <div id="shop-kits-grid" class="kit-grid"></div>
+  <div class="tab-row">
+    <button class="shop-tab-chip tab-chip tab-active" data-shoptab="anims" data-i18n="shop_tab_anims"></button>
+    <button class="shop-tab-chip tab-chip" data-shoptab="kits" data-i18n="shop_tab_kits"></button>
+    <button class="shop-tab-chip tab-chip" data-shoptab="skins" data-i18n="shop_tab_skins"></button>
+  </div>
 
-  <div class="shop-section" data-i18n="shop_skins"></div>
+  <div id="shop-pane-anims" class="shop-pane">
+    <p class="shop-sub" data-i18n="shop_sub"></p>
+    <div id="shop-grid" class="shop-grid"></div>
+  </div>
+
+  <div id="shop-pane-kits" class="shop-pane hidden">
+    <p class="shop-sub" data-i18n="shop_kits_sub"></p>
+    <div id="shop-kits-grid" class="kit-grid"></div>
+  </div>
+
+  <div id="shop-pane-skins" class="shop-pane hidden">
   <p class="shop-sub" data-i18n="shop_skins_sub"></p>
   <div id="shop-skins-grid" class="skins-grid"></div>
   <div id="shop-skins-footer" class="shop-skins-footer"></div>
@@ -972,6 +988,8 @@ body.theme-genesis .player-card::after {
 
   <div class="shop-section" data-i18n="skin_select_title"></div>
   <div id="shop-skin-selector" class="tab-row hidden"></div>
+  </div><!-- /shop-pane-skins -->
+
   <div class="end-btns">
     <button id="btn-shop-back" class="big-btn ghost" data-i18n="back"></button>
   </div>
@@ -1312,6 +1330,7 @@ fr: {
   pp_notfound:"Profil introuvable",
   pf_modes_title:"Détail par mode", pf_mode_solo:"Duels vs Ali", pf_mode_random:"Matchmaking aléatoire",
   pf_mode_private:"Parties privées", pf_mode_ranked:"Duel Classé",
+  shop_tab_anims:"Animations", shop_tab_kits:"Maillots", shop_tab_skins:"Skins",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1444,6 +1463,7 @@ en: {
   pp_notfound:"Profile not found",
   pf_modes_title:"Breakdown by mode", pf_mode_solo:"Duels vs Ali", pf_mode_random:"Random matchmaking",
   pf_mode_private:"Private games", pf_mode_ranked:"Ranked Duel",
+  shop_tab_anims:"Animations", shop_tab_kits:"Jerseys", shop_tab_skins:"Skins",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -1574,6 +1594,7 @@ es: {
   pp_notfound:"Perfil no encontrado",
   pf_modes_title:"Detalle por modo", pf_mode_solo:"Duelos vs Ali", pf_mode_random:"Emparejamiento aleatorio",
   pf_mode_private:"Partidas privadas", pf_mode_ranked:"Duelo Clasificatorio",
+  shop_tab_anims:"Animaciones", shop_tab_kits:"Camisetas", shop_tab_skins:"Skins",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -3245,6 +3266,19 @@ function renderCoins(){
   if (dg) dg.textContent = store.duelgold || 0;
 }
 function isOwned(id){ return store.owned.indexOf(id) >= 0; }
+var shopTab = "anims";
+function setShopTab(tab){
+  shopTab = tab || "anims";
+  var panes = ["anims","kits","skins"];
+  for (var i=0;i<panes.length;i++){
+    var pane = qs("shop-pane-" + panes[i]);
+    if (pane) pane.classList.toggle("hidden", panes[i] !== shopTab);
+  }
+  var chips = document.querySelectorAll(".shop-tab-chip");
+  for (var j=0;j<chips.length;j++){
+    chips[j].classList.toggle("tab-active", chips[j].getAttribute("data-shoptab") === shopTab);
+  }
+}
 function renderShop(){
   renderCoins();
   var grid = qs("shop-grid");
@@ -3479,6 +3513,7 @@ function renderTriondaShop(){
 function openShop(){
   hideAllScreens();
   renderShop();
+  setShopTab("anims");
   show("screen-shop");
 }
 
@@ -3558,6 +3593,9 @@ function init(){
   });
   qs("bid-slider").addEventListener("input", syncFromSlider);
   qs("bid-input").addEventListener("input", syncFromInput);
+  bindChips(".shop-tab-chip", "tab-active", function(btn){
+    setShopTab(btn.getAttribute("data-shoptab"));
+  });
   qs("btn-friends").addEventListener("click", function(){ openFriendsScreen("requests"); });
   qs("btn-add-friend").addEventListener("click", promptAddFriend);
   qs("btn-pp-back").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });

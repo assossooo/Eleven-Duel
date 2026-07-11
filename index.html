@@ -790,6 +790,21 @@ body.theme-genesis .player-card::after {
 @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
 .shop-tab-chip { font-size:0.74rem; }
 
+
+/* ===== V14 : KPI admin ===== */
+#screen-admin .tab-row { flex-wrap:wrap; gap:5px; }
+#screen-admin .admin-tab-chip { font-size:0.68rem; padding:7px 9px; }
+.kpi-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:14px; }
+.kpi-cell {
+  background:#12101f; border:1px solid #221d3d; border-radius:12px;
+  padding:11px 6px; text-align:center;
+}
+.kpi-emoji { font-size:1.1rem; }
+.kpi-value { font-size:1.15rem; font-weight:900; color:#f5b31c; margin-top:2px; line-height:1.1; }
+.kpi-label { font-size:0.6rem; color:#8b8fa8; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; margin-top:3px; }
+.kpi-sub { font-size:0.58rem; color:#6d7189; margin-top:2px; }
+.admin-note { font-size:0.68rem; color:#6d7189; line-height:1.4; padding:8px 4px; font-style:italic; }
+
 </style>
 </head>
 <body>
@@ -1201,8 +1216,11 @@ body.theme-genesis .player-card::after {
 <div id="screen-admin" class="screen hidden">
   <div class="brush shop-title" style="text-align:center; margin-bottom:14px;" data-i18n="admin_title"></div>
   <div class="tab-row">
-    <button class="admin-tab-chip tab-chip tab-active" data-admintab="accounts" data-i18n="admin_tab_accounts"></button>
+    <button class="admin-tab-chip tab-chip tab-active" data-admintab="overview" data-i18n="admin_tab_overview"></button>
+    <button class="admin-tab-chip tab-chip" data-admintab="accounts" data-i18n="admin_tab_accounts"></button>
     <button class="admin-tab-chip tab-chip" data-admintab="matches" data-i18n="admin_tab_matches"></button>
+    <button class="admin-tab-chip tab-chip" data-admintab="shop" data-i18n="admin_tab_shop"></button>
+    <button class="admin-tab-chip tab-chip" data-admintab="sessions" data-i18n="admin_tab_sessions"></button>
     <button class="admin-tab-chip tab-chip" data-admintab="sources" data-i18n="admin_tab_sources"></button>
   </div>
   <div id="admin-body"></div>
@@ -1331,6 +1349,18 @@ fr: {
   pf_modes_title:"Détail par mode", pf_mode_solo:"Duels vs Ali", pf_mode_random:"Matchmaking aléatoire",
   pf_mode_private:"Parties privées", pf_mode_ranked:"Duel Classé",
   shop_tab_anims:"Animations", shop_tab_kits:"Maillots", shop_tab_skins:"Skins",
+  admin_tab_overview:"Résumé", admin_tab_shop:"Achats", admin_tab_sessions:"Sessions",
+  adm_kpi_accounts:"Comptes", adm_kpi_new_today:"Nouveaux (24h)", adm_kpi_7d:"7 jours",
+  adm_kpi_matches24:"Matchs (24h)", adm_kpi_sessions24:"Sessions (24h)",
+  adm_kpi_avg_session:"Durée moy.", adm_kpi_avg_new:"Durée nouveaux", adm_kpi_visitors:"visiteurs",
+  adm_kpi_buy24:"Achats (24h)", adm_kpi_coins_spent:"Pièces dépensées", adm_kpi_conv:"Conversion",
+  adm_overview_note:"Estimations sur les 500 derniers événements. La conversion = comptes créés / visiteurs uniques observés.",
+  adm_shop_summary:"{n} achats · {c} 🪙 · {g} 👑",
+  adm_shop_top:"Articles les plus achetés", adm_shop_recent:"Achats récents",
+  adm_type_kit:"Maillot", adm_type_anim:"Animation", adm_type_skin:"Skin", adm_anon:"Anonyme",
+  adm_sess_avg:"Durée moyenne", adm_sess_median:"Médiane", adm_sess_avg_new:"Moy. nouveaux",
+  adm_sess_bounce:"Rebond", adm_sess_bounce_sub:"< 15s", adm_sess_recent:"Sessions récentes",
+  skin_pack_name:"Pack Premium",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1464,6 +1494,18 @@ en: {
   pf_modes_title:"Breakdown by mode", pf_mode_solo:"Duels vs Ali", pf_mode_random:"Random matchmaking",
   pf_mode_private:"Private games", pf_mode_ranked:"Ranked Duel",
   shop_tab_anims:"Animations", shop_tab_kits:"Jerseys", shop_tab_skins:"Skins",
+  admin_tab_overview:"Overview", admin_tab_shop:"Purchases", admin_tab_sessions:"Sessions",
+  adm_kpi_accounts:"Accounts", adm_kpi_new_today:"New (24h)", adm_kpi_7d:"7 days",
+  adm_kpi_matches24:"Matches (24h)", adm_kpi_sessions24:"Sessions (24h)",
+  adm_kpi_avg_session:"Avg. duration", adm_kpi_avg_new:"New visitor dur.", adm_kpi_visitors:"visitors",
+  adm_kpi_buy24:"Purchases (24h)", adm_kpi_coins_spent:"Coins spent", adm_kpi_conv:"Conversion",
+  adm_overview_note:"Estimates over the last 500 events. Conversion = accounts created / unique visitors seen.",
+  adm_shop_summary:"{n} purchases · {c} 🪙 · {g} 👑",
+  adm_shop_top:"Most purchased items", adm_shop_recent:"Recent purchases",
+  adm_type_kit:"Jersey", adm_type_anim:"Animation", adm_type_skin:"Skin", adm_anon:"Anonymous",
+  adm_sess_avg:"Average duration", adm_sess_median:"Median", adm_sess_avg_new:"New avg.",
+  adm_sess_bounce:"Bounce", adm_sess_bounce_sub:"< 15s", adm_sess_recent:"Recent sessions",
+  skin_pack_name:"Premium Pack",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -1595,6 +1637,18 @@ es: {
   pf_modes_title:"Detalle por modo", pf_mode_solo:"Duelos vs Ali", pf_mode_random:"Emparejamiento aleatorio",
   pf_mode_private:"Partidas privadas", pf_mode_ranked:"Duelo Clasificatorio",
   shop_tab_anims:"Animaciones", shop_tab_kits:"Camisetas", shop_tab_skins:"Skins",
+  admin_tab_overview:"Resumen", admin_tab_shop:"Compras", admin_tab_sessions:"Sesiones",
+  adm_kpi_accounts:"Cuentas", adm_kpi_new_today:"Nuevos (24h)", adm_kpi_7d:"7 días",
+  adm_kpi_matches24:"Partidas (24h)", adm_kpi_sessions24:"Sesiones (24h)",
+  adm_kpi_avg_session:"Duración media", adm_kpi_avg_new:"Dur. nuevos", adm_kpi_visitors:"visitantes",
+  adm_kpi_buy24:"Compras (24h)", adm_kpi_coins_spent:"Monedas gastadas", adm_kpi_conv:"Conversión",
+  adm_overview_note:"Estimaciones sobre los últimos 500 eventos. Conversión = cuentas creadas / visitantes únicos.",
+  adm_shop_summary:"{n} compras · {c} 🪙 · {g} 👑",
+  adm_shop_top:"Artículos más comprados", adm_shop_recent:"Compras recientes",
+  adm_type_kit:"Camiseta", adm_type_anim:"Animación", adm_type_skin:"Skin", adm_anon:"Anónimo",
+  adm_sess_avg:"Duración media", adm_sess_median:"Mediana", adm_sess_avg_new:"Media nuevos",
+  adm_sess_bounce:"Rebote", adm_sess_bounce_sub:"< 15s", adm_sess_recent:"Sesiones recientes",
+  skin_pack_name:"Pack Premium",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -3310,6 +3364,7 @@ function renderShop(){
           store.coins -= a.price;
           store.owned.push(a.id);
           store.equipped = a.id;
+          logPurchase("anim", a.id, a.price, "coins");
           saveStore(store); pushShopStateToAccount(); renderShop(); playAnim(a.id);
         });
       }
@@ -3355,6 +3410,7 @@ function renderKitsShop(){
         store.coins -= KIT_PRICE;
         store.ownedKits.push(k.id);
         store.equippedKit = k.id;
+        logPurchase("kit", k.id, KIT_PRICE, "coins");
         saveStore(store);
         pushShopStateToAccount();
         renderShop();
@@ -3455,6 +3511,7 @@ function renderSkinsShop(){
       store.duelgold -= SKINS_PACK_PRICE;
       store.skinsPack = true;
       if (store.equippedSkin === "none") store.equippedSkin = "tierpack";
+      logPurchase("skin", "tierpack", SKINS_PACK_PRICE, "duelgold");
       saveStore(store);
       pushShopStateToAccount();
       renderShop();
@@ -3502,6 +3559,7 @@ function renderTriondaShop(){
       store.coins -= TRIONDA_PRICE;
       store.triondaOwned = true;
       if (store.equippedSkin === "none") store.equippedSkin = "trionda";
+      logPurchase("skin", "trionda", TRIONDA_PRICE, "coins");
       saveStore(store);
       pushShopStateToAccount();
       renderShop();
@@ -3536,6 +3594,7 @@ function init(){
   checkTriondaExpiry();
   if (store.account) loadFriendsData();
   if (checkAdminRoute()){ initAdminScreen(); return; }
+  startSessionTracking();
   var pendingJoin = /^#join=/.test(window.location.hash || "");
   showCreateAccountPopup();
   renderCoins();
@@ -5140,6 +5199,66 @@ function computeArrivalSource(){
 }
 
 /* ---------- ECRITURE DU LOG DE MATCH (matchLog) ---------- */
+function logPurchase(itemType, itemId, price, currency){
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    fb.db.collection("purchases").add(cleanData({
+      userKey: store.account ? store.account.key : null,
+      pseudo: store.account ? store.account.pseudo : null,
+      itemType: itemType,
+      itemId: itemId,
+      price: price,
+      currency: currency,
+      timestamp: Date.now()
+    })).catch(function(){});
+  });
+}
+
+/* ---------- SUIVI DE SESSION ---------- */
+var sessionInfo = { id:null, ref:null, start:0, timer:null, isNew:false, ended:false };
+function startSessionTracking(){
+  sessionInfo.start = Date.now();
+  sessionInfo.id = "s_" + sessionInfo.start + "_" + Math.random().toString(36).slice(2,9);
+  sessionInfo.isNew = !localStorage.getItem("ed_seen");
+  try { localStorage.setItem("ed_seen", "1"); } catch(e){}
+
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    sessionInfo.ref = fb.db.collection("sessions").doc(sessionInfo.id);
+    sessionInfo.ref.set(cleanData({
+      start: sessionInfo.start,
+      lastSeen: sessionInfo.start,
+      durationSec: 0,
+      isNewVisitor: sessionInfo.isNew,
+      userKey: store.account ? store.account.key : null,
+      pseudo: store.account ? store.account.pseudo : null,
+      source: arrivalSource || "direct",
+      lang: store.lang || "fr"
+    })).catch(function(){});
+
+    /* heartbeat : 1 ecriture / 45s tant que l onglet est visible */
+    sessionInfo.timer = setInterval(function(){
+      if (document.hidden) return;
+      touchSession();
+    }, 45000);
+  });
+
+  document.addEventListener("visibilitychange", function(){
+    if (document.hidden) touchSession();
+  });
+  window.addEventListener("pagehide", touchSession);
+}
+function touchSession(){
+  if (!sessionInfo.ref) return;
+  var now = Date.now();
+  sessionInfo.ref.update(cleanData({
+    lastSeen: now,
+    durationSec: Math.round((now - sessionInfo.start) / 1000),
+    userKey: store.account ? store.account.key : null,
+    pseudo: store.account ? store.account.pseudo : null
+  })).catch(function(){});
+}
+
 function writeMatchLog(entry){
   initFirebase().then(function(ok){
     if (!ok) return;
@@ -5247,7 +5366,7 @@ function checkAdminRoute(){
 }
 
 /* ---------- DASHBOARD ---------- */
-var adminTab = "accounts";
+var adminTab = "overview";
 function showAdminDashboard(){
   hideAllScreens();
   show("screen-admin");
@@ -5258,8 +5377,11 @@ function loadAdminTab(tabId){
   var box = qs("admin-body");
   clear(box);
   box.appendChild(el("div","rk-empty", t("rk_loading")));
-  if (tabId === "accounts") renderAdminAccounts(box);
+  if (tabId === "overview") renderAdminOverview(box);
+  else if (tabId === "accounts") renderAdminAccounts(box);
   else if (tabId === "matches") renderAdminMatches(box);
+  else if (tabId === "shop") renderAdminShop(box);
+  else if (tabId === "sessions") renderAdminSessions(box);
   else if (tabId === "sources") renderAdminSources(box);
 }
 
@@ -5585,6 +5707,195 @@ function hostBotTick(d, arr){
     u2["bids.b" + bIdx + ".salt"] = botState.pending.salt;
     online.ref.update(u2).catch(function(){ botState.revealedRound = 0; });
   }
+}
+
+/* =========================================================
+   V14 : DASHBOARD ADMIN ENRICHI
+   ========================================================= */
+function adminDateFmt(ts){
+  if (!ts) return "—";
+  var loc = store.lang === "fr" ? "fr-FR" : (store.lang === "es" ? "es-ES" : "en-US");
+  return new Date(ts).toLocaleString(loc, { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" });
+}
+function fmtDuration(sec){
+  sec = Math.max(0, Math.round(sec || 0));
+  if (sec < 60) return sec + "s";
+  var m = Math.floor(sec / 60), s = sec % 60;
+  if (m < 60) return m + "m " + (s < 10 ? "0" : "") + s + "s";
+  var h = Math.floor(m / 60);
+  return h + "h " + (m % 60) + "m";
+}
+function adminErr(box, err){
+  clear(box);
+  box.appendChild(el("div","rk-empty", (err && err.code === "permission-denied") ? t("admin_denied") : t("st_err")));
+}
+function kpiCell(emoji, label, value, sub){
+  var c = el("div","kpi-cell");
+  c.appendChild(el("div","kpi-emoji", emoji));
+  c.appendChild(el("div","kpi-value", String(value)));
+  c.appendChild(el("div","kpi-label", label));
+  if (sub) c.appendChild(el("div","kpi-sub", sub));
+  return c;
+}
+
+/* ---------- ONGLET RESUME ---------- */
+function renderAdminOverview(box){
+  var now = Date.now();
+  var DAY = 86400000;
+  Promise.all([
+    fb.db.collection("users").limit(1000).get(),
+    fb.db.collection("matchLog").orderBy("timestamp","desc").limit(500).get(),
+    fb.db.collection("sessions").orderBy("start","desc").limit(500).get(),
+    fb.db.collection("purchases").orderBy("timestamp","desc").limit(500).get()
+  ]).then(function(res){
+    clear(box);
+    var users = res[0], matches = res[1], sessions = res[2], purchases = res[3];
+
+    var newToday = 0, users7d = 0;
+    users.forEach(function(d){
+      var c = d.data().createdAt || 0;
+      if (now - c < DAY) newToday++;
+      if (now - c < 7 * DAY) users7d++;
+    });
+
+    var matches24 = 0;
+    matches.forEach(function(d){ if (now - (d.data().timestamp || 0) < DAY) matches24++; });
+
+    var sess24 = 0, totalDur = 0, durCount = 0, newVisitors = 0, newVisitorDur = 0, newVisitorCount = 0;
+    sessions.forEach(function(d){
+      var s = d.data();
+      if (now - (s.start || 0) < DAY) sess24++;
+      if (typeof s.durationSec === "number" && s.durationSec > 0){
+        totalDur += s.durationSec; durCount++;
+        if (s.isNewVisitor){ newVisitorDur += s.durationSec; newVisitorCount++; }
+      }
+      if (s.isNewVisitor) newVisitors++;
+    });
+    var avgDur = durCount ? totalDur / durCount : 0;
+    var avgNewDur = newVisitorCount ? newVisitorDur / newVisitorCount : 0;
+
+    var buy24 = 0, coinsSpent = 0, goldSpent = 0;
+    purchases.forEach(function(d){
+      var p = d.data();
+      if (now - (p.timestamp || 0) < DAY) buy24++;
+      if (p.currency === "coins") coinsSpent += (p.price || 0);
+      else if (p.currency === "duelgold") goldSpent += (p.price || 0);
+    });
+
+    /* taux de conversion : comptes crees / visiteurs uniques observes */
+    var convRate = newVisitors ? Math.round(users.size / newVisitors * 100) + "%" : "—";
+
+    var grid = el("div","kpi-grid");
+    grid.appendChild(kpiCell("👥", t("adm_kpi_accounts"), users.size));
+    grid.appendChild(kpiCell("✨", t("adm_kpi_new_today"), newToday, t("adm_kpi_7d") + " : " + users7d));
+    grid.appendChild(kpiCell("⚔️", t("adm_kpi_matches24"), matches24));
+    grid.appendChild(kpiCell("👀", t("adm_kpi_sessions24"), sess24));
+    grid.appendChild(kpiCell("⏱", t("adm_kpi_avg_session"), fmtDuration(avgDur)));
+    grid.appendChild(kpiCell("🆕", t("adm_kpi_avg_new"), fmtDuration(avgNewDur), newVisitorCount + " " + t("adm_kpi_visitors")));
+    grid.appendChild(kpiCell("🛒", t("adm_kpi_buy24"), buy24));
+    grid.appendChild(kpiCell("🪙", t("adm_kpi_coins_spent"), coinsSpent, "👑 " + goldSpent));
+    grid.appendChild(kpiCell("📈", t("adm_kpi_conv"), convRate));
+    box.appendChild(grid);
+
+    var note = el("div","admin-note", t("adm_overview_note"));
+    box.appendChild(note);
+  }).catch(function(err){ adminErr(box, err); });
+}
+
+/* ---------- ONGLET SHOP (achats) ---------- */
+function renderAdminShop(box){
+  fb.db.collection("purchases").orderBy("timestamp","desc").limit(300).get().then(function(qsnap){
+    clear(box);
+    if (qsnap.empty){ box.appendChild(el("div","rk-empty", t("admin_none"))); return; }
+
+    var byItem = {}, coins = 0, gold = 0;
+    qsnap.forEach(function(doc){
+      var p = doc.data();
+      var k = p.itemType + ":" + p.itemId;
+      if (!byItem[k]) byItem[k] = { type:p.itemType, id:p.itemId, n:0, total:0, currency:p.currency };
+      byItem[k].n++;
+      byItem[k].total += (p.price || 0);
+      if (p.currency === "coins") coins += (p.price || 0);
+      else if (p.currency === "duelgold") gold += (p.price || 0);
+    });
+
+    box.appendChild(el("div","admin-summary",
+      tf("adm_shop_summary", { n: qsnap.size, c: coins, g: gold })));
+
+    /* top items */
+    var arr = [];
+    for (var k in byItem) arr.push(byItem[k]);
+    arr.sort(function(a,b){ return b.n - a.n; });
+
+    box.appendChild(el("div","shop-section", t("adm_shop_top")));
+    for (var i=0;i<arr.length;i++){
+      var it = arr[i];
+      var row = el("div","admin-row");
+      row.appendChild(el("span","admin-row-pseudo", adminItemLabel(it.type, it.id)));
+      row.appendChild(el("span","admin-row-src", t("adm_type_" + it.type)));
+      row.appendChild(el("span","admin-row-date", it.n + "×"));
+      row.appendChild(el("span","admin-match-winner", it.total + (it.currency === "duelgold" ? " 👑" : " 🪙")));
+      box.appendChild(row);
+    }
+
+    /* achats recents */
+    box.appendChild(el("div","shop-section", t("adm_shop_recent")));
+    qsnap.forEach(function(doc){
+      var p = doc.data();
+      var row = el("div","admin-row");
+      row.appendChild(el("span","admin-row-pseudo", p.pseudo || t("adm_anon")));
+      row.appendChild(el("span","admin-row-src", adminItemLabel(p.itemType, p.itemId)));
+      row.appendChild(el("span","admin-row-date", adminDateFmt(p.timestamp)));
+      row.appendChild(el("span","admin-match-winner", (p.price || 0) + (p.currency === "duelgold" ? " 👑" : " 🪙")));
+      box.appendChild(row);
+    });
+  }).catch(function(err){ adminErr(box, err); });
+}
+function adminItemLabel(type, id){
+  if (type === "kit") return t("kit_" + id);
+  if (type === "anim") return t("anim_" + id);
+  if (type === "skin") return id === "trionda" ? "Trionda" : t("skin_pack_name");
+  return id;
+}
+
+/* ---------- ONGLET SESSIONS ---------- */
+function renderAdminSessions(box){
+  fb.db.collection("sessions").orderBy("start","desc").limit(200).get().then(function(qsnap){
+    clear(box);
+    if (qsnap.empty){ box.appendChild(el("div","rk-empty", t("admin_none"))); return; }
+
+    var durs = [], newDurs = [], bounce = 0;
+    qsnap.forEach(function(doc){
+      var s = doc.data();
+      var d = s.durationSec || 0;
+      durs.push(d);
+      if (s.isNewVisitor) newDurs.push(d);
+      if (d < 15) bounce++;
+    });
+    durs.sort(function(a,b){ return a - b; });
+    var median = durs.length ? durs[Math.floor(durs.length / 2)] : 0;
+    var avg = durs.length ? durs.reduce(function(a,b){ return a + b; }, 0) / durs.length : 0;
+    var avgNew = newDurs.length ? newDurs.reduce(function(a,b){ return a + b; }, 0) / newDurs.length : 0;
+    var bounceRate = durs.length ? Math.round(bounce / durs.length * 100) : 0;
+
+    var grid = el("div","kpi-grid");
+    grid.appendChild(kpiCell("⏱", t("adm_sess_avg"), fmtDuration(avg)));
+    grid.appendChild(kpiCell("📊", t("adm_sess_median"), fmtDuration(median)));
+    grid.appendChild(kpiCell("🆕", t("adm_sess_avg_new"), fmtDuration(avgNew), newDurs.length + " " + t("adm_kpi_visitors")));
+    grid.appendChild(kpiCell("💨", t("adm_sess_bounce"), bounceRate + "%", t("adm_sess_bounce_sub")));
+    box.appendChild(grid);
+
+    box.appendChild(el("div","shop-section", t("adm_sess_recent")));
+    qsnap.forEach(function(doc){
+      var s = doc.data();
+      var row = el("div","admin-row");
+      row.appendChild(el("span","admin-row-pseudo", s.pseudo || t("adm_anon")));
+      row.appendChild(el("span","admin-row-country", s.isNewVisitor ? "🆕" : "🔁"));
+      row.appendChild(el("span","admin-row-date", adminDateFmt(s.start)));
+      row.appendChild(el("span","admin-match-winner", fmtDuration(s.durationSec)));
+      box.appendChild(row);
+    });
+  }).catch(function(err){ adminErr(box, err); });
 }
 
 </script>

@@ -618,32 +618,30 @@ body.theme-genesis .player-card::after {
   background-size:contain; background-repeat:no-repeat; background-position:center;
 }
 
-/* GREY : 1 panneau (USA) */
-.trionda-grey .td-panel.p1 { width:64%; height:64%; top:-14%; right:-14%; border-radius:0 0 0 100%; }
-.trionda-grey .p1 .td-panel-icon { width:44%; height:44%; top:32%; left:68%; }
+/* GREY : 1 panneau (USA) — panneaux carrés basés sur la largeur */
+.trionda-grey .td-panel.p1 { width:70%; aspect-ratio:1; top:0; right:0; transform:translate(30%,-30%); border-radius:50%; }
+.trionda-grey .p1 .td-panel-icon { width:34%; height:34%; top:62%; left:34%; }
 
 /* CYAN : 2 panneaux (USA + Mexique) */
-.trionda-cyan { box-shadow:0 0 16px #0066cc33 !important; }
-.trionda-cyan .td-panel.p1 { width:58%; height:58%; top:-12%; right:-12%; border-radius:0 0 0 100%; }
-.trionda-cyan .p1 .td-panel-icon { width:46%; height:46%; top:30%; left:68%; }
-.trionda-cyan .td-panel.p2 { width:56%; height:56%; bottom:-12%; left:-12%; border-radius:100% 0 0 0; }
-.trionda-cyan .p2 .td-panel-icon { width:46%; height:46%; top:70%; left:30%; }
+.trionda-cyan .td-panel.p1 { width:64%; aspect-ratio:1; top:0; right:0; transform:translate(28%,-28%); border-radius:50%; }
+.trionda-cyan .p1 .td-panel-icon { width:36%; height:36%; top:60%; left:36%; }
+.trionda-cyan .td-panel.p2 { width:62%; aspect-ratio:1; bottom:0; left:0; transform:translate(-28%,28%); border-radius:50%; }
+.trionda-cyan .p2 .td-panel-icon { width:36%; height:36%; top:36%; left:64%; }
 
 /* PINK : 2 panneaux (Canada + USA) */
-.trionda-pink { box-shadow:0 0 20px #e3193744 !important; }
-.trionda-pink .td-panel.p1 { width:58%; height:58%; top:-12%; left:-12%; border-radius:0 0 100% 0; }
-.trionda-pink .p1 .td-panel-icon { width:46%; height:46%; top:30%; left:30%; }
-.trionda-pink .td-panel.p2 { width:56%; height:56%; bottom:-12%; right:-12%; border-radius:100% 0 0 0; }
-.trionda-pink .p2 .td-panel-icon { width:46%; height:46%; top:70%; left:70%; }
+.trionda-pink .td-panel.p1 { width:64%; aspect-ratio:1; top:0; left:0; transform:translate(-28%,-28%); border-radius:50%; }
+.trionda-pink .p1 .td-panel-icon { width:36%; height:36%; top:60%; left:64%; }
+.trionda-pink .td-panel.p2 { width:62%; aspect-ratio:1; bottom:0; right:0; transform:translate(28%,28%); border-radius:50%; }
+.trionda-pink .p2 .td-panel-icon { width:36%; height:36%; top:36%; left:36%; }
 
 /* GOLD : 3 panneaux (Canada + USA + Mexique) + éclat animé */
-.trionda-gold { box-shadow:0 0 30px #ffc72c77, inset 0 0 20px #ffc72c22 !important; }
-.trionda-gold .td-panel.p1 { width:50%; height:50%; top:-10%; left:-10%; border-radius:0 0 100% 0; }
-.trionda-gold .p1 .td-panel-icon { width:44%; height:44%; top:26%; left:26%; }
-.trionda-gold .td-panel.p2 { width:50%; height:50%; top:-10%; right:-10%; border-radius:0 0 0 100%; }
-.trionda-gold .p2 .td-panel-icon { width:44%; height:44%; top:26%; left:74%; }
-.trionda-gold .td-panel.p3 { width:58%; height:44%; bottom:-8%; left:21%; border-radius:16px 16px 0 0; }
-.trionda-gold .p3 .td-panel-icon { width:36%; height:36%; top:82%; left:50%; }
+.trionda-gold .td-panel.p1 { width:56%; aspect-ratio:1; top:0; left:0; transform:translate(-26%,-26%); border-radius:50%; }
+.trionda-gold .p1 .td-panel-icon { width:32%; height:32%; top:58%; left:62%; }
+.trionda-gold .td-panel.p2 { width:56%; aspect-ratio:1; top:0; right:0; transform:translate(26%,-26%); border-radius:50%; }
+.trionda-gold .p2 .td-panel-icon { width:32%; height:32%; top:58%; left:38%; }
+.trionda-gold .td-panel.p3 { width:60%; aspect-ratio:1; bottom:0; left:50%; transform:translate(-50%,32%); border-radius:50%; }
+.trionda-gold .p3 .td-panel-icon { width:28%; height:28%; top:28%; left:50%; }
+
 .trionda-gold .td-shine {
   content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
   background:linear-gradient(115deg, transparent 20%, #ffffffaa 32%, transparent 44%);
@@ -804,6 +802,13 @@ body.theme-genesis .player-card::after {
 .kpi-label { font-size:0.6rem; color:#8b8fa8; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; margin-top:3px; }
 .kpi-sub { font-size:0.58rem; color:#6d7189; margin-top:2px; }
 .admin-note { font-size:0.68rem; color:#6d7189; line-height:1.4; padding:8px 4px; font-style:italic; }
+
+
+/* Fix aperçu Shop : scan cyan adapté à la petite carte */
+.skin-mini.skin-cyan.skinned::before { animation:skinScanMini 2.5s linear infinite; }
+@keyframes skinScanMini { 0%{ transform:translateY(0); opacity:0; } 10%{opacity:1;} 90%{opacity:1;} 100%{ transform:translateY(96px); opacity:0; } }
+/* S'assurer que les effets ::before des mini restent sous le texte mais visibles */
+.skin-mini.skinned::before { border-radius:12px; }
 
 </style>
 </head>
@@ -3492,7 +3497,7 @@ function renderSkinsShop(){
   ];
   for (var i=0;i<tiers.length;i++){
     (function(tr){
-      var mini = el("div","skin-mini skin-" + tr.cls + (store.skinsPack && store.equippedSkin === "tierpack" ? " skinned" : ""));
+      var mini = el("div","skin-mini skin-" + tr.cls + " skinned");
       mini.appendChild(el("div","skin-mini-note", String(tr.note)));
       mini.appendChild(el("div","skin-mini-name", tr.name));
       mini.appendChild(el("div","skin-mini-lbl", tr.label));

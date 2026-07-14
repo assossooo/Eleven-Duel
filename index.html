@@ -133,7 +133,13 @@ body {
 .chip-bump {
   background:#0a0817; border:1px solid #2c2750; color:#cfd2ea; border-radius:10px;
   padding:8px 10px; font-weight:800; font-size:0.82rem;
+  touch-action:manipulation;              /* v15.1 : plus de double-tap-to-zoom iOS */
+  -webkit-tap-highlight-color:transparent;
+  -webkit-user-select:none; user-select:none;
 }
+.chip-bump:active { background:#151228; }
+/* la rangée entière + le slider : aucun zoom au double-tap */
+.chip-row, #bid-slider, .bid-zone { touch-action:manipulation; }
 .chip-bump[data-n="allin"] { border-color:#f52c8c; color:#f52c8c; }
 .bid-max-label { text-align:center; color:#8b8fa8; font-size:0.75rem; margin-bottom:10px; }
 .bid-btns { display:flex; gap:10px; }
@@ -3933,10 +3939,15 @@ function init(){
   var bumps = document.querySelectorAll(".chip-bump");
   for (var b=0;b<bumps.length;b++){
     (function(btn){
-      btn.addEventListener("click", function(){
+      btn.addEventListener("click", function(ev){
+        if (ev && ev.preventDefault) ev.preventDefault();
         var d = btn.getAttribute("data-n");
         if (d === "allin") setBid(maxBidYou());
         else bumpBid(parseInt(d, 10));
+      });
+      /* iOS : bloque le zoom/scroll du double-tap rapide sur ces boutons */
+      btn.addEventListener("dblclick", function(ev){
+        if (ev && ev.preventDefault) ev.preventDefault();
       });
     })(bumps[b]);
   }

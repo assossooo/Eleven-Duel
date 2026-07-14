@@ -810,6 +810,53 @@ body.theme-genesis .player-card::after {
 /* S'assurer que les effets ::before des mini restent sous le texte mais visibles */
 .skin-mini.skinned::before { border-radius:12px; }
 
+
+/* ===== V15 : SKINS COUPE DU MONDE RÉTRO ===== */
+.cdm-ball { position:absolute; z-index:1; width:56%; height:56%; bottom:-14%; right:-12%; opacity:0.9; pointer-events:none; }
+.player-card.cdm-skin .cdm-ball { width:120px; height:120px; bottom:-24px; right:-20px; }
+
+.cdm-skin { position:relative; overflow:hidden; }
+.cdm-skin .pc-note, .cdm-skin .pc-name, .cdm-skin .pc-pos, .cdm-skin .pc-club,
+.cdm-skin .skin-mini-note, .cdm-skin .skin-mini-lbl { position:relative; z-index:5; }
+
+/* 2010 Afrique du Sud */
+.cdm2010 { background:linear-gradient(150deg,#141207 0%, #241f10 100%) !important; border-color:#f5b31c !important; box-shadow:0 0 18px #f5b31c44 !important; }
+.cdm2010 .pc-note, .cdm2010 .skin-mini-note { color:#ffd94a !important; text-shadow:0 0 8px #f5b31c88 !important; }
+.cdm2010 .pc-name, .cdm2010 .pc-pos, .cdm2010 .pc-club, .cdm2010 .skin-mini-lbl { color:#fff8e6 !important; }
+
+/* 2014 Brésil */
+.cdm2014 { background:linear-gradient(150deg,#04140b 0%, #0a2418 100%) !important; border-color:#00c85a !important; box-shadow:0 0 18px #00c85a44 !important; }
+.cdm2014 .pc-note, .cdm2014 .skin-mini-note { color:#ffe94d !important; text-shadow:0 0 8px #00c85a88 !important; }
+.cdm2014 .pc-name, .cdm2014 .pc-pos, .cdm2014 .pc-club, .cdm2014 .skin-mini-lbl { color:#eafff2 !important; }
+
+/* 2018 Russie */
+.cdm2018 { background:linear-gradient(150deg,#0c0c12 0%, #16161f 100%) !important; border-color:#c0392b !important; box-shadow:0 0 18px #c0392b44 !important; }
+.cdm2018 .pc-note, .cdm2018 .skin-mini-note { color:#f4f4f8 !important; text-shadow:0 0 6px #ffffff55 !important; }
+.cdm2018 .pc-name, .cdm2018 .pc-pos, .cdm2018 .pc-club, .cdm2018 .skin-mini-lbl { color:#e4e4ee !important; }
+
+/* 2022 Qatar (reflet perlé animé) */
+.cdm2022 { background:linear-gradient(150deg,#3a0a1e 0%, #5a1030 100%) !important; border-color:#e6c58a !important; box-shadow:0 0 20px #7a1a3f66 !important; }
+.cdm2022 .pc-note, .cdm2022 .skin-mini-note { color:#f7e3b8 !important; text-shadow:0 0 8px #e6c58a88 !important; }
+.cdm2022 .pc-name, .cdm2022 .pc-pos, .cdm2022 .pc-club, .cdm2022 .skin-mini-lbl { color:#fbeede !important; }
+.cdm2022::after {
+  content:""; position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:linear-gradient(115deg, transparent 32%, #ffffff77 44%, transparent 54%);
+  animation:cdmPearl 3.2s ease-in-out infinite;
+}
+@keyframes cdmPearl { 0%,100%{ transform:translateX(-45%); opacity:0.2; } 50%{ transform:translateX(45%); opacity:0.85; } }
+
+/* Boutique CDM : blocs par édition */
+.cdm-block { background:#100e1e; border:1px solid #221d3d; border-radius:14px; padding:12px; margin-bottom:12px; }
+.cdm-block-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.cdm-block-title { flex:1; font-weight:900; font-style:italic; text-transform:uppercase; font-size:0.82rem; color:#eef0ff; }
+.cdm-block-host { font-size:1rem; }
+.cdm-mini-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+.cdm-mini-grid .skin-mini { min-height:96px; display:flex; flex-direction:column; justify-content:center; }
+.cdm-foot { text-align:center; }
+.cdm-countdown { display:flex; flex-direction:column; align-items:center; gap:3px; padding:8px; background:#0a0817; border-radius:10px; }
+.cdm-lock { font-size:0.72rem; color:#8b8fa8; font-weight:700; }
+.cdm-timer { font-size:1.1rem; font-weight:900; color:#f5b31c; font-variant-numeric:tabular-nums; letter-spacing:1px; }
+
 </style>
 </head>
 <body>
@@ -1004,6 +1051,12 @@ body.theme-genesis .player-card::after {
     <p class="shop-sub" data-i18n="shop_trionda_sub"></p>
     <div id="shop-trionda-grid" class="skins-grid"></div>
     <div id="shop-trionda-footer" class="shop-skins-footer"></div>
+  </div>
+
+  <div id="shop-cdm-section" class="hidden">
+    <div class="shop-section" data-i18n="cdm_title"></div>
+    <p class="shop-sub" data-i18n="cdm_sub"></p>
+    <div id="shop-cdm-grid"></div>
   </div>
 
   <div class="shop-section" data-i18n="skin_select_title"></div>
@@ -1366,6 +1419,10 @@ fr: {
   adm_sess_avg:"Durée moyenne", adm_sess_median:"Médiane", adm_sess_avg_new:"Moy. nouveaux",
   adm_sess_bounce:"Rebond", adm_sess_bounce_sub:"< 15s", adm_sess_recent:"Sessions récentes",
   skin_pack_name:"Pack Premium",
+  cdm_title:"Skins Coupe du Monde — Édition rétro", cdm_sub:"Collection légendes inspirée des ballons mythiques. 100 🪙 chacun, déblocable dès le 21 juillet.",
+  cdm_locked:"Disponible le 21 juillet 10h",
+  cdm_cdm2010:"Édition 2010 · Afrique du Sud", cdm_cdm2014:"Édition 2014 · Brésil",
+  cdm_cdm2018:"Édition 2018 · Russie", cdm_cdm2022:"Édition 2022 · Qatar",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1511,6 +1568,10 @@ en: {
   adm_sess_avg:"Average duration", adm_sess_median:"Median", adm_sess_avg_new:"New avg.",
   adm_sess_bounce:"Bounce", adm_sess_bounce_sub:"< 15s", adm_sess_recent:"Recent sessions",
   skin_pack_name:"Premium Pack",
+  cdm_title:"World Cup Skins — Retro Edition", cdm_sub:"Legends collection inspired by iconic balls. 100 🪙 each, unlockable from July 21.",
+  cdm_locked:"Available July 21, 10am",
+  cdm_cdm2010:"2010 Edition · South Africa", cdm_cdm2014:"2014 Edition · Brazil",
+  cdm_cdm2018:"2018 Edition · Russia", cdm_cdm2022:"2022 Edition · Qatar",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -1654,6 +1715,10 @@ es: {
   adm_sess_avg:"Duración media", adm_sess_median:"Mediana", adm_sess_avg_new:"Media nuevos",
   adm_sess_bounce:"Rebote", adm_sess_bounce_sub:"< 15s", adm_sess_recent:"Sesiones recientes",
   skin_pack_name:"Pack Premium",
+  cdm_title:"Skins Mundial — Edición retro", cdm_sub:"Colección leyendas inspirada en balones icónicos. 100 🪙 cada uno, desbloqueable desde el 21 de julio.",
+  cdm_locked:"Disponible el 21 de julio a las 10h",
+  cdm_cdm2010:"Edición 2010 · Sudáfrica", cdm_cdm2014:"Edición 2014 · Brasil",
+  cdm_cdm2018:"Edición 2018 · Rusia", cdm_cdm2022:"Edición 2022 · Catar",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -1837,6 +1902,17 @@ function kitSvg(kitId, size){
   return svg;
 }
 var TRIONDA_PRICE = 100;
+/* ----- SKINS COUPE DU MONDE RÉTRO ----- */
+var CDM_PRICE = 100;
+var CDM_UNLOCK = new Date("2026-07-21T10:00:00+02:00").getTime(); /* 21 juillet 10h (Paris) */
+var CDM_SKINS = [
+  { id:"cdm2010", year:"2010", host:"🇿🇦" },
+  { id:"cdm2014", year:"2014", host:"🇧🇷" },
+  { id:"cdm2018", year:"2018", host:"🇷🇺" },
+  { id:"cdm2022", year:"2022", host:"🇶🇦" }
+];
+function cdmUnlocked(){ return Date.now() >= CDM_UNLOCK; }
+function cdmOwned(id){ return store.ownedCdm.indexOf(id) >= 0; }
 var TRIONDA_EXPIRY = new Date("2026-08-01T00:00:00Z").getTime();
 function triondaExpired(){ return Date.now() >= TRIONDA_EXPIRY; }
 function svgDataUrl(svgStr){ return "data:image/svg+xml;base64," + btoa(svgStr); }
@@ -1898,6 +1974,9 @@ function cardSkinClass(note){
   if (store.equippedSkin === "tierpack" && store.skinsPack){
     return " skinned skin-" + tierSuffix;
   }
+  if (store.equippedSkin.indexOf("cdm") === 0 && cdmOwned(store.equippedSkin)){
+    return " cdm-skin " + store.equippedSkin + " cdm-" + tierSuffix;
+  }
   return "";
 }
 var FORMATION_BONUS = 0.5;
@@ -1920,7 +1999,7 @@ var ANIMS = [
 /* ---------- STORAGE ---------- */
 var memStore = null;
 function loadStore(){
-  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none", ownedKits:[], equippedKit:"classic" };
+  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none", ownedKits:[], equippedKit:"classic", ownedCdm:[] };
   try {
     var raw = window.localStorage.getItem("elevenduel_store");
     if (raw){
@@ -1933,6 +2012,7 @@ function loadStore(){
         if (s.triondaOwned === undefined) s.triondaOwned = false;
         if (!Array.isArray(s.ownedKits)) s.ownedKits = [];
         if (typeof s.equippedKit !== "string") s.equippedKit = "classic";
+        if (!Array.isArray(s.ownedCdm)) s.ownedCdm = [];
         if (s.equippedSkin === undefined) s.equippedSkin = s.skinsPack ? "tierpack" : "none";
         if (s.account === undefined) s.account = null;
         return s;
@@ -2326,6 +2406,7 @@ function renderRound(){
   } else {
     clearTriondaPanels(cardEl);
   }
+  injectCdmBall(cardEl, p[2]);
   qs("pc-note").textContent = p[2];
   qs("pc-name").textContent = p[0];
   qs("pc-pos").textContent = t("pos_" + p[1]);
@@ -3380,6 +3461,8 @@ function renderShop(){
   }
   renderSkinsShop();
   renderKitsShop();
+  renderCdmShop();
+  startCdmTicker();
 }
 function renderKitsShop(){
   var box = qs("shop-kits-grid");
@@ -3429,7 +3512,7 @@ function shopStateSnapshot(){
   return {
     coins: store.coins, owned: store.owned, equipped: store.equipped,
     skinsPack: store.skinsPack, triondaOwned: store.triondaOwned, equippedSkin: store.equippedSkin,
-    ownedKits: store.ownedKits, equippedKit: store.equippedKit
+    ownedKits: store.ownedKits, equippedKit: store.equippedKit, ownedCdm: store.ownedCdm
   };
 }
 function pushShopStateToAccount(){
@@ -3449,6 +3532,7 @@ function pullShopStateFromAccount(d){
   if (typeof d.equippedSkin === "string"){ store.equippedSkin = d.equippedSkin; changed = true; }
   if (Array.isArray(d.ownedKits)){ store.ownedKits = d.ownedKits; changed = true; }
   if (typeof d.equippedKit === "string"){ store.equippedKit = d.equippedKit; changed = true; }
+  if (Array.isArray(d.ownedCdm)){ store.ownedCdm = d.ownedCdm; changed = true; }
   if (typeof d.duelgold === "number"){ store.duelgold = d.duelgold; changed = true; }
   if (changed){
     saveStore(store);
@@ -3469,7 +3553,8 @@ function renderSkinSelector(){
   var sel = qs("shop-skin-selector");
   if (!sel) return;
   clear(sel);
-  if (!store.skinsPack && !(store.triondaOwned && !triondaExpired())){
+  var hasCdm = store.ownedCdm.length > 0;
+  if (!store.skinsPack && !(store.triondaOwned && !triondaExpired()) && !hasCdm){
     sel.classList.add("hidden");
     return;
   }
@@ -3477,6 +3562,9 @@ function renderSkinSelector(){
   var opts = [{ id:"none", label:t("skin_none") }];
   if (store.skinsPack) opts.push({ id:"tierpack", label:t("skin_tierpack_name") });
   if (store.triondaOwned && !triondaExpired()) opts.push({ id:"trionda", label:t("skin_trionda_name") });
+  for (var ci=0;ci<CDM_SKINS.length;ci++){
+    if (cdmOwned(CDM_SKINS[ci].id)) opts.push({ id:CDM_SKINS[ci].id, label:CDM_SKINS[ci].year });
+  }
   for (var i=0;i<opts.length;i++){
     (function(o){
       var btn = el("button","tab-chip" + (store.equippedSkin === o.id ? " tab-active" : ""), o.label);
@@ -3526,6 +3614,169 @@ function renderSkinsShop(){
   renderTriondaShop();
   renderSkinSelector();
 }
+var SVGNS = "http://www.w3.org/2000/svg";
+function svgEl(tag, attrs){
+  var e = document.createElementNS(SVGNS, tag);
+  for (var k in attrs){ if (attrs.hasOwnProperty(k)) e.setAttribute(k, attrs[k]); }
+  return e;
+}
+function injectCdmBall(cardEl, note){
+  var old = cardEl.querySelectorAll(".cdm-ball");
+  for (var i=0;i<old.length;i++) old[i].parentNode.removeChild(old[i]);
+  if (store.equippedSkin.indexOf("cdm") !== 0 || !cdmOwned(store.equippedSkin)) return;
+  var tierSuffix = tierClass(note).replace("tier-","");
+  cardEl.insertBefore(buildCdmBall(store.equippedSkin, tierSuffix), cardEl.firstChild);
+}
+function buildCdmBall(skinId, tierCls){
+  var svg = svgEl("svg", { "class":"cdm-ball", viewBox:"0 0 100 100" });
+  svg.appendChild(svgEl("circle", { cx:50, cy:50, r:46, fill: cdmBallBase(skinId) }));
+  var parts = cdmBallParts(skinId, tierCls);
+  for (var i=0;i<parts.length;i++) svg.appendChild(parts[i]);
+  svg.appendChild(svgEl("circle", { cx:50, cy:50, r:46, fill:"none", stroke:"#0a0817", "stroke-width":2 }));
+  return svg;
+}
+function cdmBallBase(skinId){
+  if (skinId === "cdm2018") return "#e8e8ee";
+  if (skinId === "cdm2022") return "#f4efe6";
+  return "#ffffff";
+}
+function cdmBallParts(skinId, tierCls){
+  var out = [];
+  function path(d, fill, extra){
+    var a = { d:d, fill:fill }; if (extra) for (var k in extra) a[k] = extra[k];
+    return svgEl("path", a);
+  }
+  /* rotation des couleurs selon le tier pour varier un peu */
+  var rot = { gold:0, pink:1, cyan:2, grey:3 }[tierCls] || 0;
+  function pick(arr){ return arr[(rot) % arr.length]; }
+
+  if (skinId === "cdm2010"){
+    var c = ["#e30613","#0072cb","#009540","#f5b31c","#111"];
+    var seq = [];
+    for (var i=0;i<5;i++) seq.push(c[(i + rot) % 5]);
+    out.push(path("M50 50 L70 14 A40 40 0 0 1 88 46 Z", seq[0]));
+    out.push(path("M50 50 L88 46 A40 40 0 0 1 66 86 Z", seq[1]));
+    out.push(path("M50 50 L66 86 A40 40 0 0 1 24 84 Z", seq[2]));
+    out.push(path("M50 50 L24 84 A40 40 0 0 1 16 40 Z", seq[3]));
+    out.push(path("M50 50 L16 40 A40 40 0 0 1 70 14 Z", seq[4]));
+  } else if (skinId === "cdm2014"){
+    var cc = ["#00a3e0","#ff7a00","#00c85a","#f52c8c"];
+    var s = [];
+    for (var j=0;j<4;j++) s.push(cc[(j + rot) % 4]);
+    out.push(path("M30 26 Q50 44 30 62 Q10 44 30 26", "none", { stroke:s[0], "stroke-width":7, "stroke-linecap":"round" }));
+    out.push(path("M70 30 Q52 50 70 70 Q90 50 70 30", "none", { stroke:s[1], "stroke-width":7, "stroke-linecap":"round" }));
+    out.push(path("M40 70 Q58 58 74 74", "none", { stroke:s[2], "stroke-width":7, "stroke-linecap":"round" }));
+    out.push(path("M26 46 Q44 60 40 82", "none", { stroke:s[3], "stroke-width":7, "stroke-linecap":"round" }));
+  } else if (skinId === "cdm2018"){
+    out.push(path("M50 22 L64 34 L58 52 L42 52 L36 34 Z", "#111"));
+    out.push(path("M30 56 L44 60 L44 78 L30 74 Z", "#111", { opacity:0.85 }));
+    out.push(path("M56 60 L70 56 L70 74 L56 78 Z", "#111", { opacity:0.7 }));
+    out.push(path("M20 40 L32 34 L34 48 L24 52 Z", "#1a1a24", { opacity:0.6 }));
+    out.push(path("M80 40 L68 34 L66 48 L76 52 Z", "#1a1a24", { opacity:0.6 }));
+  } else if (skinId === "cdm2022"){
+    out.push(path("M50 50 Q64 20 86 34 Q72 50 86 66 Q64 80 50 50", "#7a1a3f"));
+    out.push(path("M50 50 Q40 22 20 30 Q34 48 20 64 Q40 76 50 50", "#00b4a0", { opacity:0.85 }));
+    out.push(path("M50 50 Q54 78 34 84 Q42 64 30 56 Q46 54 50 50", "#ff7a30", { opacity:0.8 }));
+  }
+  return out;
+}
+function cdmCountdownStr(){
+  var ms = CDM_UNLOCK - Date.now();
+  if (ms <= 0) return null;
+  var s = Math.floor(ms / 1000);
+  var d = Math.floor(s / 86400); s -= d * 86400;
+  var h = Math.floor(s / 3600); s -= h * 3600;
+  var m = Math.floor(s / 60); s -= m * 60;
+  function p(n){ return (n < 10 ? "0" : "") + n; }
+  return (d > 0 ? d + "j " : "") + p(h) + ":" + p(m) + ":" + p(s);
+}
+function cdmCardMini(skinId, tierCls, note, label){
+  var mini = el("div","skin-mini cdm-skin " + skinId + " cdm-" + tierCls);
+  mini.appendChild(buildCdmBall(skinId, tierCls));
+  mini.appendChild(el("div","skin-mini-note", String(note)));
+  mini.appendChild(el("div","skin-mini-lbl", label));
+  return mini;
+}
+function renderCdmShop(){
+  var section = qs("shop-cdm-section");
+  if (!section) return;
+  section.classList.remove("hidden");
+  var box = qs("shop-cdm-grid");
+  clear(box);
+  var unlocked = cdmUnlocked();
+  var tiers = [
+    { cls:"gold", label:t("skin_gold"), note:91 },
+    { cls:"pink", label:t("skin_pink"), note:88 },
+    { cls:"cyan", label:t("skin_cyan"), note:85 },
+    { cls:"grey", label:t("skin_grey"), note:78 }
+  ];
+  for (var i=0;i<CDM_SKINS.length;i++){
+    (function(sk){
+      var owned = cdmOwned(sk.id);
+      var block = el("div","cdm-block");
+      var head = el("div","cdm-block-head");
+      head.appendChild(el("span","cdm-block-title", sk.year + " · " + t("cdm_" + sk.id)));
+      head.appendChild(el("span","cdm-block-host", sk.host));
+      block.appendChild(head);
+
+      /* 2 aperçus (Or + Rare) pour montrer le style */
+      var grid = el("div","cdm-mini-grid");
+      grid.appendChild(cdmCardMini(sk.id, "gold", 91, t("skin_gold")));
+      grid.appendChild(cdmCardMini(sk.id, "cyan", 85, t("skin_cyan")));
+      block.appendChild(grid);
+
+      /* bouton / compteur / possédé */
+      var foot = el("div","cdm-foot");
+      if (owned){
+        foot.appendChild(el("div","skin-owned", t("skin_owned")));
+      } else if (!unlocked){
+        var cd = el("div","cdm-countdown");
+        cd.appendChild(el("span","cdm-lock", "🔒 " + t("cdm_locked")));
+        var tm = el("span","cdm-timer");
+        tm.id = "cdm-timer-" + sk.id;
+        cd.appendChild(tm);
+        foot.appendChild(cd);
+      } else {
+        var buy = el("button","shop-btn shop-btn-buy" + (store.coins < CDM_PRICE ? " shop-btn-poor" : ""),
+          t("skin_buy") + " · " + CDM_PRICE + " 🪙");
+        buy.addEventListener("click", function(){
+          if (!cdmUnlocked()){ renderShop(); return; }
+          if (store.coins < CDM_PRICE){ window.alert(t("kit_need_coins")); return; }
+          store.coins -= CDM_PRICE;
+          store.ownedCdm.push(sk.id);
+          if (store.equippedSkin === "none") store.equippedSkin = sk.id;
+          logPurchase("skin", sk.id, CDM_PRICE, "coins");
+          saveStore(store);
+          pushShopStateToAccount();
+          renderShop();
+          renderCoins();
+        });
+        foot.appendChild(buy);
+      }
+      block.appendChild(foot);
+      box.appendChild(block);
+    })(CDM_SKINS[i]);
+  }
+  updateCdmTimers();
+}
+function updateCdmTimers(){
+  var str = cdmCountdownStr();
+  for (var i=0;i<CDM_SKINS.length;i++){
+    var el2 = qs("cdm-timer-" + CDM_SKINS[i].id);
+    if (el2) el2.textContent = str || "";
+  }
+}
+var cdmTickerStarted = false;
+function startCdmTicker(){
+  if (cdmTickerStarted) return;
+  cdmTickerStarted = true;
+  setInterval(function(){
+    if (qs("screen-shop") && !qs("screen-shop").classList.contains("hidden") && !cdmUnlocked()){
+      updateCdmTimers();
+    }
+  }, 1000);
+}
+
 function renderTriondaShop(){
   var section = qs("shop-trionda-section");
   if (!section) return;
@@ -3793,7 +4044,7 @@ function registerAccount(){
           coins: store.coins, owned: store.owned, equipped: store.equipped,
           skinsPack: store.skinsPack, triondaOwned: store.triondaOwned,
           equippedSkin: store.equippedSkin, duelgold: store.duelgold || 0,
-          ownedKits: store.ownedKits, equippedKit: store.equippedKit
+          ownedKits: store.ownedKits, equippedKit: store.equippedKit, ownedCdm: store.ownedCdm
         }));
       });
     }).then(function(){

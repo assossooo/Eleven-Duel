@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Eleven Duel">
@@ -949,14 +952,18 @@ body.theme-genesis .player-card::after {
 }
 .btn-disabled { opacity:0.4; }
 
-.pe-squad { margin-top:12px; max-height:132px; overflow-y:auto; }
+/* effectif visible EN ENTIER (2 colonnes compactes, pas de scroll interne) */
+.pe-squad { margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:4px; }
 .pe-row {
-  display:flex; align-items:center; gap:8px; padding:6px 8px;
-  background:#1a0f33; border:1px solid #2e1c55; border-radius:9px; margin-bottom:4px;
+  display:flex; align-items:center; gap:5px; padding:5px 6px;
+  background:#1a0f33; border:1px solid #2e1c55; border-radius:8px; min-width:0;
 }
-.pe-row-pos { font-size:0.6rem; font-weight:900; width:16px; text-align:center; }
-.pe-row-name { flex:1; font-size:0.82rem; font-weight:700; color:#eef0ff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.pe-row-price { font-size:0.74rem; font-weight:800; color:#d9b3ff; }
+.pe-row-pos { font-size:0.55rem; font-weight:900; width:12px; text-align:center; flex:0 0 12px; }
+.pe-row-name { flex:1; min-width:0; font-size:0.72rem; font-weight:700; color:#eef0ff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pe-row-price { font-size:0.64rem; font-weight:800; color:#d9b3ff; flex:0 0 auto; }
+.pe-squad .squad-note { font-size:0.7rem; flex:0 0 auto; }
+/* ecran de fin : une seule colonne, on a la place */
+#pe-final-squad { grid-template-columns:1fr; }
 
 /* ---- Ecran de fin ---- */
 #screen-perfect-end { background:radial-gradient(circle at 50% 0%, #2a1050 0%, #150a2e 45%, #0a0817 75%); }
@@ -1068,6 +1075,39 @@ body.theme-genesis .player-card::after {
 #boot-splash img { width:150px; max-width:50%; animation:bootPulse 1.2s ease-in-out infinite; }
 @keyframes bootPulse { 0%,100%{ opacity:0.75; transform:scale(0.97); } 50%{ opacity:1; transform:scale(1.03); } }
 #boot-splash.gone { opacity:0; pointer-events:none; }
+
+
+/* ===== V19 : reseaux sociaux ===== */
+.social-row { display:flex; justify-content:center; gap:10px; margin-top:18px; }
+.social-btn {
+  width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:#12101f; border:1px solid #2c2750; color:#cfd2ea; font-size:1.05rem;
+  text-decoration:none; touch-action:manipulation; transition:border-color 0.15s ease;
+}
+.social-btn:active { border-color:#f5b31c; }
+.social-handles {
+  display:flex; justify-content:center; flex-wrap:wrap; gap:10px;
+  margin-top:8px; font-size:0.62rem; color:#6d7189; font-weight:700;
+}
+.social-mail {
+  display:block; text-align:center; margin-top:6px; padding-bottom:8px;
+  font-size:0.66rem; color:#8b8fa8; text-decoration:none; font-weight:700;
+}
+
+
+/* ===== V20 : banniere de mise a jour ===== */
+.update-banner {
+  position:fixed; left:0; right:0; bottom:0; z-index:9998;
+  background:linear-gradient(135deg,#8b3df5,#f52c8c);
+  display:flex; align-items:center; gap:10px; padding:12px 14px;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom));
+  box-shadow:0 -6px 24px rgba(0,0,0,0.5);
+}
+.update-banner-txt { flex:1; color:#fff; font-size:0.8rem; font-weight:800; }
+.update-banner-btn {
+  background:#fff; color:#12061f; border:none; border-radius:10px;
+  padding:8px 14px; font-size:0.78rem; font-weight:900; touch-action:manipulation;
+}
 
 </style>
 </head>
@@ -1382,7 +1422,7 @@ body.theme-genesis .player-card::after {
 <div id="screen-wait" class="screen hidden">
   <div class="wait-box">
     <div class="brush shop-title" data-i18n="wait_title"></div>
-    <div class="online-label" style="margin-top:10px;" data-i18n="wait_code"></div>
+    <div id="wait-code-label" class="online-label" style="margin-top:10px;" data-i18n="wait_code"></div>
     <div id="wait-code" class="wait-code">-----</div>
     <div id="wait-players" class="wait-players"></div>
     <div class="wait-spinner"></div>
@@ -1427,6 +1467,19 @@ body.theme-genesis .player-card::after {
   <div class="end-btns">
     <button id="btn-profile-back" class="big-btn ghost" data-i18n="back"></button>
   </div>
+
+  <div class="social-row">
+    <a class="social-btn" href="https://x.com/elevenduel" target="_blank" rel="noopener" aria-label="X">𝕏</a>
+    <a class="social-btn" href="https://www.instagram.com/elevenduel_" target="_blank" rel="noopener" aria-label="Instagram">📸</a>
+    <a class="social-btn" href="https://www.tiktok.com/@elevenduel" target="_blank" rel="noopener" aria-label="TikTok">🎵</a>
+    <a class="social-btn" href="mailto:contact@elevenduel.com" aria-label="Email">✉️</a>
+  </div>
+  <div class="social-handles">
+    <span>𝕏 @elevenduel</span>
+    <span>📸 @elevenduel_</span>
+    <span>🎵 @elevenduel</span>
+  </div>
+  <a class="social-mail" href="mailto:contact@elevenduel.com">contact@elevenduel.com</a>
 </div>
 
 <!-- ================= CLASSEMENTS ================= -->
@@ -1773,6 +1826,8 @@ fr: {
   acc_prompt_title:"🏆 Garde ta progression",
   acc_prompt_sub:"Crée ton compte pour conserver tes {c} 🪙, entrer au classement mondial et défier tes amis.",
   acc_prompt_btn:"Créer mon compte · 30 secondes",
+  upd_msg:"Nouvelle version disponible", upd_btn:"Recharger",
+  st_version:"Versions différentes — rechargez la page tous les deux",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1945,6 +2000,8 @@ en: {
   acc_prompt_title:"🏆 Keep your progress",
   acc_prompt_sub:"Create your account to keep your {c} 🪙, enter the world ranking and challenge your friends.",
   acc_prompt_btn:"Create my account · 30 seconds",
+  upd_msg:"New version available", upd_btn:"Reload",
+  st_version:"Different versions — both of you must reload the page",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -2115,6 +2172,8 @@ es: {
   acc_prompt_title:"🏆 Guarda tu progreso",
   acc_prompt_sub:"Crea tu cuenta para conservar tus {c} 🪙, entrar en el ranking mundial y retar a tus amigos.",
   acc_prompt_btn:"Crear mi cuenta · 30 segundos",
+  upd_msg:"Nueva versión disponible", upd_btn:"Recargar",
+  st_version:"Versiones distintas — recargad la página los dos",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -3217,10 +3276,14 @@ function createPrivateGame(isPublic){
       players: { p0: newDocSide(myPseudo(), fb.uid) },
       round: 0, currentIdx: -1, used: [], bids: {},
       leagueCode: (!isPublic && qs("game-league").value) ? qs("game-league").value : null,
-      lastResult: null, endReason: null
+      lastResult: null, endReason: null,
+      botIdx: null, botProfile: null,
+      appVersion: APP_VERSION
     };
     online.ref.set(cleanData(doc)).then(function(){
       listenGame();
+      /* adversaire aleatoire : si personne ne vient, un bot arrive apres 12s */
+      if (isPublic) scheduleBotFallback(online.code);
     }).catch(function(){ setOnlineStatus(t("st_err"), true); });
   });
 }
@@ -3230,6 +3293,10 @@ function tryJoin(ref, code){
     return tx.get(ref).then(function(snap){
       if (!snap.exists) throw new Error("notfound");
       var d = snap.data();
+      /* versions differentes = schemas differents = partie cassee.
+         On refuse proprement au lieu de laisser un bug silencieux. */
+      var hostV = (typeof d.appVersion === "number") ? d.appVersion : 0;
+      if (hostV !== APP_VERSION) throw new Error("version");
       if (d.status !== "waiting" || d.joined >= d.maxPlayers) throw new Error("full");
       for (var i=0;i<d.joined;i++){
         if (d.players["p" + i] && d.players["p" + i].uid === fb.uid) throw new Error("self");
@@ -3260,6 +3327,7 @@ function joinPrivateGame(){
       if (err && err.message === "notfound") setOnlineStatus(t("st_notfound"), true);
       else if (err && err.message === "full") setOnlineStatus(t("st_full"), true);
       else if (err && err.message === "self") setOnlineStatus(t("st_self"), true);
+      else if (err && err.message === "version"){ setOnlineStatus(t("st_version"), true); showUpdateBanner(); }
       else setOnlineStatus(t("st_err"), true);
     });
   });
@@ -3457,11 +3525,15 @@ function onGameUpdate(snap){
   if (d.status === "waiting"){
     hideAllScreens();
     show("screen-wait");
+    /* en aleatoire (ou en classe), le code ne sert a rien : on le masque */
+    var noCode = !!d.isPublic || !!d.isRanked;
     qs("wait-code").textContent = online.code;
+    qs("wait-code").classList.toggle("hidden", noCode);
+    qs("wait-code-label").classList.toggle("hidden", noCode);
     qs("wait-players").textContent = tf("wait_players", { a: d.joined, b: d.maxPlayers });
-    qs("wait-msg").textContent = d.isPublic ? t("wait_random_msg") : t("wait_share");
+    qs("wait-msg").textContent = noCode ? t("wait_random_msg") : t("wait_share");
     qs("btn-wait-cancel").classList.toggle("hidden", online.myIdx !== 0);
-    qs("btn-share-link").classList.toggle("hidden", !!d.isPublic);
+    qs("btn-share-link").classList.toggle("hidden", noCode);
     return;
   }
 
@@ -4291,6 +4363,7 @@ function init(){
   var pendingJoin = /^#join=/.test(window.location.hash || "");
   renderCoins();
   loadSeasonConfig();
+  checkAppVersion();
   applyI18n();
   var langBtns = document.querySelectorAll(".lang-chip");
   for (var i=0;i<langBtns.length;i++){
@@ -5278,12 +5351,11 @@ function rejectFriendRequest(senderKey){
 
 function recordGameHistory(opponentKey, opponentPseudo, result, maxPlayers){
   if (MODE !== "online" || !store.account || !online.data || !opponentKey) return;
-  if (friendsModule.friendsList.indexOf(opponentKey) < 0) return;
   initFirebase().then(function(ok){
     if (!ok) return;
     var rec = {
       timestamp: Date.now(),
-      result: result,    /* "win", "lose", "tie" */
+      result: result,    /* "win", "lose", "tie", "forfeit" */
       opponent: opponentPseudo,
       players: maxPlayers,
       league: online.data.league
@@ -5423,12 +5495,12 @@ function openFriendsHistory(friendKey, friendPseudo){
     for (var i=0;i<hist.length;i++){
       var h = hist[i];
       if (h.result === "win") stats.wins++;
-      else if (h.result === "loss") stats.losses++;
+      else if (h.result === "lose") stats.losses++;
       else stats.ties++;
       var row = el("div","game-hist-row");
       var date = new Date(h.timestamp);
       var dateStr = date.toLocaleDateString(store.lang === "fr" ? "fr-FR" : (store.lang === "es" ? "es-ES" : "en-US"));
-      var emoji = h.result === "win" ? "🏆" : (h.result === "loss" ? "💔" : "🤝");
+      var emoji = h.result === "win" ? "🏆" : (h.result === "lose" ? "💔" : "🤝");
       row.appendChild(el("span","gh-emoji", emoji));
       row.appendChild(el("span","gh-date", dateStr));
       row.appendChild(el("span","gh-league", h.league + " (" + h.players + "p)"));
@@ -5958,11 +6030,19 @@ function startSessionTracking(){
       lang: store.lang || "fr"
     })).catch(function(){});
 
-    /* heartbeat : 1 ecriture / 45s tant que l onglet est visible */
+    /* Mesure fiable des sessions courtes : on ecrit tot et souvent au debut,
+       puis on espace. Indispensable car sur Safari iOS l'ecriture declenchee
+       par pagehide/visibilitychange n'a pas le temps de partir. */
+    var marks = [3000, 8000, 15000, 25000, 40000];
+    for (var mi=0; mi<marks.length; mi++){
+      (function(ms){
+        setTimeout(function(){ if (!document.hidden) touchSession(); }, ms);
+      })(marks[mi]);
+    }
     sessionInfo.timer = setInterval(function(){
       if (document.hidden) return;
       touchSession();
-    }, 45000);
+    }, 30000);
   });
 
   document.addEventListener("visibilitychange", function(){
@@ -6213,6 +6293,40 @@ function renderAdminSources(box){
    V11 : DUEL CLASSE (Elo) + BOT FALLBACK
    ========================================================= */
 var BOT_WAIT_MS = 12000;
+
+/* =========================================================
+   GESTION DU CACHE / DES VERSIONS
+   GitHub Pages met le HTML en cache (et l'icone PWA iOS bien plus longtemps),
+   donc des joueurs tournent sur d'anciennes versions -> le multi casse.
+   ========================================================= */
+var APP_VERSION = 20;
+function forceReload(){
+  /* on change l'URL pour contourner le cache (reload(true) est obsolete) */
+  var base = window.location.pathname;
+  window.location.replace(base + "?v=" + Date.now());
+}
+function showUpdateBanner(){
+  if (qs("update-banner")) return;
+  var b = el("div","update-banner");
+  b.id = "update-banner";
+  b.appendChild(el("span","update-banner-txt", t("upd_msg")));
+  var btn = el("button","update-banner-btn", t("upd_btn"));
+  btn.addEventListener("click", forceReload);
+  b.appendChild(btn);
+  document.body.appendChild(b);
+}
+/* Version minimale exigee, publiee par l'admin dans config/app { version: N }.
+   Si le joueur a une version plus ancienne, on lui propose de recharger. */
+function checkAppVersion(){
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    fb.db.collection("config").doc("app").get().then(function(snap){
+      if (!snap.exists) return;
+      var latest = snap.data().version;
+      if (typeof latest === "number" && latest > APP_VERSION) showUpdateBanner();
+    }).catch(function(){});
+  });
+}
 var BOT_UID = "RANKED_BOT";
 /* ---------- PSEUDOS DE BOTS CREDIBLES ----------
    Un pool fixe faisait revenir les memes noms. On genere a la volee
@@ -6327,7 +6441,8 @@ function createRankedGame(){
       players: { p0: newDocSide(myPseudo(), fb.uid) },
       round: 0, currentIdx: -1, used: [], bids: {},
       leagueCode: null, lastResult: null, endReason: null,
-      botIdx: null, botProfile: null
+      botIdx: null, botProfile: null,
+      appVersion: APP_VERSION
     };
     online.ref.set(cleanData(doc)).then(function(){
       listenGame();

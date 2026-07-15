@@ -863,6 +863,122 @@ body.theme-genesis .player-card::after {
 .cdm-lock { font-size:0.72rem; color:#8b8fa8; font-weight:700; }
 .cdm-timer { font-size:1.1rem; font-weight:900; color:#f5b31c; font-variant-numeric:tabular-nums; letter-spacing:1px; }
 
+
+/* =========================================================
+   V16 : PERFECT ELEVEN — identite visuelle propre
+   Palette dediee : violet electrique -> magenta (vs or/cyan du duel)
+   ========================================================= */
+:root { --pe-1:#8b3df5; --pe-2:#f52c8c; --pe-glow:#b45cff; }
+
+/* ---- Banniere d'accueil ---- */
+.pe-banner {
+  position:relative; width:100%; display:flex; align-items:center; gap:10px;
+  padding:14px 12px; border-radius:16px; border:2px solid var(--pe-glow);
+  background:linear-gradient(115deg, #2a1050 0%, #4a1263 55%, #6b1450 100%);
+  overflow:hidden; touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+  animation:peBannerGlow 2.6s ease-in-out infinite;
+}
+@keyframes peBannerGlow {
+  0%,100% { box-shadow:0 0 12px #8b3df555, inset 0 0 18px #8b3df522; }
+  50%     { box-shadow:0 0 26px #f52c8c99, inset 0 0 22px #8b3df544; }
+}
+/* balayage lumineux */
+.pe-banner::after {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(115deg, transparent 30%, #ffffff33 45%, transparent 58%);
+  animation:peSweep 3.4s ease-in-out infinite;
+}
+@keyframes peSweep { 0%,100%{ transform:translateX(-60%); opacity:0.15; } 50%{ transform:translateX(60%); opacity:0.75; } }
+
+.pe-banner-badge {
+  position:absolute; top:6px; right:8px; z-index:3;
+  font-size:0.5rem; font-weight:900; letter-spacing:0.8px; text-transform:uppercase;
+  padding:2px 7px; border-radius:20px; color:#12061f;
+  background:linear-gradient(135deg,#ffe27a,#f5b31c);
+  animation:peBadgePulse 1.5s ease-in-out infinite;
+}
+@keyframes peBadgePulse {
+  0%,100% { box-shadow:0 0 4px #f5b31c88; transform:scale(1); }
+  50%     { box-shadow:0 0 14px #ffe27a, 0 0 22px #f5b31c99; transform:scale(1.08); }
+}
+.pe-banner-star { font-size:1.7rem; z-index:2; filter:drop-shadow(0 0 8px #b45cffcc); }
+.pe-banner-txt { flex:1; text-align:left; z-index:2; }
+.pe-banner-title {
+  display:block; font-weight:900; font-style:italic; text-transform:uppercase;
+  font-size:1rem; letter-spacing:0.5px; color:#fff;
+  text-shadow:0 0 10px #b45cff88;
+}
+.pe-banner-sub { display:block; font-size:0.62rem; color:#d9c2f5; font-weight:700; margin-top:1px; }
+.pe-banner-arrow { z-index:2; font-size:1.5rem; color:#d9c2f5; font-weight:900; }
+
+/* ---- Ecran de jeu ---- */
+#screen-perfect { background:radial-gradient(circle at 50% 0%, #2a1050 0%, #150a2e 45%, #0a0817 75%); }
+.pe-head { display:flex; align-items:center; margin-bottom:10px; }
+.pe-title {
+  flex:1; font-size:1.2rem;
+  background:linear-gradient(90deg, var(--pe-1), var(--pe-2));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.pe-quit { background:none; border:none; color:#8b8fa8; font-size:0.78rem; font-weight:700; touch-action:manipulation; }
+
+.pe-hud { display:flex; gap:8px; margin-bottom:12px; }
+.pe-hud-cell {
+  flex:1; background:#1a0f33; border:1px solid #3d2470; border-radius:12px;
+  padding:8px; text-align:center;
+}
+.pe-hud-lbl { display:block; font-size:0.56rem; color:#a98fd0; font-weight:800; text-transform:uppercase; letter-spacing:0.4px; }
+.pe-hud-val { display:block; font-size:1.05rem; font-weight:900; color:#d9b3ff; margin-top:2px; }
+.pe-hud-val.pe-danger { color:#f52c8c; animation:peDanger 0.8s ease-in-out infinite; }
+@keyframes peDanger { 0%,100%{ opacity:1; } 50%{ opacity:0.45; } }
+
+.pe-price-zone { text-align:center; margin:12px 0 10px; }
+.pe-price-lbl { font-size:0.66rem; color:#a98fd0; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+.pe-price {
+  font-size:2.4rem; font-weight:900; line-height:1.1;
+  background:linear-gradient(90deg,#ffe27a,#f5b31c);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.pe-offtrack { font-size:0.72rem; font-weight:900; min-height:16px; }
+.pe-offtrack.on { color:#f52c8c; text-shadow:0 0 10px #f52c8c88; animation:peDanger 1s ease-in-out infinite; }
+
+.pe-actions { display:flex; gap:10px; }
+.pe-actions .big-btn { flex:1; touch-action:manipulation; }
+#btn-pe-buy {
+  background:linear-gradient(135deg, var(--pe-1), var(--pe-2)) !important;
+  color:#fff !important; border:none;
+}
+.btn-disabled { opacity:0.4; }
+
+.pe-squad { margin-top:12px; max-height:132px; overflow-y:auto; }
+.pe-row {
+  display:flex; align-items:center; gap:8px; padding:6px 8px;
+  background:#1a0f33; border:1px solid #2e1c55; border-radius:9px; margin-bottom:4px;
+}
+.pe-row-pos { font-size:0.6rem; font-weight:900; width:16px; text-align:center; }
+.pe-row-name { flex:1; font-size:0.82rem; font-weight:700; color:#eef0ff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pe-row-price { font-size:0.74rem; font-weight:800; color:#d9b3ff; }
+
+/* ---- Ecran de fin ---- */
+#screen-perfect-end { background:radial-gradient(circle at 50% 0%, #2a1050 0%, #150a2e 45%, #0a0817 75%); }
+.pe-final-box {
+  background:#1a0f33; border:2px solid var(--pe-glow); border-radius:16px;
+  padding:16px; text-align:center; margin:10px 0;
+  box-shadow:0 0 22px #8b3df544;
+}
+.pe-final-box.incomplete { border-color:#5a4a70; box-shadow:none; }
+.pe-final-note {
+  font-size:3.2rem; font-weight:900; line-height:1;
+  background:linear-gradient(90deg,#ffe27a,#f5b31c);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.pe-failed-msg { font-size:0.9rem; font-weight:800; color:#f52c8c; padding:8px 0; }
+.pe-formation { font-size:0.8rem; font-weight:800; color:#a98fd0; margin-top:4px; }
+.pe-formation.ok { color:#57e08a; }
+.pe-final-det { font-size:0.72rem; color:#a98fd0; margin-top:8px; }
+.pe-final-det b { color:#eef0ff; }
+.pe-record-msg { text-align:center; font-size:0.82rem; font-weight:800; min-height:18px; }
+.pe-record-msg.record { color:#f5b31c; text-shadow:0 0 10px #f5b31c88; }
+#btn-pe-again { background:linear-gradient(135deg, var(--pe-1), var(--pe-2)) !important; color:#fff !important; }
 </style>
 </head>
 <body>
@@ -918,6 +1034,15 @@ body.theme-genesis .player-card::after {
   <div class="home-btns">
     <button id="btn-online" class="big-btn pink" data-i18n="btn_online"></button>
     <button id="btn-play" class="big-btn" data-i18n="btn_solo"></button>
+    <button id="btn-perfect" class="pe-banner">
+      <span class="pe-banner-badge" data-i18n="pe_new"></span>
+      <span class="pe-banner-star">⭐</span>
+      <span class="pe-banner-txt">
+        <span class="pe-banner-title" data-i18n="btn_perfect"></span>
+        <span class="pe-banner-sub" data-i18n="pe_banner_sub"></span>
+      </span>
+      <span class="pe-banner-arrow">›</span>
+    </button>
     <button id="btn-shop" class="big-btn gold" data-i18n="btn_shop"></button>
     <button id="btn-rules" class="big-btn ghost" data-i18n="btn_rules"></button>
     <div class="home-mini-row">
@@ -1167,12 +1292,70 @@ body.theme-genesis .player-card::after {
 </div>
 
 <!-- ================= CLASSEMENTS ================= -->
+<!-- ================= PERFECT ELEVEN ================= -->
+<div id="screen-perfect" class="screen hidden">
+  <div class="pe-head">
+    <span class="brush pe-title" data-i18n="pe_title"></span>
+    <button id="btn-pe-quit" class="pe-quit" data-i18n="pe_quit"></button>
+  </div>
+
+  <div class="pe-hud">
+    <div class="pe-hud-cell"><span class="pe-hud-lbl" data-i18n="pe_budget"></span><span id="pe-budget" class="pe-hud-val">250M</span></div>
+    <div class="pe-hud-cell"><span class="pe-hud-lbl" data-i18n="pe_slots"></span><span id="pe-slots" class="pe-hud-val">0/11</span></div>
+    <div class="pe-hud-cell"><span class="pe-hud-lbl" data-i18n="pe_left"></span><span id="pe-left" class="pe-hud-val">40</span></div>
+  </div>
+
+  <div id="pe-card" class="player-card">
+    <div id="pe-note" class="pc-note">88</div>
+    <div id="pe-name" class="pc-name">Joueur</div>
+    <div id="pe-pos" class="pc-pos">Poste</div>
+    <div id="pe-club" class="pc-club">Club</div>
+  </div>
+
+  <div class="pe-price-zone">
+    <div class="pe-price-lbl" data-i18n="pe_price"></div>
+    <div id="pe-price" class="pe-price">0M</div>
+    <div id="pe-offtrack" class="pe-offtrack"></div>
+  </div>
+
+  <div class="pe-actions">
+    <button id="btn-pe-pass" class="big-btn ghost" data-i18n="pe_pass"></button>
+    <button id="btn-pe-buy" class="big-btn gold"></button>
+  </div>
+
+  <div id="pe-squad" class="pe-squad"></div>
+</div>
+
+<div id="screen-perfect-end" class="screen hidden">
+  <div id="pe-final-title" class="brush shop-title" style="text-align:center;"></div>
+  <div id="pe-record-msg" class="pe-record-msg"></div>
+
+  <div id="pe-final-box" class="pe-final-box">
+    <div id="pe-final-note-wrap"><div class="pe-final-note"><span id="pe-final-total">0</span></div></div>
+    <div id="pe-failed-msg" class="pe-failed-msg hidden"></div>
+    <div id="pe-final-formation" class="pe-formation"></div>
+    <div class="pe-final-det">
+      <span data-i18n="pe_base"></span> <b id="pe-final-base">0</b> &middot;
+      <span data-i18n="pe_spent"></span> <b id="pe-final-spent">0M</b> &middot;
+      <span data-i18n="pe_seen"></span> <b id="pe-final-seen">0</b>
+    </div>
+  </div>
+
+  <div id="pe-final-squad" class="pe-squad"></div>
+
+  <div class="end-btns">
+    <button id="btn-pe-again" class="big-btn gold" data-i18n="pe_again"></button>
+    <button id="btn-pe-home" class="big-btn ghost" data-i18n="back"></button>
+  </div>
+</div>
+
 <div id="screen-ranks" class="screen hidden">
   <div class="brush shop-title" style="text-align:center; margin-bottom:14px;" data-i18n="rk_title"></div>
   <div class="tab-row">
     <button class="tab-chip tab-active" data-tab="world" data-i18n="rk_world"></button>
     <button class="tab-chip" data-tab="country" data-i18n="rk_country"></button>
     <button class="tab-chip" data-tab="friends" data-i18n="rk_friends"></button>
+    <button class="tab-chip" data-tab="perfect" data-i18n="rk_perfect"></button>
   </div>
   <div id="ranks-list"></div>
   <div class="end-btns">
@@ -1429,6 +1612,18 @@ fr: {
   cdm_locked:"Disponible le 21 juillet 10h",
   cdm_cdm2010:"Édition 2010 · Afrique du Sud", cdm_cdm2014:"Édition 2014 · Brésil",
   cdm_cdm2018:"Édition 2018 · Russie", cdm_cdm2022:"Édition 2022 · Qatar",
+  btn_perfect:"⭐ Perfect Eleven", rk_perfect:"Perfect XI",
+  pe_title:"⭐ Perfect Eleven", pe_quit:"Quitter",
+  pe_budget:"Budget", pe_slots:"Effectif", pe_seen:"Vus",
+  pe_price:"Prix imposé", pe_buy:"Acheter", pe_pass:"Passer",
+  pe_too_expensive:"Trop cher 🚫",
+  pe_offtrack:"🚫 Hors piste — tu ne pourras plus compléter ton onze",
+  pe_new:"New", pe_left:"Cartes",
+  pe_banner_sub:"Solo · 150M · 40 cartes · Classement mondial",
+  pe_failed_title:"Marché fermé 🚫",
+  pe_failed_msg:"Équipe incomplète ({n}/11) — non classée. Gère mieux ton budget !",
+  pe_end_title:"Ton Perfect Eleven", pe_base:"Moyenne", pe_spent:"Dépensé",
+  pe_again:"🔁 Rejouer", pe_record:"🏆 Nouveau record personnel !",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1578,6 +1773,18 @@ en: {
   cdm_locked:"Available July 21, 10am",
   cdm_cdm2010:"2010 Edition · South Africa", cdm_cdm2014:"2014 Edition · Brazil",
   cdm_cdm2018:"2018 Edition · Russia", cdm_cdm2022:"2022 Edition · Qatar",
+  btn_perfect:"⭐ Perfect Eleven", rk_perfect:"Perfect XI",
+  pe_title:"⭐ Perfect Eleven", pe_quit:"Quit",
+  pe_budget:"Budget", pe_slots:"Squad", pe_seen:"Seen",
+  pe_price:"Set price", pe_buy:"Buy", pe_pass:"Pass",
+  pe_too_expensive:"Too expensive 🚫",
+  pe_offtrack:"🚫 Out of the running — you can no longer complete your eleven",
+  pe_new:"New", pe_left:"Cards",
+  pe_banner_sub:"Solo · 150M · 40 cards · World ranking",
+  pe_failed_title:"Market closed 🚫",
+  pe_failed_msg:"Incomplete squad ({n}/11) — not ranked. Manage your budget better!",
+  pe_end_title:"Your Perfect Eleven", pe_base:"Average", pe_spent:"Spent",
+  pe_again:"🔁 Play again", pe_record:"🏆 New personal best!",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -1725,6 +1932,18 @@ es: {
   cdm_locked:"Disponible el 21 de julio a las 10h",
   cdm_cdm2010:"Edición 2010 · Sudáfrica", cdm_cdm2014:"Edición 2014 · Brasil",
   cdm_cdm2018:"Edición 2018 · Rusia", cdm_cdm2022:"Edición 2022 · Catar",
+  btn_perfect:"⭐ Perfect Eleven", rk_perfect:"Perfect XI",
+  pe_title:"⭐ Perfect Eleven", pe_quit:"Salir",
+  pe_budget:"Presupuesto", pe_slots:"Plantilla", pe_seen:"Vistos",
+  pe_price:"Precio fijo", pe_buy:"Comprar", pe_pass:"Pasar",
+  pe_too_expensive:"Demasiado caro 🚫",
+  pe_offtrack:"🚫 Fuera de juego — ya no podrás completar tu once",
+  pe_new:"New", pe_left:"Cartas",
+  pe_banner_sub:"Solo · 150M · 40 cartas · Ranking mundial",
+  pe_failed_title:"Mercado cerrado 🚫",
+  pe_failed_msg:"Plantilla incompleta ({n}/11) — sin clasificar. ¡Gestiona mejor tu presupuesto!",
+  pe_end_title:"Tu Perfect Eleven", pe_base:"Media", pe_spent:"Gastado",
+  pe_again:"🔁 Jugar otra vez", pe_record:"🏆 ¡Nuevo récord personal!",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -2005,7 +2224,7 @@ var ANIMS = [
 /* ---------- STORAGE ---------- */
 var memStore = null;
 function loadStore(){
-  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none", ownedKits:[], equippedKit:"classic", ownedCdm:[] };
+  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none", ownedKits:[], equippedKit:"classic", ownedCdm:[], perfectBest:0 };
   try {
     var raw = window.localStorage.getItem("elevenduel_store");
     if (raw){
@@ -2019,6 +2238,7 @@ function loadStore(){
         if (!Array.isArray(s.ownedKits)) s.ownedKits = [];
         if (typeof s.equippedKit !== "string") s.equippedKit = "classic";
         if (!Array.isArray(s.ownedCdm)) s.ownedCdm = [];
+        if (typeof s.perfectBest !== "number") s.perfectBest = 0;
         if (s.equippedSkin === undefined) s.equippedSkin = s.skinsPack ? "tierpack" : "none";
         if (s.account === undefined) s.account = null;
         return s;
@@ -2067,6 +2287,7 @@ function hideAllScreens(){
   hide("screen-shop"); hide("screen-online"); hide("screen-wait");
   hide("screen-profile"); hide("screen-ranks"); hide("screen-leagues"); hide("screen-league-detail");
   hide("screen-friends-requests"); hide("screen-friends-history"); hide("screen-public-profile");
+  hide("screen-perfect"); hide("screen-perfect-end");
   hide("overlay-reveal");
 }
 function cleanData(o){
@@ -2097,6 +2318,21 @@ function posCounts(squad){
   var c = { G:0, D:0, M:0, A:0 };
   for (var i=0;i<squad.length;i++) c[PLAYERS[squad[i]][1]]++;
   return c;
+}
+var POS_ORDER = { G:0, D:1, M:2, A:3 };
+/* trie un effectif par poste (G > D > M > A) puis par note desc,
+   en conservant l'association joueur <-> prix paye */
+function squadByPos(squad, paid){
+  var arr = [];
+  for (var i=0;i<squad.length;i++){
+    arr.push({ idx: squad[i], paid: paid ? paid[i] : 0 });
+  }
+  arr.sort(function(a,b){
+    var pa = POS_ORDER[PLAYERS[a.idx][1]], pb = POS_ORDER[PLAYERS[b.idx][1]];
+    if (pa !== pb) return pa - pb;
+    return PLAYERS[b.idx][2] - PLAYERS[a.idx][2];
+  });
+  return arr;
 }
 function formationOf(squad){
   if (!squad || squad.length !== 11) return null;
@@ -2486,13 +2722,13 @@ function renderWaitSquad(){
   box.appendChild(toggle);
   if (!waitSquadOpen) return;
   var list = el("div","rv-squad-list");
-  var mySquad = me().squad, myPaid = me().paid;
-  for (var i=0;i<mySquad.length;i++){
-    var pl = PLAYERS[mySquad[i]];
+  var sorted = squadByPos(me().squad, me().paid);
+  for (var i=0;i<sorted.length;i++){
+    var pl = PLAYERS[sorted[i].idx];
     var row = el("div","rv-squad-row");
     row.appendChild(el("span","squad-note " + tierClass(pl[2]), String(pl[2])));
     row.appendChild(el("span","rv-squad-name", pl[0] + " · " + t("pos_" + pl[1])));
-    row.appendChild(el("span","rv-squad-price", myPaid[i] + "M"));
+    row.appendChild(el("span","rv-squad-price", sorted[i].paid + "M"));
     list.appendChild(row);
   }
   box.appendChild(list);
@@ -3917,6 +4153,12 @@ function init(){
   bindChips(".shop-tab-chip", "tab-active", function(btn){
     setShopTab(btn.getAttribute("data-shoptab"));
   });
+  qs("btn-perfect").addEventListener("click", startPerfect);
+  qs("btn-pe-buy").addEventListener("click", peBuy);
+  qs("btn-pe-pass").addEventListener("click", pePass);
+  qs("btn-pe-quit").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
+  qs("btn-pe-again").addEventListener("click", startPerfect);
+  qs("btn-pe-home").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
   qs("btn-friends").addEventListener("click", function(){ openFriendsScreen("requests"); });
   qs("btn-add-friend").addEventListener("click", promptAddFriend);
   qs("btn-pp-back").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
@@ -4342,6 +4584,7 @@ function loadRanks(tab){
   box.appendChild(el("div","rk-empty", t("rk_loading")));
   initFirebase().then(function(ok){
     if (!ok){ clear(box); box.appendChild(el("div","rk-empty", t("st_noconfig"))); return; }
+    if (tab === "perfect"){ renderPerfectRanks(box); return; }
     if (tab === "world"){
       fb.db.collection("users").orderBy("stats.wins","desc").limit(50).get().then(function(qsnap){
         var arr = [];
@@ -6163,6 +6406,242 @@ function renderAdminSessions(box){
       box.appendChild(row);
     });
   }).catch(function(err){ adminErr(box, err); });
+}
+
+/* =========================================================
+   V16 : MODE "PERFECT ELEVEN"
+   Solo hors ligne. Le marche defile, prix imposes (+-20%).
+   11 places, 250M. Meilleure moyenne all-time au classement.
+   ========================================================= */
+var PE_BUDGET = 150;               /* serre : chaque achat est un arbitrage */
+var PE_SLOTS = 11;
+var PE_MAX_SEEN = 40;              /* le marche ferme apres 40 cartes */
+var PE_MIN_PRICE = 2;              /* prix plancher apres alea */
+var pe = null;                     /* etat de la partie en cours */
+
+function pePrice(note){
+  var base = aiValue(note);
+  var v = Math.round(base * (0.8 + Math.random() * 0.4));   /* +-20% */
+  if (v < PE_MIN_PRICE) v = PE_MIN_PRICE;
+  return v;
+}
+function peCanAfford(price){
+  return price <= pe.budget;      /* le joueur gere son budget : c'est son probleme */
+}
+/* hors piste : il est devenu mathematiquement impossible de completer les 11 */
+function peOffTrack(){
+  var slotsLeft = PE_SLOTS - pe.squad.length;
+  if (slotsLeft <= 0) return false;
+  if (pe.budget < slotsLeft * PE_MIN_PRICE) return true;      /* plus assez d'argent */
+  if (PE_MAX_SEEN - pe.seen < slotsLeft) return true;         /* plus assez de cartes */
+  return false;
+}
+function peNextPlayer(){
+  if (pe.seen >= PE_MAX_SEEN){ endPerfect(); return; }
+  var avail = availableIdxs("ALL", pe.used);
+  if (!avail.length){ pe.used = []; avail = availableIdxs("ALL", pe.used); }
+  var idx = avail[Math.floor(Math.random() * avail.length)];
+  pe.current = idx;
+  pe.price = pePrice(PLAYERS[idx][2]);
+  pe.seen++;
+  renderPerfect();
+}
+
+function startPerfect(){
+  MODE = "perfect";
+  pe = { budget: PE_BUDGET, squad: [], paid: [], used: [], current: -1, price: 0, seen: 0 };
+  hideAllScreens();
+  show("screen-perfect");
+  peNextPlayer();
+}
+
+function renderPerfect(){
+  var p = PLAYERS[pe.current];
+  var tier = tierClass(p[2]);
+
+  var cardEl = qs("pe-card");
+  cardEl.className = "player-card " + tier + cardSkinClass(p[2]);
+  if (store.equippedSkin === "trionda" && store.triondaOwned && !triondaExpired()){
+    injectTriondaPanels(cardEl, tier.replace("tier-",""));
+  } else {
+    clearTriondaPanels(cardEl);
+  }
+  injectCdmBall(cardEl, p[2]);
+
+  qs("pe-note").textContent = String(p[2]);
+  qs("pe-name").textContent = p[0];
+  qs("pe-pos").textContent = t("pos_" + p[1]);
+  qs("pe-club").textContent = p[3];
+
+  qs("pe-budget").textContent = pe.budget + "M";
+  qs("pe-slots").textContent = pe.squad.length + "/" + PE_SLOTS;
+  var left = PE_MAX_SEEN - pe.seen;
+  var leftEl = qs("pe-left");
+  leftEl.textContent = String(left);
+  /* alerte quand il reste juste assez de cartes pour completer */
+  leftEl.classList.toggle("pe-danger", left <= (PE_SLOTS - pe.squad.length) + 3);
+  qs("pe-price").textContent = pe.price + "M";
+
+  var off = peOffTrack();
+  var warn = qs("pe-offtrack");
+  warn.textContent = off ? t("pe_offtrack") : "";
+  warn.className = "pe-offtrack" + (off ? " on" : "");
+
+  var buy = qs("btn-pe-buy");
+  var can = peCanAfford(pe.price);
+  buy.disabled = !can;
+  buy.classList.toggle("btn-disabled", !can);
+  buy.textContent = can ? t("pe_buy") + " · " + pe.price + "M" : t("pe_too_expensive");
+
+  renderPerfectSquad();
+}
+
+function renderPerfectSquad(){
+  var box = qs("pe-squad");
+  clear(box);
+  if (!pe.squad.length) return;
+  var sorted = squadByPos(pe.squad, pe.paid);
+  for (var i=0;i<sorted.length;i++){
+    var pl = PLAYERS[sorted[i].idx];
+    var row = el("div","pe-row");
+    row.appendChild(el("span","squad-note " + tierClass(pl[2]), String(pl[2])));
+    row.appendChild(el("span","pe-row-pos pos-" + pl[1], pl[1]));
+    row.appendChild(el("span","pe-row-name", pl[0]));
+    row.appendChild(el("span","pe-row-price", sorted[i].paid + "M"));
+    box.appendChild(row);
+  }
+}
+
+function peBuy(){
+  if (!peCanAfford(pe.price)) return;
+  pe.budget -= pe.price;
+  pe.squad.push(pe.current);
+  pe.paid.push(pe.price);
+  pe.used.push(pe.current);
+  if (pe.squad.length >= PE_SLOTS){ endPerfect(); return; }
+  peNextPlayer();
+}
+function pePass(){
+  pe.used.push(pe.current);
+  peNextPlayer();
+}
+
+function endPerfect(){
+  var complete = pe.squad.length === PE_SLOTS;
+  var side = { squad: pe.squad, paid: pe.paid, boosted: -1 };
+  var sc = complete ? finalScore(side) : { base:0, formation:null, total:0 };
+  hideAllScreens();
+  show("screen-perfect-end");
+
+  var box = qs("pe-final-box");
+  box.classList.toggle("incomplete", !complete);
+  qs("pe-final-title").textContent = complete ? t("pe_end_title") : t("pe_failed_title");
+
+  if (complete){
+    qs("pe-final-note-wrap").classList.remove("hidden");
+    qs("pe-failed-msg").classList.add("hidden");
+    qs("pe-final-base").textContent = sc.base.toFixed(2);
+    qs("pe-final-total").textContent = sc.total.toFixed(2);
+    qs("pe-final-formation").textContent = sc.formation
+      ? tf("compo_ok", { f: sc.formation })
+      : t("compo_none");
+    qs("pe-final-formation").className = "pe-formation" + (sc.formation ? " ok" : "");
+  } else {
+    qs("pe-final-note-wrap").classList.add("hidden");
+    var fm = qs("pe-failed-msg");
+    fm.classList.remove("hidden");
+    fm.textContent = tf("pe_failed_msg", { n: pe.squad.length });
+    qs("pe-final-formation").textContent = "";
+  }
+  qs("pe-final-spent").textContent = (PE_BUDGET - pe.budget) + "M";
+  qs("pe-final-seen").textContent = String(pe.seen);
+
+  var list = qs("pe-final-squad");
+  clear(list);
+  var order = squadByPos(pe.squad, pe.paid);
+  for (var i=0;i<order.length;i++){
+    var pl = PLAYERS[order[i].idx];
+    var row = el("div","pe-row");
+    row.appendChild(el("span","squad-note " + tierClass(pl[2]), String(pl[2])));
+    row.appendChild(el("span","pe-row-pos pos-" + pl[1], pl[1]));
+    row.appendChild(el("span","pe-row-name", pl[0] + " · " + pl[3]));
+    list.appendChild(row);
+  }
+
+  if (complete) savePerfectScore(sc);
+  else { qs("pe-record-msg").textContent = ""; qs("pe-record-msg").className = "pe-record-msg"; }
+  bumpModeStats("perfect", null);
+}
+
+/* ---------- record personnel + classement mondial ---------- */
+function savePerfectScore(sc){
+  var msg = qs("pe-record-msg");
+  msg.textContent = "";
+  msg.className = "pe-record-msg";
+
+  var local = store.perfectBest || 0;
+  var isRecord = sc.total > local;
+  if (isRecord){
+    store.perfectBest = sc.total;
+    saveStore(store);
+    msg.textContent = t("pe_record");
+    msg.className = "pe-record-msg record";
+  }
+
+  if (!store.account) return;
+  initFirebase().then(function(ok){
+    if (!ok) return;
+    var ref = myUserRef();
+    fb.db.runTransaction(function(tx){
+      return tx.get(ref).then(function(snap){
+        if (!snap.exists) return;
+        var d = snap.data();
+        var prev = (d.perfectBest && d.perfectBest.total) || 0;
+        if (sc.total <= prev) return;
+        tx.update(ref, cleanData({
+          perfectBest: {
+            total: Math.round(sc.total * 100) / 100,
+            base: Math.round(sc.base * 100) / 100,
+            formation: sc.formation || null,
+            squad: pe.squad,
+            spent: PE_BUDGET - pe.budget,
+            ts: Date.now()
+          }
+        }));
+      });
+    }).catch(function(){});
+  });
+}
+
+/* ---------- onglet classement Perfect Eleven ---------- */
+function renderPerfectRanks(box){
+  fb.db.collection("users").orderBy("perfectBest.total","desc").limit(50).get()
+    .then(function(qsnap){
+      clear(box);
+      if (qsnap.empty){ box.appendChild(el("div","rk-empty", t("rk_empty"))); return; }
+      var pos = 0;
+      qsnap.forEach(function(doc){
+        var d = doc.data();
+        if (!d.perfectBest || !d.perfectBest.total) return;
+        pos++;
+        var isMe = store.account && doc.id === store.account.key;
+        var row = el("div","rank-row" + (isMe ? " rank-me" : ""));
+        var medals = ["🥇","🥈","🥉"];
+        row.appendChild(el("span","rank-medal", pos <= 3 ? medals[pos-1] : pos + "."));
+        var nameEl = el("span","rank-name", countryFlag(d.country || "XX") + " " + d.pseudo + (isMe ? " · " + t("rk_me") : ""));
+        if (!isMe && store.account) makeFriendNameClickable(nameEl, doc.id, d.pseudo);
+        row.appendChild(nameEl);
+        var det = d.perfectBest.total.toFixed(2);
+        if (d.perfectBest.formation) det += " · " + d.perfectBest.formation;
+        row.appendChild(el("span","rank-det", det));
+        box.appendChild(row);
+      });
+      if (!pos) box.appendChild(el("div","rk-empty", t("rk_empty")));
+    })
+    .catch(function(){
+      clear(box);
+      box.appendChild(el("div","rk-empty", t("st_err")));
+    });
 }
 
 </script>

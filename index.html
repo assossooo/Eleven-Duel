@@ -2380,7 +2380,7 @@ var ANIMS = [
 /* ---------- STORAGE ---------- */
 var memStore = null;
 function loadStore(){
-  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none", ownedKits:[], equippedKit:"classic", ownedCdm:[], perfectBest:0, gamesPlayed:0 };
+  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none", ownedKits:[], equippedKit:"classic", ownedCdm:[], perfectBest:0, gamesPlayed:0, botsSeen:[] };
   try {
     var raw = window.localStorage.getItem("elevenduel_store");
     if (raw){
@@ -2396,6 +2396,7 @@ function loadStore(){
         if (!Array.isArray(s.ownedCdm)) s.ownedCdm = [];
         if (typeof s.perfectBest !== "number") s.perfectBest = 0;
         if (typeof s.gamesPlayed !== "number") s.gamesPlayed = 0;
+        if (!Array.isArray(s.botsSeen)) s.botsSeen = [];
         if (s.equippedSkin === undefined) s.equippedSkin = s.skinsPack ? "tierpack" : "none";
         if (s.account === undefined) s.account = null;
         return s;
@@ -6183,19 +6184,57 @@ function renderAdminSources(box){
 /* =========================================================
    V11 : DUEL CLASSE (Elo) + BOT FALLBACK
    ========================================================= */
-var BOT_WAIT_MS = 15000;
+var BOT_WAIT_MS = 12000;
 var BOT_UID = "RANKED_BOT";
-var BOT_PSEUDOS = [
-  "Leo_Fut94","MattiaCalcio","Karim_du_13","FutKing_Ali","DiegoTactico","MaxiGoleador",
-  "Sofian_Zidane10","ToniBallon","EnzoDribble","PabloElMister","LuchoFutbolero","JojoStriker",
-  "Mehdi_CR7Fan","NicoPanenka","SamiLibero","VictorVolley","AdriTikiTaka","IlanZlatanien",
-  "TheoCrampons","YanisNumero10","MarcoRabona","LucasCorner","RayanLucarne","HugoPressing",
-  "DavidCoachito","OmarCaptain","BrunoMilieu","AntoFinisseur","GabiGardien","RomainContre",
-  "AlexisPivot","NolanTransversale","EliasChilena","MattVeloce","KhalilRush","DylanNutmeg",
-  "FabioTrivela","IsmaCurva","NathanRemontada","TiagoSombrero"
+/* ---------- PSEUDOS DE BOTS CREDIBLES ----------
+   Un pool fixe faisait revenir les memes noms. On genere a la volee
+   a partir de bases + motifs reels, ce qui donne des milliers de combinaisons,
+   et on garde en memoire ceux deja vus pour ne jamais repeter. */
+var BOT_BASES = [
+  "leo","karim","sofiane","matteo","diego","yanis","enzo","theo","hugo","rayan",
+  "mehdi","nico","sami","victor","adri","ilan","marco","lucas","bruno","gabi",
+  "romain","alexis","nolan","elias","dylan","fabio","isma","nathan","tiago","pablo",
+  "lucho","maxi","toni","omar","anto","khalil","matt","david","jojo","ali",
+  "noah","adam","gabriel","raphael","arthur","jules","ethan","tom","axel","kylian",
+  "ayoub","bilal","ryan","samy","walid","zack","oscar","milan","rafa","joao",
+  "pedro","andrea","luca","stefano","alvaro","javi","sergio","dani","hakim","younes",
+  "amine","reda","idriss","jonas","luka","stan","noe","evan","malik","tony"
 ];
+var BOT_NUMS   = ["7","9","10","11","23","6","8","17","19","21","30","77","99"];
+var BOT_YEARS  = ["93","94","95","96","97","98","99","00","01","02","03","04","05","06"];
+var BOT_DEPTS  = ["13","75","92","93","06","69","31","59","33","44","78","95"];
+var BOT_TAGS   = ["fut","fc","off","ball","zone","tv","hd","jr","world","pro"];
+
+function botPick(a){ return a[Math.floor(Math.random() * a.length)]; }
+function botCap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function genBotPseudo(){
+  var b = botPick(BOT_BASES);
+  switch (Math.floor(Math.random() * 9)){
+    case 0: return b + botPick(BOT_NUMS);                        /* leo10 */
+    case 1: return b + "_" + botPick(BOT_NUMS);                  /* karim_7 */
+    case 2: return b + botPick(BOT_YEARS);                       /* sofiane98 */
+    case 3: return b + "_" + botPick(BOT_DEPTS);                 /* yanis_93 */
+    case 4: return botCap(b) + botCap(botPick(BOT_TAGS));        /* MatteoFut */
+    case 5: return "x" + b + "x";                                /* xdiegox */
+    case 6: return b + "." + botPick(BOT_TAGS);                  /* enzo.fc */
+    case 7: return "its" + botCap(b);                            /* itsLeo */
+    default: return botCap(b) + botPick(BOT_NUMS) + botPick(BOT_TAGS); /* Theo10fc */
+  }
+}
+/* jamais deux fois le meme adversaire : on retient les pseudos deja croises */
 function pickBotPseudo(){
-  return BOT_PSEUDOS[Math.floor(Math.random() * BOT_PSEUDOS.length)];
+  if (!Array.isArray(store.botsSeen)) store.botsSeen = [];
+  for (var i=0;i<50;i++){
+    var p = genBotPseudo();
+    if (store.botsSeen.indexOf(p) < 0){
+      store.botsSeen.push(p);
+      if (store.botsSeen.length > 120) store.botsSeen.shift();
+      saveStore(store);
+      return p;
+    }
+  }
+  return genBotPseudo() + Math.floor(Math.random() * 99);
 }
 function pickBotProfile(){
   return PROFILE_KEYS[Math.floor(Math.random() * PROFILE_KEYS.length)];
@@ -6269,7 +6308,7 @@ function createRankedGame(){
   });
 }
 
-/* ---------- BOT FALLBACK APRES 15s ---------- */
+/* ---------- BOT FALLBACK APRES 12s ---------- */
 var botFallbackTimer = null;
 function scheduleBotFallback(code){
   if (botFallbackTimer) clearTimeout(botFallbackTimer);

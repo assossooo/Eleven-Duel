@@ -7171,67 +7171,89 @@ function drawShareCanvas(cb){
 
   var d = shareData;
   var cx = W/2;
-
-  /* bandeau resultat */
-  var accent = d && d.outcome === "win" ? "#f5b31c" : (d && d.outcome === "tie" ? "#27c3f5" : "#f52c8c");
   c.textAlign = "center";
-  c.fillStyle = accent;
-  c.font = "900 italic 104px -apple-system, Helvetica, Arial";
-  c.fillText(shareTitleFor(d ? d.outcome : "win").toUpperCase(), cx, 430);
 
-  /* scores */
-  if (d){
+  /* --- LOGO EN PREMIER : dessine avant les textes, sinon il les recouvre.
+     Le logo est un JPEG a fond noir : le mode "screen" neutralise le noir
+     (noir = 0 => n'ajoute rien) et ne laisse que les couleurs du blason. --- */
+  var img = document.querySelector("#screen-home .logo-wrap img");
+  var logoBottom = 250;
+  if (img && img.complete && img.naturalWidth){
+    var lw = 330, lh = lw * (img.naturalHeight / img.naturalWidth);
+    try {
+      c.save();
+      c.globalCompositeOperation = "screen";
+      c.drawImage(img, cx - lw/2, 90, lw, lh);
+      c.restore();
+      logoBottom = 90 + lh;
+    } catch (e){
+      c.fillStyle = "#ffffff";
+      c.font = "900 italic 78px -apple-system, Helvetica, Arial";
+      c.fillText("ELEVEN DUEL", cx, 200);
+      logoBottom = 240;
+    }
+  } else {
     c.fillStyle = "#ffffff";
-    c.font = "900 italic 210px -apple-system, Helvetica, Arial";
-    c.fillText(d.myScore.toFixed(2), cx, 680);
+    c.font = "900 italic 78px -apple-system, Helvetica, Arial";
+    c.fillText("ELEVEN DUEL", cx, 200);
+    logoBottom = 240;
+  }
+
+  var y = logoBottom + 130;
+
+  /* titre du resultat */
+  var accent = d && d.outcome === "win" ? "#f5b31c" : (d && d.outcome === "tie" ? "#27c3f5" : "#f52c8c");
+  c.fillStyle = accent;
+  c.font = "900 italic 100px -apple-system, Helvetica, Arial";
+  c.fillText(shareTitleFor(d ? d.outcome : "win").toUpperCase(), cx, y);
+  y += 200;
+
+  if (d){
+    /* score */
+    c.fillStyle = "#ffffff";
+    c.font = "900 italic 200px -apple-system, Helvetica, Arial";
+    c.fillText(d.myScore.toFixed(2), cx, y);
+    y += 90;
     if (d.oppScore !== null){
       c.fillStyle = "#a98fd0";
-      c.font = "800 54px -apple-system, Helvetica, Arial";
-      c.fillText(t("sh_vs") + " " + d.oppScore.toFixed(2) + (d.oppName ? " · " + d.oppName : ""), cx, 770);
+      c.font = "800 52px -apple-system, Helvetica, Arial";
+      c.fillText(t("sh_vs") + " " + d.oppScore.toFixed(2) + (d.oppName ? " · " + d.oppName : ""), cx, y);
     }
+    y += 130;
 
-    /* mon top 3 */
-    var y = 940;
-    c.font = "800 44px -apple-system, Helvetica, Arial";
-    c.fillStyle = "#8b7ab0";
-    c.fillText(t("sh_squad").toUpperCase(), cx, y);
-    y += 90;
-    for (var k=0;k<d.top3.length;k++){
-      var pl = PLAYERS[d.top3[k].idx];
-      c.fillStyle = "#1a0f33";
-      roundRect(c, 150, y - 58, W - 300, 88, 18);
-      c.fill();
-      c.textAlign = "left";
-      c.fillStyle = "#f5b31c";
-      c.font = "900 58px -apple-system, Helvetica, Arial";
-      c.fillText(String(pl[2]), 190, y);
-      c.fillStyle = "#eef0ff";
-      c.font = "800 46px -apple-system, Helvetica, Arial";
-      c.fillText(pl[0], 300, y);
-      c.textAlign = "center";
-      y += 110;
+    /* mon top 3 : uniquement s'il y a vraiment des joueurs */
+    if (d.top3.length){
+      c.font = "800 44px -apple-system, Helvetica, Arial";
+      c.fillStyle = "#8b7ab0";
+      c.fillText(t("sh_squad").toUpperCase(), cx, y);
+      y += 95;
+      for (var k=0;k<d.top3.length;k++){
+        var pl = PLAYERS[d.top3[k].idx];
+        c.fillStyle = "#1a0f33";
+        roundRect(c, 150, y - 60, W - 300, 90, 18);
+        c.fill();
+        c.textAlign = "left";
+        c.fillStyle = "#f5b31c";
+        c.font = "900 58px -apple-system, Helvetica, Arial";
+        c.fillText(String(pl[2]), 195, y);
+        c.fillStyle = "#eef0ff";
+        c.font = "800 46px -apple-system, Helvetica, Arial";
+        c.fillText(pl[0], 310, y);
+        c.textAlign = "center";
+        y += 112;
+      }
     }
   }
 
   /* pied : promesse + url */
   c.textAlign = "center";
   c.fillStyle = "#c9b8e8";
-  c.font = "800 italic 52px -apple-system, Helvetica, Arial";
-  c.fillText(t("sh_promise"), cx, H - 300);
+  c.font = "800 italic 50px -apple-system, Helvetica, Arial";
+  c.fillText(t("sh_promise"), cx, H - 290);
   c.fillStyle = "#27c3f5";
-  c.font = "900 italic 62px -apple-system, Helvetica, Arial";
-  c.fillText("elevenduel.com", cx, H - 210);
+  c.font = "900 italic 60px -apple-system, Helvetica, Arial";
+  c.fillText("elevenduel.com", cx, H - 200);
 
-  /* logo si deja charge dans le DOM */
-  var img = document.querySelector("#screen-home .logo-wrap img");
-  if (img && img.complete && img.naturalWidth){
-    var lw = 300, lh = lw * (img.naturalHeight / img.naturalWidth);
-    try { c.drawImage(img, cx - lw/2, 120, lw, lh); } catch (e){}
-  } else {
-    c.fillStyle = "#ffffff";
-    c.font = "900 italic 76px -apple-system, Helvetica, Arial";
-    c.fillText("ELEVEN DUEL", cx, 220);
-  }
   cb(cv);
 }
 

@@ -1109,6 +1109,33 @@ body.theme-genesis .player-card::after {
   padding:8px 14px; font-size:0.78rem; font-weight:900; touch-action:manipulation;
 }
 
+
+/* ===== V21 : partage de fin de duel ===== */
+.end-share {
+  background:#12101f; border:1px solid #2c2750; border-radius:16px;
+  padding:12px; margin:12px 0;
+}
+.share-title {
+  font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:1px;
+  color:#8b8fa8; text-align:center; margin-bottom:10px;
+}
+.share-row { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
+.share-btn {
+  background:#1a1830; border:1px solid #2c2750; border-radius:12px;
+  padding:9px 4px; display:flex; flex-direction:column; align-items:center; gap:3px;
+  touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+}
+.share-btn:active { border-color:#f5b31c; }
+.share-ico { font-size:1.15rem; line-height:1; }
+.share-lbl { font-size:0.54rem; font-weight:800; color:#cfd2ea; white-space:nowrap; }
+/* la story est le partage le plus viral : on la met en avant */
+.share-story {
+  background:linear-gradient(135deg,#8b3df5,#f52c8c); border-color:#b45cff;
+}
+.share-story .share-lbl { color:#fff; }
+.share-msg { text-align:center; font-size:0.66rem; font-weight:700; color:#57e08a; min-height:14px; margin-top:7px; }
+.share-msg.err { color:#f52c8c; }
+
 </style>
 </head>
 <body>
@@ -1318,6 +1345,28 @@ body.theme-genesis .player-card::after {
     <div id="end-coins"></div>
   </div>
   <div id="end-rank"></div>
+  <div id="end-share" class="end-share">
+    <div class="share-title" data-i18n="sh_title"></div>
+    <div class="share-row">
+      <button id="btn-share-story" class="share-btn share-story">
+        <span class="share-ico">📸</span>
+        <span class="share-lbl" data-i18n="sh_story"></span>
+      </button>
+      <button id="btn-share-x" class="share-btn">
+        <span class="share-ico">𝕏</span>
+        <span class="share-lbl">X</span>
+      </button>
+      <button id="btn-share-wa" class="share-btn">
+        <span class="share-ico">💬</span>
+        <span class="share-lbl">WhatsApp</span>
+      </button>
+      <button id="btn-share-copy" class="share-btn">
+        <span class="share-ico">🔗</span>
+        <span class="share-lbl" data-i18n="sh_copy"></span>
+      </button>
+    </div>
+    <div id="share-msg" class="share-msg"></div>
+  </div>
   <div id="end-account-prompt" class="hidden"></div>
   <div id="end-squads-all"></div>
   <div class="end-btns">
@@ -1756,7 +1805,7 @@ fr: {
   pf_troph:"Trophées", pf_note:"Seules les parties en ligne (adversaire aléatoire) comptent dans ces stats.",
   rk_title:"Classements", rk_world:"🌍 Mondial", rk_country:"Pays", rk_friends:"Amis",
   rk_empty:"Personne ici pour l’instant…", rk_loading:"Chargement…", rk_me:"toi",
-  rk_v:"V", rk_j:"J",
+  rk_v:"V", rk_j:"M",
   lg_title:"Ligues privées", lg_mine:"Mes ligues", lg_none:"Aucune ligue pour l’instant. Crées-en une !",
   lg_create:"Créer une ligue", lg_join:"Rejoindre une ligue", lg_name:"Nom de la ligue",
   lg_pass:"Mot de passe (optionnel)", lg_max:"Joueurs max (4-100)", lg_code:"Code d’invitation",
@@ -1828,6 +1877,15 @@ fr: {
   acc_prompt_btn:"Créer mon compte · 30 secondes",
   upd_msg:"Nouvelle version disponible", upd_btn:"Recharger",
   st_version:"Versions différentes — rechargez la page tous les deux",
+  sh_title:"Partage ton duel", sh_story:"Story", sh_copy:"Copier",
+  sh_win:"🏆 Victoire !", sh_lose:"😤 Défaite", sh_tie:"🤝 Égalité",
+  sh_score:"{a} contre {b}", sh_score_solo:"Moyenne : {a}",
+  sh_vs:"contre", sh_squad:"Mon onze",
+  sh_tag:"sur Eleven Duel ⚽ Recrute ton onze avec 250M — mise à l'aveugle !",
+  sh_promise:"250M. 11 joueurs. Un seul gagnant.",
+  sh_generic:"Je joue à Eleven Duel ⚽",
+  sh_copied:"Copié ✓", sh_preparing:"Préparation de l'image...",
+  sh_downloaded:"Image téléchargée ✓", sh_err:"Échec du partage",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
   admin_login:"Se connecter", admin_denied:"Accès refusé", admin_missing:"Remplis tous les champs",
   admin_tab_accounts:"Comptes", admin_tab_matches:"Matchs", admin_tab_sources:"Sources",
@@ -1927,7 +1985,7 @@ en: {
   pf_troph:"Trophies", pf_note:"Only online games (random opponent) count in these stats.",
   rk_title:"Rankings", rk_world:"🌍 World", rk_country:"Country", rk_friends:"Friends",
   rk_empty:"Nobody here yet…", rk_loading:"Loading…", rk_me:"you",
-  rk_v:"W", rk_j:"G",
+  rk_v:"W", rk_j:"M",
   lg_title:"Private leagues", lg_mine:"My leagues", lg_none:"No league yet. Create one!",
   lg_create:"Create a league", lg_join:"Join a league", lg_name:"League name",
   lg_pass:"Password (optional)", lg_max:"Max players (4-100)", lg_code:"Invite code",
@@ -2002,6 +2060,15 @@ en: {
   acc_prompt_btn:"Create my account · 30 seconds",
   upd_msg:"New version available", upd_btn:"Reload",
   st_version:"Different versions — both of you must reload the page",
+  sh_title:"Share your duel", sh_story:"Story", sh_copy:"Copy",
+  sh_win:"🏆 Win!", sh_lose:"😤 Defeat", sh_tie:"🤝 Draw",
+  sh_score:"{a} vs {b}", sh_score_solo:"Average: {a}",
+  sh_vs:"vs", sh_squad:"My eleven",
+  sh_tag:"on Eleven Duel ⚽ Build your eleven with 250M — blind bidding!",
+  sh_promise:"250M. 11 players. One winner.",
+  sh_generic:"I'm playing Eleven Duel ⚽",
+  sh_copied:"Copied ✓", sh_preparing:"Preparing image...",
+  sh_downloaded:"Image downloaded ✓", sh_err:"Sharing failed",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
   admin_login:"Sign in", admin_denied:"Access denied", admin_missing:"Fill in all fields",
   admin_tab_accounts:"Accounts", admin_tab_matches:"Matches", admin_tab_sources:"Sources",
@@ -2099,7 +2166,7 @@ es: {
   pf_troph:"Trofeos", pf_note:"Solo las partidas online (rival aleatorio) cuentan en estas estadísticas.",
   rk_title:"Clasificaciones", rk_world:"🌍 Mundial", rk_country:"País", rk_friends:"Amigos",
   rk_empty:"Nadie por aquí todavía…", rk_loading:"Cargando…", rk_me:"tú",
-  rk_v:"V", rk_j:"P",
+  rk_v:"V", rk_j:"M",
   lg_title:"Ligas privadas", lg_mine:"Mis ligas", lg_none:"Ninguna liga todavía. ¡Crea una!",
   lg_create:"Crear una liga", lg_join:"Unirse a una liga", lg_name:"Nombre de la liga",
   lg_pass:"Contraseña (opcional)", lg_max:"Jugadores máx (4-100)", lg_code:"Código de invitación",
@@ -2174,6 +2241,15 @@ es: {
   acc_prompt_btn:"Crear mi cuenta · 30 segundos",
   upd_msg:"Nueva versión disponible", upd_btn:"Recargar",
   st_version:"Versiones distintas — recargad la página los dos",
+  sh_title:"Comparte tu duelo", sh_story:"Story", sh_copy:"Copiar",
+  sh_win:"🏆 ¡Victoria!", sh_lose:"😤 Derrota", sh_tie:"🤝 Empate",
+  sh_score:"{a} contra {b}", sh_score_solo:"Media: {a}",
+  sh_vs:"contra", sh_squad:"Mi once",
+  sh_tag:"en Eleven Duel ⚽ ¡Ficha tu once con 250M — puja a ciegas!",
+  sh_promise:"250M. 11 jugadores. Un solo ganador.",
+  sh_generic:"Estoy jugando a Eleven Duel ⚽",
+  sh_copied:"Copiado ✓", sh_preparing:"Preparando imagen...",
+  sh_downloaded:"Imagen descargada ✓", sh_err:"Error al compartir",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
   admin_login:"Iniciar sesión", admin_denied:"Acceso denegado", admin_missing:"Rellena todos los campos",
   admin_tab_accounts:"Cuentas", admin_tab_matches:"Partidas", admin_tab_sources:"Fuentes",
@@ -3162,6 +3238,8 @@ function renderEnd(reason){
   renderCoins();
   renderAllSquads(qs("end-squads-all"));
   countGamePlayed();
+  shareData = buildShareData(outcome);
+  setShareMsg("");
   renderAccountPrompt();
   if (outcome === "win") playAnim(store.equipped);
 }
@@ -4446,6 +4524,10 @@ function init(){
   bindChips(".shop-tab-chip", "tab-active", function(btn){
     setShopTab(btn.getAttribute("data-shoptab"));
   });
+  qs("btn-share-story").addEventListener("click", shareNative);
+  qs("btn-share-x").addEventListener("click", shareX);
+  qs("btn-share-wa").addEventListener("click", shareWhatsApp);
+  qs("btn-share-copy").addEventListener("click", copyShare);
   qs("btn-perfect").addEventListener("click", startPerfect);
   qs("btn-pe-buy").addEventListener("click", peBuy);
   qs("btn-pe-pass").addEventListener("click", pePass);
@@ -6299,7 +6381,7 @@ var BOT_WAIT_MS = 12000;
    GitHub Pages met le HTML en cache (et l'icone PWA iOS bien plus longtemps),
    donc des joueurs tournent sur d'anciennes versions -> le multi casse.
    ========================================================= */
-var APP_VERSION = 20;
+var APP_VERSION = 21;
 function forceReload(){
   /* on change l'URL pour contourner le cache (reload(true) est obsolete) */
   var base = window.location.pathname;
@@ -7007,6 +7089,232 @@ function renderPerfectRanks(box){
       clear(box);
       box.appendChild(el("div","rk-empty", t("st_err")));
     });
+}
+
+/* =========================================================
+   V21 : PARTAGE DE FIN DE DUEL
+   Une story sans visuel n'existe pas -> on genere une image.
+   navigator.share ouvre la feuille native iOS (Instagram, WhatsApp, ...).
+   ========================================================= */
+var SHARE_URL = "https://elevenduel.com";
+var shareData = null;   /* rempli a chaque fin de duel */
+
+function buildShareData(outcome){
+  var mePl = me();
+  if (!mePl || !state.players) return null;
+  var scMe = finalScore(mePl);
+  var opp = null, scOpp = null;
+  for (var i=0;i<state.players.length;i++){
+    if (i !== state.myIdx && state.players[i]){ opp = state.players[i]; break; }
+  }
+  if (opp) scOpp = finalScore(opp);
+  /* les 3 meilleurs de mon onze */
+  var top = squadByPos(mePl.squad, mePl.paid).slice();
+  top.sort(function(a,b){ return PLAYERS[b.idx][2] - PLAYERS[a.idx][2]; });
+  return {
+    outcome: outcome,
+    myScore: scMe.total,
+    myName: mePl.name || t("you"),
+    oppScore: scOpp ? scOpp.total : null,
+    oppName: opp ? opp.name : null,
+    top3: top.slice(0, 3),
+    players: state.players.length
+  };
+}
+
+function shareTitleFor(o){
+  if (o === "win") return t("sh_win");
+  if (o === "tie") return t("sh_tie");
+  return t("sh_lose");
+}
+
+function buildShareText(){
+  if (!shareData) return t("sh_generic") + " " + SHARE_URL;
+  var d = shareData;
+  var s = shareTitleFor(d.outcome) + " ";
+  if (d.oppScore !== null){
+    s += tf("sh_score", { a: d.myScore.toFixed(2), b: d.oppScore.toFixed(2) }) + " ";
+  } else {
+    s += tf("sh_score_solo", { a: d.myScore.toFixed(2) }) + " ";
+  }
+  s += t("sh_tag") + " " + SHARE_URL;
+  return s;
+}
+
+/* ---------- image de partage (format story 1080x1920) ---------- */
+function drawShareCanvas(cb){
+  var W = 1080, H = 1920;
+  var cv = document.createElement("canvas");
+  cv.width = W; cv.height = H;
+  var c = cv.getContext("2d");
+
+  /* fond violet radial facon DA du jeu */
+  var g = c.createRadialGradient(W/2, H*0.36, 60, W/2, H*0.36, H*0.78);
+  g.addColorStop(0, "#2a1050");
+  g.addColorStop(0.45, "#150a2e");
+  g.addColorStop(1, "#0a0817");
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+
+  /* rayons neon */
+  c.save();
+  c.translate(W/2, H*0.36);
+  var cols = ["#27c3f5","#8b3df5","#f5b31c","#f52c8c"];
+  for (var i=0;i<28;i++){
+    c.rotate(Math.PI * 2 / 28);
+    c.strokeStyle = cols[i % cols.length];
+    c.globalAlpha = 0.16;
+    c.lineWidth = 3;
+    c.beginPath(); c.moveTo(0, 0); c.lineTo(0, -H); c.stroke();
+  }
+  c.restore();
+  c.globalAlpha = 1;
+
+  var d = shareData;
+  var cx = W/2;
+
+  /* bandeau resultat */
+  var accent = d && d.outcome === "win" ? "#f5b31c" : (d && d.outcome === "tie" ? "#27c3f5" : "#f52c8c");
+  c.textAlign = "center";
+  c.fillStyle = accent;
+  c.font = "900 italic 104px -apple-system, Helvetica, Arial";
+  c.fillText(shareTitleFor(d ? d.outcome : "win").toUpperCase(), cx, 430);
+
+  /* scores */
+  if (d){
+    c.fillStyle = "#ffffff";
+    c.font = "900 italic 210px -apple-system, Helvetica, Arial";
+    c.fillText(d.myScore.toFixed(2), cx, 680);
+    if (d.oppScore !== null){
+      c.fillStyle = "#a98fd0";
+      c.font = "800 54px -apple-system, Helvetica, Arial";
+      c.fillText(t("sh_vs") + " " + d.oppScore.toFixed(2) + (d.oppName ? " · " + d.oppName : ""), cx, 770);
+    }
+
+    /* mon top 3 */
+    var y = 940;
+    c.font = "800 44px -apple-system, Helvetica, Arial";
+    c.fillStyle = "#8b7ab0";
+    c.fillText(t("sh_squad").toUpperCase(), cx, y);
+    y += 90;
+    for (var k=0;k<d.top3.length;k++){
+      var pl = PLAYERS[d.top3[k].idx];
+      c.fillStyle = "#1a0f33";
+      roundRect(c, 150, y - 58, W - 300, 88, 18);
+      c.fill();
+      c.textAlign = "left";
+      c.fillStyle = "#f5b31c";
+      c.font = "900 58px -apple-system, Helvetica, Arial";
+      c.fillText(String(pl[2]), 190, y);
+      c.fillStyle = "#eef0ff";
+      c.font = "800 46px -apple-system, Helvetica, Arial";
+      c.fillText(pl[0], 300, y);
+      c.textAlign = "center";
+      y += 110;
+    }
+  }
+
+  /* pied : promesse + url */
+  c.textAlign = "center";
+  c.fillStyle = "#c9b8e8";
+  c.font = "800 italic 52px -apple-system, Helvetica, Arial";
+  c.fillText(t("sh_promise"), cx, H - 300);
+  c.fillStyle = "#27c3f5";
+  c.font = "900 italic 62px -apple-system, Helvetica, Arial";
+  c.fillText("elevenduel.com", cx, H - 210);
+
+  /* logo si deja charge dans le DOM */
+  var img = document.querySelector("#screen-home .logo-wrap img");
+  if (img && img.complete && img.naturalWidth){
+    var lw = 300, lh = lw * (img.naturalHeight / img.naturalWidth);
+    try { c.drawImage(img, cx - lw/2, 120, lw, lh); } catch (e){}
+  } else {
+    c.fillStyle = "#ffffff";
+    c.font = "900 italic 76px -apple-system, Helvetica, Arial";
+    c.fillText("ELEVEN DUEL", cx, 220);
+  }
+  cb(cv);
+}
+
+function roundRect(c, x, y, w, h, r){
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.lineTo(x + w - r, y); c.quadraticCurveTo(x + w, y, x + w, y + r);
+  c.lineTo(x + w, y + h - r); c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  c.lineTo(x + r, y + h); c.quadraticCurveTo(x, y + h, x, y + h - r);
+  c.lineTo(x, y + r); c.quadraticCurveTo(x, y, x + r, y);
+  c.closePath();
+}
+
+/* ---------- actions de partage ---------- */
+function setShareMsg(txt, err){
+  var m = qs("share-msg");
+  if (!m) return;
+  m.textContent = txt || "";
+  m.className = "share-msg" + (err ? " err" : "");
+}
+
+/* Partage natif AVEC image : c'est ce qui permet la story Instagram. */
+function shareNative(){
+  setShareMsg(t("sh_preparing"));
+  drawShareCanvas(function(cv){
+    if (!cv.toBlob){ shareNativeText(); return; }
+    cv.toBlob(function(blob){
+      if (!blob){ shareNativeText(); return; }
+      var file = null;
+      try { file = new File([blob], "eleven-duel.png", { type: "image/png" }); } catch (e){ file = null; }
+      var payload = { text: buildShareText(), url: SHARE_URL };
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })){
+        payload.files = [file];
+      }
+      if (navigator.share){
+        navigator.share(payload).then(function(){ setShareMsg(""); })
+          .catch(function(){ setShareMsg(""); });   /* annulation = silencieux */
+      } else {
+        downloadShareImage(cv);
+      }
+    }, "image/png");
+  });
+}
+function shareNativeText(){
+  if (navigator.share){
+    navigator.share({ text: buildShareText(), url: SHARE_URL })
+      .then(function(){ setShareMsg(""); }).catch(function(){ setShareMsg(""); });
+  } else {
+    copyShare();
+  }
+}
+/* si le partage natif n'existe pas (desktop) : telechargement de l'image */
+function downloadShareImage(cv){
+  try {
+    var a = document.createElement("a");
+    a.href = cv.toDataURL("image/png");
+    a.download = "eleven-duel.png";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setShareMsg(t("sh_downloaded"));
+  } catch (e){ setShareMsg(t("sh_err"), true); }
+}
+
+function shareX(){
+  var u = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(buildShareText());
+  window.open(u, "_blank");
+}
+function shareWhatsApp(){
+  var u = "https://wa.me/?text=" + encodeURIComponent(buildShareText());
+  window.open(u, "_blank");
+}
+function copyShare(){
+  var txt = buildShareText();
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ setShareMsg(t("sh_copied")); })
+      .catch(function(){ setShareMsg(t("sh_err"), true); });
+  } else {
+    var ta = document.createElement("textarea");
+    ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); setShareMsg(t("sh_copied")); }
+    catch (e){ setShareMsg(t("sh_err"), true); }
+    document.body.removeChild(ta);
+  }
 }
 
 </script>

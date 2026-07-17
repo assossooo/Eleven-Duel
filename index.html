@@ -9,6 +9,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Eleven Duel">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Eleven Duel</title>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GF45SBQKR8"></script>
 <script>
@@ -30,19 +33,20 @@ gtag('config', 'G-GF45SBQKR8');
    violet = Perfect Eleven. Jamais decoratifs.
    ========================================================= */
 :root {
-  --bg:        #0B0A12;
-  --surface:   #14121F;
-  --surface-2: #1D1A2C;
-  --line:      #2A2640;
+  --bg:        #101014;
+  --surface:   #17171B;
+  --surface-2: #1F1F24;
+  --line:      #2B2B31;
 
-  --ink:       #ECEDF5;
-  --ink-2:     #9A97B0;
-  --ink-3:     #6B6880;
+  --ink:       #F4F2ED;
+  --ink-2:     #A3A19B;
+  --ink-3:     #64625D;
 
-  --gold:      #F5B31C;
-  --cyan:      #27C3F5;
-  --magenta:   #F52C8C;
-  --violet:    #8B3DF5;
+  --gold:      #F0B428;
+  --fire:      #FF5A1F;   /* l'orange du logo : action, mise */
+  --cyan:      #2FBFEF;
+  --magenta:   #F5327E;   /* le rose du logo : l'adversaire */
+  --violet:    #8B3DF5;   /* Perfect Eleven, inchange */
 
   --r-sm: 8px;
   --r-md: 14px;
@@ -78,7 +82,7 @@ gtag('config', 'G-GF45SBQKR8');
 html, body { height:100%; }
 body {
   background:var(--bg); color:var(--ink);
-  font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x:hidden; min-height:100%;
   padding-bottom:env(safe-area-inset-bottom);
 }
@@ -86,7 +90,12 @@ body {
 .screen { max-width:520px; margin:0 auto; padding:16px 14px 40px; }
 
 /* ------ titres façon brush ------ */
-.brush { font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:0.5px; }
+.brush {
+  font-family:'Anton', 'Arial Narrow', sans-serif; font-weight:400; font-style:normal;
+  text-transform:uppercase; letter-spacing:0.04em;
+}
+/* la voix display du produit, reutilisable */
+.display { font-family:'Anton', 'Arial Narrow', sans-serif; font-weight:400; text-transform:uppercase; letter-spacing:0.04em; }
 
 /* ------ HOME ------ */
 .lang-row { display:flex; justify-content:flex-end; gap:6px; margin-bottom:2px; }
@@ -118,13 +127,15 @@ body {
 .lg-active { border-color:var(--cyan); color:var(--cyan); background:#102035; }
 .home-btns { display:flex; flex-direction:column; gap:12px; }
 .big-btn {
-  border:none; border-radius:16px; padding:16px; font-size:1.15rem; font-weight:900;
-  font-style:italic; text-transform:uppercase; letter-spacing:0.5px; color:var(--bg);
-  background:linear-gradient(135deg, var(--cyan), #1c8ef5); box-shadow:0 6px 20px color-mix(in srgb, var(--cyan) 27%, transparent);
+  border:none; border-radius:0; padding:15px 22px; min-height:54px;
+  font-family:'Anton', 'Arial Narrow', sans-serif; font-weight:400;
+  font-size:19px; letter-spacing:0.06em; text-transform:uppercase; color:var(--bg);
+  background:var(--ink);
+  transition:transform 0.1s ease, filter 0.15s ease;
 }
 .big-btn:active { transform:scale(0.97); }
-.big-btn.gold { background:var(--gold); }
-.big-btn.pink { background:transparent; color:var(--ink); border:1px solid var(--line); box-shadow:none; }
+.big-btn.gold { background:var(--fire); }
+.big-btn.pink { background:transparent; color:var(--ink); border:2px solid var(--line); box-shadow:none; }
 .big-btn.ghost { background:none; color:var(--ink-2); border:none; box-shadow:none; font-size:15px; font-weight:600; }
 
 /* ------ GAME HUD ------ */
@@ -136,7 +147,7 @@ body {
 .hud-out { opacity:0.45; }
 .hud-label { font-size:0.72rem; color:var(--ink-2); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .hud-nums { display:flex; justify-content:space-between; align-items:baseline; }
-.hud-budget { font-weight:900; font-size:1.05rem; }
+.hud-budget { font-family:'Anton','Arial Narrow',sans-serif; font-weight:400; font-size:1.5rem; line-height:1.05; }
 .hud-count { font-size:0.78rem; color:var(--ink-2); font-weight:700; }
 .hud-barwrap { height:5px; background:var(--bg); border-radius:3px; margin-top:5px; overflow:hidden; }
 .hud-bar { height:100%; border-radius:3px; transition:width 0.4s; }
@@ -157,10 +168,10 @@ body {
 .tier-pink { background:linear-gradient(160deg, #2a0818, var(--surface)); border-color:var(--magenta); box-shadow:0 0 26px color-mix(in srgb, var(--magenta) 20%, transparent); }
 .tier-cyan { background:linear-gradient(160deg, #08202a, var(--surface)); border-color:var(--cyan); box-shadow:0 0 22px color-mix(in srgb, var(--cyan) 20%, transparent); }
 .tier-grey { background:linear-gradient(160deg, var(--surface-2), var(--surface)); border-color:#3c3860; }
-.pc-note { font-size:2.6rem; font-weight:900; line-height:1; }
+.pc-note { font-family:'Anton','Arial Narrow',sans-serif; font-weight:400; font-size:3.6rem; line-height:0.95; }
 .tier-gold .pc-note { color:var(--gold); } .tier-pink .pc-note { color:var(--magenta); }
 .tier-cyan .pc-note { color:var(--cyan); } .tier-grey .pc-note { color:#b8bce0; }
-.pc-name { font-size:1.5rem; font-weight:900; font-style:italic; text-transform:uppercase; margin:4px 0 2px; }
+.pc-name { font-family:'Anton','Arial Narrow',sans-serif; font-weight:400; font-size:1.7rem; text-transform:uppercase; margin:4px 0 2px; }
 .pc-pos { color:var(--ink-2); font-size:0.9rem; font-weight:700; }
 .pc-club { color:var(--ink-2); font-size:0.82rem; margin-top:2px; }
 
@@ -168,14 +179,14 @@ body {
 .timer-wrap { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
 .timer-track { flex:1; height:8px; background:var(--surface); border-radius:4px; overflow:hidden; border:1px solid var(--line); }
 #timer-bar { height:100%; background:linear-gradient(90deg, var(--cyan), var(--gold)); border-radius:4px; }
-#timer-sec { font-weight:900; color:var(--gold); min-width:34px; text-align:right; font-size:0.95rem; }
+#timer-sec { font-family:'Anton','Arial Narrow',sans-serif; font-weight:400; color:var(--gold); min-width:34px; text-align:right; font-size:1.3rem; }
 
 /* ------ MISES ------ */
 .bid-zone { background:var(--surface); border-radius:16px; padding:14px; border:1px solid var(--line); }
 .bid-input-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
 #bid-input {
-  flex:1; background:var(--bg); border:1px solid var(--line); color:#fff; border-radius:12px;
-  padding:12px; font-size:1.4rem; font-weight:900; text-align:center; -webkit-appearance:none;
+  flex:1; background:var(--bg); border:2px solid var(--line); color:var(--ink); border-radius:0;
+  padding:12px; font-size:1.7rem; font-family:'Anton','Arial Narrow',sans-serif; font-weight:400; text-align:center; -webkit-appearance:none;
 }
 .bid-m { font-weight:900; color:var(--ink-2); font-size:1.1rem; }
 #bid-slider { width:100%; margin:2px 0 10px; -webkit-appearance:none; height:6px; border-radius:3px; background:var(--bg); outline:none; }
@@ -203,7 +214,7 @@ body {
 }
 #btn-pass { background:var(--line); color:var(--ink-2); border:1px solid var(--line); }
 #btn-pass:disabled { opacity:0.45; }
-#btn-bid { background:linear-gradient(135deg, var(--gold), #f5731c); color:var(--bg); box-shadow:0 4px 16px color-mix(in srgb, var(--gold) 27%, transparent); }
+#btn-bid { background:var(--fire); color:var(--bg); }
 #btn-bid:active { transform:scale(0.97); }
 .auto-pass { text-align:center; color:var(--ink-2); padding:18px 10px; font-weight:700; }
 
@@ -237,7 +248,7 @@ body {
 .rv-grid.rv-n3, .rv-grid.rv-n4 { grid-template-columns:1fr 1fr; }
 .rv-cell { border-radius:14px; padding:12px 8px; text-align:center; border:1px solid var(--line); background:var(--bg); }
 .rv-side { font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.rv-amt { font-size:1.5rem; font-weight:900; }
+.rv-amt { font-family:'Anton','Arial Narrow',sans-serif; font-weight:400; font-size:2.1rem; }
 .rv-cyan .rv-side, .rv-cyan .rv-amt { color:var(--cyan); }
 .rv-pink .rv-side, .rv-pink .rv-amt { color:var(--magenta); }
 .rv-orange .rv-side, .rv-orange .rv-amt { color:#f5731c; }
@@ -250,8 +261,9 @@ body {
 .rv-lose { background:color-mix(in srgb, var(--magenta) 9%, transparent); color:var(--magenta); }
 .rv-tie { background:color-mix(in srgb, var(--cyan) 9%, transparent); color:var(--cyan); }
 .rv-waiting { text-align:center; color:var(--ink-2); font-weight:700; padding:22px 8px; }
-.rv-next { width:100%; border:none; border-radius:12px; padding:14px; font-weight:900; font-style:italic;
-  text-transform:uppercase; font-size:1rem; background:linear-gradient(135deg, var(--cyan), #1c8ef5); color:var(--bg); }
+.rv-next { width:100%; border:none; border-radius:0; padding:14px; min-height:52px;
+  font-family:'Anton','Arial Narrow',sans-serif; font-weight:400; letter-spacing:0.06em;
+  text-transform:uppercase; font-size:18px; background:var(--ink); color:var(--bg); }
 
 .rules-title { text-align:center; font-size:1.3rem; color:var(--gold); margin-bottom:12px; }
 .rules-body { list-style:none; }
@@ -322,8 +334,9 @@ body {
 .join-row { display:flex; gap:8px; margin-top:10px; }
 .join-row .text-input { flex:1; text-transform:uppercase; letter-spacing:2px; text-align:center; }
 .mid-btn {
-  border:none; border-radius:12px; padding:12px 16px; font-weight:900; font-style:italic;
-  text-transform:uppercase; font-size:0.9rem; background:linear-gradient(135deg, var(--cyan), #1c8ef5); color:var(--bg);
+  border:none; border-radius:0; padding:12px 16px; min-height:46px;
+  font-family:'Anton','Arial Narrow',sans-serif; font-weight:400; letter-spacing:0.06em;
+  text-transform:uppercase; font-size:15px; background:var(--ink); color:var(--bg);
 }
 .mid-btn.full { width:100%; margin-top:10px; }
 .mid-btn.gold { background:linear-gradient(135deg, var(--gold), #f5731c); }
@@ -1219,6 +1232,28 @@ body.theme-genesis .player-card::after {
 }
 
 .lang-footer { justify-content:center; margin-top:20px; margin-bottom:0; }
+
+/* ===== V23 : DA "Affiche de match" — signatures ===== */
+/* CTA incline comme le lettrage du logo */
+.cta-skew {
+  display:flex; align-items:center; justify-content:space-between; width:100%;
+  transform:skewX(-9deg); margin:0 4px 18px; width:calc(100% - 8px);
+}
+.cta-in { transform:skewX(9deg); }
+.cta-go { color:var(--fire); font-size:22px; }
+
+/* sommaire facon une de journal */
+.toc { border-top:1px solid var(--line); margin-bottom:14px; }
+.toc-row {
+  display:flex; align-items:baseline; width:100%; background:none; border:none; cursor:pointer;
+  border-bottom:1px solid var(--line); padding:15px 2px; color:var(--ink); text-align:left; gap:12px;
+  min-height:52px;
+}
+.toc-lbl { font-family:'Anton','Arial Narrow',sans-serif; font-size:19px; letter-spacing:0.04em; text-transform:uppercase; }
+.toc-dots { flex:1; border-bottom:2px dotted var(--line); transform:translateY(-4px); }
+.toc-meta { font-size:12px; font-weight:700; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.toc-meta.hot { color:var(--fire); }
+
 </style>
 </head>
 <body>
@@ -1314,19 +1349,29 @@ body.theme-genesis .player-card::after {
   </div><!-- /home-opts -->
 
   <div class="home-btns">
-    <button id="btn-online" class="big-btn" data-i18n="btn_online"></button>
-    <button id="btn-play" class="big-btn pink" data-i18n="btn_solo"></button>
-    <button id="btn-perfect" class="pe-banner">
-      <span class="pe-banner-badge" data-i18n="pe_new"></span>
-      <span class="pe-banner-star">⭐</span>
-      <span class="pe-banner-txt">
-        <span class="pe-banner-title" data-i18n="btn_perfect"></span>
-        <span class="pe-banner-sub" data-i18n="pe_banner_sub"></span>
-      </span>
-      <span class="pe-banner-arrow">›</span>
-    </button>
-    <button id="btn-shop" class="big-btn gold" data-i18n="btn_shop"></button>
-    <button id="btn-rules" class="big-btn ghost" data-i18n="btn_rules"></button>
+    <button id="btn-online" class="big-btn cta-skew"><span class="cta-in" data-i18n="btn_online"></span><span class="cta-in cta-go">→</span></button>
+    <div class="toc">
+      <button id="btn-play" class="toc-row">
+        <span class="toc-lbl" data-i18n="btn_solo"></span>
+        <span class="toc-dots"></span>
+        <span class="toc-meta"></span>
+      </button>
+      <button id="btn-perfect" class="toc-row">
+        <span class="toc-lbl" data-i18n="btn_perfect"></span>
+        <span class="toc-dots"></span>
+        <span class="toc-meta hot" data-i18n="pe_new"></span>
+      </button>
+      <button id="btn-shop" class="toc-row">
+        <span class="toc-lbl" data-i18n="btn_shop"></span>
+        <span class="toc-dots"></span>
+        <span class="toc-meta"></span>
+      </button>
+      <button id="btn-rules" class="toc-row">
+        <span class="toc-lbl" data-i18n="btn_rules"></span>
+        <span class="toc-dots"></span>
+        <span class="toc-meta"></span>
+      </button>
+    </div>
     <div class="home-mini-row">
       <button id="btn-profile" class="mini-btn"><span class="mini-emoji">👑</span><span data-i18n="pf_title"></span></button>
       <button id="btn-ranks" class="mini-btn"><span class="mini-emoji">🏆</span><span data-i18n="rk_title"></span></button>
@@ -6464,7 +6509,7 @@ var BOT_WAIT_MS = 12000;
    GitHub Pages met le HTML en cache (et l'icone PWA iOS bien plus longtemps),
    donc des joueurs tournent sur d'anciennes versions -> le multi casse.
    ========================================================= */
-var APP_VERSION = 22;
+var APP_VERSION = 23;
 function forceReload(){
   /* on change l'URL pour contourner le cache (reload(true) est obsolete) */
   var base = window.location.pathname;

@@ -12,7 +12,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<title>Eleven Duel</title>
+<title>Eleven Duel — Enchères foot à l'aveugle</title>
+<meta name="description" content="250M de budget, 11 joueurs à recruter, des enchères secrètes. Affronte le monde entier ou construis l'équipe parfaite en solo. Gratuit, sans installation.">
+<link rel="canonical" href="https://elevenduel.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Eleven Duel">
+<meta property="og:title" content="Eleven Duel — Enchères foot à l'aveugle">
+<meta property="og:description" content="250M. Onze joueurs. Un gagnant. Des enchères secrètes sur les stars du foot — gratuit et sans installation.">
+<meta property="og:url" content="https://elevenduel.com/">
+<meta property="og:image" content="https://elevenduel.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Eleven Duel — Enchères foot à l'aveugle">
+<meta name="twitter:description" content="250M. Onze joueurs. Un gagnant. Enchères secrètes sur les stars du foot.">
+<meta name="twitter:image" content="https://elevenduel.com/og-image.png">
+<meta name="twitter:site" content="@elevenduel">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GF45SBQKR8"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -1290,6 +1306,10 @@ body.theme-genesis .player-card::after {
   0%, 100% { transform:translateX(-70%); }
   50%      { transform:translateX(70%); }
 }
+.bid-after {
+  text-align:center; font-size:12px; font-weight:600; color:var(--ink-3);
+  min-height:16px; margin:2px 0 6px; font-variant-numeric:tabular-nums;
+}
 </style>
 </head>
 <body>
@@ -1423,10 +1443,10 @@ body.theme-genesis .player-card::after {
       </button>
     </div>
     <div class="home-mini-row">
-      <button id="btn-profile" class="mini-btn"><span class="mini-emoji">👑</span><span data-i18n="pf_title"></span></button>
-      <button id="btn-ranks" class="mini-btn"><span class="mini-emoji">🏆</span><span data-i18n="rk_title"></span></button>
-      <button id="btn-leagues" class="mini-btn"><span class="mini-emoji">👥</span><span data-i18n="lg_title"></span></button>
-      <button id="btn-friends" class="mini-btn"><span class="mini-emoji">🤝</span><span data-i18n="fr_title"></span><span id="friends-badge" class="friends-badge hidden"></span></button>
+      <button id="btn-profile" class="mini-btn" aria-label="Profil"><span class="mini-emoji">👑</span><span data-i18n="pf_title"></span></button>
+      <button id="btn-ranks" class="mini-btn" aria-label="Classements"><span class="mini-emoji">🏆</span><span data-i18n="rk_title"></span></button>
+      <button id="btn-leagues" class="mini-btn" aria-label="Ligues"><span class="mini-emoji">👥</span><span data-i18n="lg_title"></span></button>
+      <button id="btn-friends" class="mini-btn" aria-label="Amis"><span class="mini-emoji">🤝</span><span data-i18n="fr_title"></span><span id="friends-badge" class="friends-badge hidden"></span></button>
     </div>
   </div>
 </div>
@@ -1457,6 +1477,7 @@ body.theme-genesis .player-card::after {
       <input id="bid-input" type="number" inputmode="numeric" pattern="[0-9]*" min="0" value="0">
       <span class="bid-m">M</span>
     </div>
+    <div id="bid-after" class="bid-after"></div>
     <input id="bid-slider" type="range" min="0" max="250" value="0">
     <div class="chip-row">
       <button class="chip-bump" data-n="-10">-10</button>
@@ -1912,7 +1933,7 @@ var FIREBASE_CONFIG = {
 var I18N = {
 fr: {
   hk1:"250M.", hk2:"Onze joueurs.", hk3:"Un gagnant.", wm_season:"Saison Genesis",
-bid_lbl:"Ta mise à l'aveugle",
+bid_lbl:"Ta mise à l'aveugle", bid_after:"Reste après mise : {a}M",
 tagline:"Des enchères à l'aveugle sur les stars du foot. Personne ne voit ta mise avant la révélation.",
   opponent:"Ton adversaire : Ali", prof_random:"Aléatoire", prof_prudent:"Prudent", prof_agressif:"Agressif", prof_malin:"Malin",
   league_label:"Championnat", lg_ALL:"Monde entier",
@@ -2094,7 +2115,7 @@ tagline:"Des enchères à l'aveugle sur les stars du foot. Personne ne voit ta m
 },
 en: {
   hk1:"250M.", hk2:"Eleven players.", hk3:"One winner.", wm_season:"Genesis Season",
-bid_lbl:"Your blind bid",
+bid_lbl:"Your blind bid", bid_after:"Left after bid: {a}M",
 tagline:"Blind auctions on football stars. Nobody sees your bid before the reveal.",
   opponent:"Your opponent: Ali", prof_random:"Random", prof_prudent:"Cautious", prof_agressif:"Aggressive", prof_malin:"Smart",
   league_label:"League", lg_ALL:"Whole world",
@@ -2277,7 +2298,7 @@ tagline:"Blind auctions on football stars. Nobody sees your bid before the revea
 },
 es: {
   hk1:"250M.", hk2:"Once jugadores.", hk3:"Un ganador.", wm_season:"Temporada Genesis",
-bid_lbl:"Tu puja a ciegas",
+bid_lbl:"Tu puja a ciegas", bid_after:"Restante tras la puja: {a}M",
 tagline:"Subastas a ciegas sobre las estrellas del fútbol. Nadie ve tu puja antes de la revelación.",
   opponent:"Tu rival: Ali", prof_random:"Aleatorio", prof_prudent:"Prudente", prof_agressif:"Agresivo", prof_malin:"Astuto",
   league_label:"Liga", lg_ALL:"Mundo entero",
@@ -2472,6 +2493,7 @@ function tf(key, vars){
   return s;
 }
 function applyI18n(){
+  document.documentElement.setAttribute("lang", store.lang);
   var els = document.querySelectorAll("[data-i18n]");
   for (var i=0;i<els.length;i++) els[i].textContent = t(els[i].getAttribute("data-i18n"));
   var phs = document.querySelectorAll("[data-i18n-ph]");
@@ -3124,6 +3146,19 @@ function setBid(v){
   if (v > maxB) v = maxB;
   qs("bid-input").value = String(v);
   qs("bid-slider").value = String(v);
+  updateBidAfter();
+}
+/* combien restera-t-il apres cette mise ? (le budget affiche = celui du HUD) */
+function updateBidAfter(){
+  var el = qs("bid-after");
+  if (!el) return;
+  var m = me();
+  if (!m){ el.textContent = ""; return; }
+  var v = parseInt(qs("bid-input").value, 10);
+  if (isNaN(v)) v = 0;
+  var left = m.budget - v;
+  if (left < 0) left = 0;
+  el.textContent = tf("bid_after", { a: left });
 }
 
 function renderBonusBar(){}
@@ -3158,6 +3193,7 @@ function renderRound(){
   if (minBidYou() > 0){ pb.disabled = true; pb.textContent = t("no_pass"); }
   else { pb.disabled = false; pb.textContent = tf("pass", { n: passesLeft }); }
   qs("btn-bid").textContent = t("bid");
+  updateBidAfter();
 
   if (me().out){
     qs("bid-zone").classList.add("hidden");
@@ -3178,7 +3214,7 @@ function renderRound(){
   startTimer();
 }
 
-function syncFromSlider(){ qs("bid-input").value = qs("bid-slider").value; }
+function syncFromSlider(){ qs("bid-input").value = qs("bid-slider").value; updateBidAfter(); }
 function syncFromInput(){
   var raw = qs("bid-input").value;
   if (raw === "" || raw === "-"){ return; } /* laisser effacer librement */
@@ -3188,6 +3224,7 @@ function syncFromInput(){
   if (v > maxB){ v = maxB; qs("bid-input").value = String(v); }
   var minS = parseInt(qs("bid-slider").min, 10) || 0;
   qs("bid-slider").value = String(Math.max(minS, Math.min(maxB, v)));
+  updateBidAfter();
 }
 function bumpBid(n){
   var v = parseInt(qs("bid-input").value, 10);
@@ -6566,7 +6603,7 @@ var BOT_WAIT_MS = 12000;
    GitHub Pages met le HTML en cache (et l'icone PWA iOS bien plus longtemps),
    donc des joueurs tournent sur d'anciennes versions -> le multi casse.
    ========================================================= */
-var APP_VERSION = 23;
+var APP_VERSION = 24;
 function forceReload(){
   /* on change l'URL pour contourner le cache (reload(true) est obsolete) */
   var base = window.location.pathname;

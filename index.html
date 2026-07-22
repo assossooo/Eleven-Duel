@@ -1319,6 +1319,49 @@ body.theme-genesis .player-card::after {
   color:var(--gold); border:1px solid color-mix(in srgb, var(--gold) 45%, transparent);
   border-radius:999px; padding:2px 8px; line-height:1.4;
 }
+
+/* ===== V28 : les 4 niveaux redeviennent lisibles sous les skins CDM =====
+   L'edition (2010/2014/2018/2022) donne le FOND.
+   Le niveau (Legende/Super rare/Rare/Commun) donne BORDURE + NOTE + HALO. */
+
+/* --- LEGENDE --- */
+.cdm-skin.tier-gold, .cdm-skin.cdm-gold {
+  border-color:#E8B23A !important;
+  box-shadow:0 0 30px rgba(232,178,58,0.42), inset 0 0 34px rgba(232,178,58,0.10) !important;
+}
+.cdm-skin.tier-gold .pc-note, .cdm-skin.cdm-gold .skin-mini-note {
+  color:#FFD94A !important; text-shadow:0 0 10px rgba(232,178,58,0.65) !important;
+}
+
+/* --- SUPER RARE --- */
+.cdm-skin.tier-pink, .cdm-skin.cdm-pink {
+  border-color:#F03D8A !important;
+  box-shadow:0 0 24px rgba(240,61,138,0.34), inset 0 0 30px rgba(240,61,138,0.08) !important;
+}
+.cdm-skin.tier-pink .pc-note, .cdm-skin.cdm-pink .skin-mini-note {
+  color:#FF9AC6 !important; text-shadow:0 0 9px rgba(240,61,138,0.6) !important;
+}
+
+/* --- RARE --- */
+.cdm-skin.tier-cyan, .cdm-skin.cdm-cyan {
+  border-color:#35C8F0 !important;
+  box-shadow:0 0 20px rgba(53,200,240,0.28), inset 0 0 26px rgba(53,200,240,0.07) !important;
+}
+.cdm-skin.tier-cyan .pc-note, .cdm-skin.cdm-cyan .skin-mini-note {
+  color:#A5E8FB !important; text-shadow:0 0 8px rgba(53,200,240,0.55) !important;
+}
+
+/* --- COMMUN : sobre, aucun halo. C'est ce qui rend les autres precieuses. --- */
+.cdm-skin.tier-grey, .cdm-skin.cdm-grey {
+  border-color:#5A5A66 !important;
+  box-shadow:none !important;
+}
+.cdm-skin.tier-grey .pc-note, .cdm-skin.cdm-grey .skin-mini-note {
+  color:#D6D6DE !important; text-shadow:none !important;
+}
+/* le reflet perle du skin 2022 est reserve aux cartes qui le meritent */
+.cdm2022.tier-grey::after, .cdm2022.cdm-grey::after { display:none; }
+
 </style>
 </head>
 <body>
@@ -1607,9 +1650,6 @@ body.theme-genesis .player-card::after {
   </div>
 
   <div id="shop-pane-skins" class="shop-pane hidden">
-  <p class="shop-sub" data-i18n="shop_skins_sub"></p>
-  <div id="shop-skins-grid" class="skins-grid"></div>
-  <div id="shop-skins-footer" class="shop-skins-footer"></div>
 
   <div id="shop-trionda-section" class="hidden">
     <div class="shop-section" data-i18n="shop_trionda_title"></div>
@@ -2055,7 +2095,7 @@ tagline:"Des enchères à l'aveugle sur les stars du foot. Personne ne voit ta m
   lg_pick:"Compter la partie pour une ligue :", lg_free:"Aucune (partie libre)",
   lg_share:"Partage ce code pour inviter tes amis !",
   skin_none:"Aucun", skin_tierpack_name:"Pack Premium", skin_trionda_name:"Trionda ⚽",
-  shop_trionda_title:"Skin Coupe du Monde — Édition limitée", shop_trionda_sub:"Inspiré du ballon officiel Trionda (USA 🇺🇸 Mexique 🇲🇽 Canada 🇨🇦). Disponible jusqu'au 1er août 2026 — après cette date, le skin disparaît automatiquement de ton inventaire.",
+  shop_trionda_title:"Skin Coupe du Monde 2026", shop_trionda_sub:"Inspiré du ballon officiel Trionda (USA 🇺🇸 Mexique 🇲🇽 Canada 🇨🇦). Le style s'adapte au niveau de chaque carte.",
   skin_select_title:"Skin équipé",
   share_link_btn:"🔗 Partager le lien", share_join_text:"Rejoins ma partie Eleven Duel !",
   share_copied:"Lien copié !", share_copy_manual:"Copie ce lien :",
@@ -2136,7 +2176,7 @@ tagline:"Des enchères à l'aveugle sur les stars du foot. Personne ne voit ta m
   tier_continental:"Continental", tier_mondial:"Mondial",
   season_reward_title:"Fin de saison !", season_rank_mondial:"Rang mondial",
   season_history_title:"Historique des saisons",
-  skin_gold:"Or", skin_pink:"Élite", skin_cyan:"Rare", skin_grey:"Commun",
+  skin_gold:"Légende", skin_pink:"Super rare", skin_cyan:"Rare", skin_grey:"Commun",
   skin_buy:"Débloquer les skins", skin_owned:"✅ Skins débloqués", skin_need_gold:"Pas assez de DuelGold 👑",
   shop_skins:"Skins de cartes", shop_skins_sub:"Un pack unique qui applique un style premium aux cartes selon leur niveau. Achat en DuelGold 👑 (gagnés en fin de saison).",
   country_label:"Pays",
@@ -2236,7 +2276,7 @@ tagline:"Blind auctions on football stars. Nobody sees your bid before the revea
   lg_pick:"Count this game for a league:", lg_free:"None (casual game)",
   lg_share:"Share this code to invite your friends!",
   skin_none:"None", skin_tierpack_name:"Premium Pack", skin_trionda_name:"Trionda ⚽",
-  shop_trionda_title:"World Cup Skin — Limited Edition", shop_trionda_sub:"Inspired by the official Trionda ball (USA 🇺🇸 Mexico 🇲🇽 Canada 🇨🇦). Available until August 1, 2026 — after that date, the skin disappears automatically from your inventory.",
+  shop_trionda_title:"World Cup 2026 Skin", shop_trionda_sub:"Inspired by the official Trionda ball (USA 🇺🇸 Mexico 🇲🇽 Canada 🇨🇦). The style adapts to each card's tier.",
   skin_select_title:"Equipped skin",
   share_link_btn:"🔗 Share link", share_join_text:"Join my Eleven Duel game!",
   share_copied:"Link copied!", share_copy_manual:"Copy this link:",
@@ -2320,7 +2360,7 @@ tagline:"Blind auctions on football stars. Nobody sees your bid before the revea
   tier_continental:"Continental", tier_mondial:"World",
   season_reward_title:"Season over!", season_rank_mondial:"World rank",
   season_history_title:"Season history",
-  skin_gold:"Gold", skin_pink:"Elite", skin_cyan:"Rare", skin_grey:"Common",
+  skin_gold:"Legend", skin_pink:"Super rare", skin_cyan:"Rare", skin_grey:"Common",
   skin_buy:"Unlock skins", skin_owned:"✅ Skins unlocked", skin_need_gold:"Not enough DuelGold 👑",
   shop_skins:"Card skins", shop_skins_sub:"A single pack that applies a premium style to cards based on their tier. Buy with DuelGold 👑 (earned at season end).",
   country_label:"Country",
@@ -2418,7 +2458,7 @@ tagline:"Subastas a ciegas sobre las estrellas del fútbol. Nadie ve tu puja ant
   lg_pick:"Contar esta partida para una liga:", lg_free:"Ninguna (partida libre)",
   lg_share:"¡Comparte este código para invitar a tus amigos!",
   skin_none:"Ninguno", skin_tierpack_name:"Pack Premium", skin_trionda_name:"Trionda ⚽",
-  shop_trionda_title:"Skin Mundial — Edición limitada", shop_trionda_sub:"Inspirado en el balón oficial Trionda (USA 🇺🇸 México 🇲🇽 Canadá 🇨🇦). Disponible hasta el 1 de agosto de 2026 — después de esa fecha, el skin desaparece automáticamente de tu inventario.",
+  shop_trionda_title:"Skin Mundial 2026", shop_trionda_sub:"Inspirado en el balón oficial Trionda (USA 🇺🇸 México 🇲🇽 Canadá 🇨🇦). El estilo se adapta al nivel de cada carta.",
   skin_select_title:"Skin equipado",
   share_link_btn:"🔗 Compartir enlace", share_join_text:"Únete a mi partida de Eleven Duel!",
   share_copied:"¡Enlace copiado!", share_copy_manual:"Copia este enlace:",
@@ -2502,7 +2542,7 @@ tagline:"Subastas a ciegas sobre las estrellas del fútbol. Nadie ve tu puja ant
   tier_continental:"Continental", tier_mondial:"Mundial",
   season_reward_title:"¡Fin de temporada!", season_rank_mondial:"Rango mundial",
   season_history_title:"Historial de temporadas",
-  skin_gold:"Oro", skin_pink:"Élite", skin_cyan:"Raro", skin_grey:"Común",
+  skin_gold:"Leyenda", skin_pink:"Súper raro", skin_cyan:"Raro", skin_grey:"Común",
   skin_buy:"Desbloquear skins", skin_owned:"✅ Skins desbloqueados", skin_need_gold:"DuelGold insuficiente 👑",
   shop_skins:"Skins de cartas", shop_skins_sub:"Un pack único que aplica un estilo premium a las cartas según su nivel. Compra con DuelGold 👑 (ganados al final de temporada).",
   country_label:"País",
@@ -2683,8 +2723,8 @@ var CDM_SKINS = [
 ];
 function cdmUnlocked(){ return Date.now() >= CDM_UNLOCK; }
 function cdmOwned(id){ return store.ownedCdm.indexOf(id) >= 0; }
-var TRIONDA_EXPIRY = new Date("2026-08-01T00:00:00Z").getTime();
-function triondaExpired(){ return Date.now() >= TRIONDA_EXPIRY; }
+var TRIONDA_EXPIRY = Infinity;   /* v28 : plus de date limite */
+function triondaExpired(){ return false; }   /* v28 : le skin ne disparait plus */
 function svgDataUrl(svgStr){ return "data:image/svg+xml;base64," + btoa(svgStr); }
 var TRIONDA_ICON_URLS = {
   star: svgDataUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12,1 14.7,8.6 22.8,8.8 16.3,13.7 18.6,21.5 12,16.9 5.4,21.5 7.7,13.7 1.2,8.8 9.3,8.6" fill="#ffffff"/></svg>'),
@@ -4415,43 +4455,8 @@ function renderSkinSelector(){
   }
 }
 function renderSkinsShop(){
-  var box = qs("shop-skins-grid");
-  if (!box) return;
-  clear(box);
-  var tiers = [
-    { cls:"gold", label:t("skin_gold"), note:91, name:"Mbappé" },
-    { cls:"pink", label:t("skin_pink"), note:88, name:"Saka" },
-    { cls:"cyan", label:t("skin_cyan"), note:85, name:"Lookman" },
-    { cls:"grey", label:t("skin_grey"), note:78, name:"Giroud" }
-  ];
-  for (var i=0;i<tiers.length;i++){
-    (function(tr){
-      var mini = el("div","skin-mini skin-" + tr.cls + " skinned");
-      mini.appendChild(el("div","skin-mini-note", String(tr.note)));
-      mini.appendChild(el("div","skin-mini-name", tr.name));
-      mini.appendChild(el("div","skin-mini-lbl", tr.label));
-      box.appendChild(mini);
-    })(tiers[i]);
-  }
-  var footer = qs("shop-skins-footer");
-  clear(footer);
-  if (store.skinsPack){
-    footer.appendChild(el("div","skin-owned", t("skin_owned")));
-  } else {
-    var buy = el("button","shop-btn shop-btn-buy" + (store.duelgold < SKINS_PACK_PRICE ? " shop-btn-poor" : ""),
-      t("skin_buy") + " · " + SKINS_PACK_PRICE + " 👑");
-    buy.addEventListener("click", function(){
-      if (store.duelgold < SKINS_PACK_PRICE){ window.alert(t("skin_need_gold")); return; }
-      store.duelgold -= SKINS_PACK_PRICE;
-      store.skinsPack = true;
-      if (store.equippedSkin === "none") store.equippedSkin = "tierpack";
-      logPurchase("skin", "tierpack", SKINS_PACK_PRICE, "duelgold");
-      saveStore(store);
-      pushShopStateToAccount();
-      renderShop();
-    });
-    footer.appendChild(buy);
-  }
+  /* v28 : le pack premium a 2000 DuelGold a ete retire du shop.
+     store.skinsPack reste lu pour les joueurs qui l'avaient deja achete. */
   renderTriondaShop();
   renderSkinSelector();
 }
@@ -4563,7 +4568,9 @@ function renderCdmShop(){
       /* 2 aperçus (Or + Rare) pour montrer le style */
       var grid = el("div","cdm-mini-grid");
       grid.appendChild(cdmCardMini(sk.id, "gold", 91, t("skin_gold")));
+      grid.appendChild(cdmCardMini(sk.id, "pink", 88, t("skin_pink")));
       grid.appendChild(cdmCardMini(sk.id, "cyan", 85, t("skin_cyan")));
+      grid.appendChild(cdmCardMini(sk.id, "grey", 78, t("skin_grey")));
       block.appendChild(grid);
 
       /* bouton / compteur / possédé */
@@ -6647,7 +6654,7 @@ var BOT_WAIT_MS = 12000;
    GitHub Pages met le HTML en cache (et l'icone PWA iOS bien plus longtemps),
    donc des joueurs tournent sur d'anciennes versions -> le multi casse.
    ========================================================= */
-var APP_VERSION = 27;
+var APP_VERSION = 28;
 function forceReload(){
   /* on change l'URL pour contourner le cache (reload(true) est obsolete) */
   var base = window.location.pathname;

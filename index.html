@@ -3919,6 +3919,12 @@ function onGameUpdate(snap){
     showOnlineEnd(d);
     return;
   }
+  /* v29 — CORRECTIF : tant que le resultat de l'enchere est affiche, on ne
+     re-rend PAS la manche par-dessus. Sans ce garde-fou, n'importe quelle
+     ecriture sur le document du duel (typiquement un emoji envoye !) declenchait
+     un snapshot qui retombait ici et fermait la revelation, donnant l'impression
+     de sauter directement au tour suivant. Le mode solo avait deja ce garde. */
+  if (!qs("overlay-reveal").classList.contains("hidden")) return;
   if (d.round > 0){
     if (qs("screen-game").classList.contains("hidden")){
       hideAllScreens();
@@ -6654,7 +6660,7 @@ var BOT_WAIT_MS = 12000;
    GitHub Pages met le HTML en cache (et l'icone PWA iOS bien plus longtemps),
    donc des joueurs tournent sur d'anciennes versions -> le multi casse.
    ========================================================= */
-var APP_VERSION = 28;
+var APP_VERSION = 29;
 function forceReload(){
   /* on change l'URL pour contourner le cache (reload(true) est obsolete) */
   var base = window.location.pathname;

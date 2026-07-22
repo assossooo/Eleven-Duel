@@ -1362,6 +1362,29 @@ body.theme-genesis .player-card::after {
 /* le reflet perle du skin 2022 est reserve aux cartes qui le meritent */
 .cdm2022.tier-grey::after, .cdm2022.cdm-grey::after { display:none; }
 
+
+/* ===== V30 : la carte de fin qui donne envie de partager ===== */
+.end-wow { margin:14px 0; }
+.end-badge {
+  text-align:center; margin-bottom:12px;
+  font-family:'Barlow Condensed','Arial Narrow',sans-serif; font-weight:800;
+  font-size:19px; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold);
+}
+.end-badge span {
+  display:inline-block; border:1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  border-radius:999px; padding:6px 16px;
+}
+.end-stats { border-top:1px solid var(--line); }
+.end-stat {
+  display:flex; align-items:baseline; gap:10px;
+  border-bottom:1px solid var(--line); padding:10px 2px;
+}
+.end-stat-lbl { flex:1; font-size:12.5px; font-weight:600; color:var(--ink-2); }
+.end-stat-val {
+  font-family:'Barlow Condensed','Arial Narrow',sans-serif; font-weight:800;
+  font-size:19px; color:var(--ink); font-variant-numeric:tabular-nums;
+}
+.end-stat-val small { font-size:13px; color:var(--ink-3); font-weight:700; margin-left:4px; }
 </style>
 </head>
 <body>
@@ -1595,6 +1618,10 @@ body.theme-genesis .player-card::after {
     <div id="end-coins"></div>
   </div>
   <div id="end-rank"></div>
+  <div id="end-wow" class="end-wow hidden">
+    <div id="end-badge" class="end-badge"></div>
+    <div id="end-stats" class="end-stats"></div>
+  </div>
   <div id="end-share" class="end-share">
     <div class="share-title" data-i18n="sh_title"></div>
     <div class="share-row">
@@ -2159,7 +2186,12 @@ tagline:"Des enchères à l'aveugle sur les stars du foot. Personne ne voit ta m
   sh_vs:"contre", sh_squad:"Mon onze",
   sh_tag:"sur Eleven Duel ⚽ Recrute ton onze avec 250M — mise à l'aveugle !",
   sh_promise:"250M. 11 joueurs. Un seul gagnant.",
-  sh_generic:"Je joue à Eleven Duel ⚽", sh_pe:"⭐ Perfect Eleven !", sh_pe_score:"Mon onze : {a}/100", sh_pe_squad:"Mon Perfect Eleven",
+  sh_generic:"Je joue à Eleven Duel ⚽",
+  bg_flambeur:"🎰 Le Flambeur", bg_negociateur:"💎 Roi des bonnes affaires", bg_panic:"🔥 Achat panique",
+  bg_sniper:"🎯 Le Sniper", bg_econome:"🧮 Victoire à l'économie", bg_patron:"👑 Le Patron",
+  bg_solide:"🧱 Le Solide", bg_battant:"⚡ Le Battant", bg_out:"💸 Ruiné mais beau joueur",
+  st_mvp:"MVP de ton onze", st_deal:"Meilleure affaire", st_overpay:"Le plus surpayé",
+  st_biggest:"Ta plus grosse enchère", st_spent:"Budget dépensé", sh_pe:"⭐ Perfect Eleven !", sh_pe_score:"Mon onze : {a}/100", sh_pe_squad:"Mon Perfect Eleven",
   sh_copied:"Copié ✓", sh_preparing:"Préparation de l'image...",
   sh_downloaded:"Image téléchargée ✓", sh_err:"Échec du partage",
   admin_title:"Dashboard Admin", admin_email:"Email admin", admin_pass:"Mot de passe",
@@ -2343,7 +2375,12 @@ tagline:"Blind auctions on football stars. Nobody sees your bid before the revea
   sh_vs:"vs", sh_squad:"My eleven",
   sh_tag:"on Eleven Duel ⚽ Build your eleven with 250M — blind bidding!",
   sh_promise:"250M. 11 players. One winner.",
-  sh_generic:"I'm playing Eleven Duel ⚽", sh_pe:"⭐ Perfect Eleven!", sh_pe_score:"My eleven: {a}/100", sh_pe_squad:"My Perfect Eleven",
+  sh_generic:"I'm playing Eleven Duel ⚽",
+  bg_flambeur:"🎰 High Roller", bg_negociateur:"💎 Bargain King", bg_panic:"🔥 Panic Buy",
+  bg_sniper:"🎯 The Sniper", bg_econome:"🧮 Budget Win", bg_patron:"👑 The Boss",
+  bg_solide:"🧱 Rock Solid", bg_battant:"⚡ The Fighter", bg_out:"💸 Broke but bold",
+  st_mvp:"Your MVP", st_deal:"Best bargain", st_overpay:"Most overpaid",
+  st_biggest:"Your biggest bid", st_spent:"Budget spent", sh_pe:"⭐ Perfect Eleven!", sh_pe_score:"My eleven: {a}/100", sh_pe_squad:"My Perfect Eleven",
   sh_copied:"Copied ✓", sh_preparing:"Preparing image...",
   sh_downloaded:"Image downloaded ✓", sh_err:"Sharing failed",
   admin_title:"Admin Dashboard", admin_email:"Admin email", admin_pass:"Password",
@@ -2525,7 +2562,12 @@ tagline:"Subastas a ciegas sobre las estrellas del fútbol. Nadie ve tu puja ant
   sh_vs:"contra", sh_squad:"Mi once",
   sh_tag:"en Eleven Duel ⚽ ¡Ficha tu once con 250M — puja a ciegas!",
   sh_promise:"250M. 11 jugadores. Un solo ganador.",
-  sh_generic:"Estoy jugando a Eleven Duel ⚽", sh_pe:"⭐ ¡Perfect Eleven!", sh_pe_score:"Mi once: {a}/100", sh_pe_squad:"Mi Perfect Eleven",
+  sh_generic:"Estoy jugando a Eleven Duel ⚽",
+  bg_flambeur:"🎰 El Apostador", bg_negociateur:"💎 Rey de las gangas", bg_panic:"🔥 Compra de pánico",
+  bg_sniper:"🎯 El Francotirador", bg_econome:"🧮 Victoria low cost", bg_patron:"👑 El Jefe",
+  bg_solide:"🧱 El Sólido", bg_battant:"⚡ El Luchador", bg_out:"💸 Arruinado con estilo",
+  st_mvp:"MVP de tu once", st_deal:"Mejor ganga", st_overpay:"El más sobrepagado",
+  st_biggest:"Tu mayor puja", st_spent:"Presupuesto gastado", sh_pe:"⭐ ¡Perfect Eleven!", sh_pe_score:"Mi once: {a}/100", sh_pe_squad:"Mi Perfect Eleven",
   sh_copied:"Copiado ✓", sh_preparing:"Preparando imagen...",
   sh_downloaded:"Imagen descargada ✓", sh_err:"Error al compartir",
   admin_title:"Panel Admin", admin_email:"Email admin", admin_pass:"Contraseña",
@@ -3532,7 +3574,9 @@ function renderEnd(reason){
   renderCoins();
   renderAllSquads(qs("end-squads-all"));
   countGamePlayed();
+  var endBadge = renderEndWow(mePl, outcome);
   shareData = buildShareData(outcome);
+  if (shareData && endBadge) shareData.badge = endBadge;
   setShareMsg("");
   renderAccountPrompt();
   if (outcome === "win") playAnim(store.equipped);
@@ -6660,7 +6704,7 @@ var BOT_WAIT_MS = 12000;
    GitHub Pages met le HTML en cache (et l'icone PWA iOS bien plus longtemps),
    donc des joueurs tournent sur d'anciennes versions -> le multi casse.
    ========================================================= */
-var APP_VERSION = 29;
+var APP_VERSION = 30;
 function forceReload(){
   /* on change l'URL pour contourner le cache (reload(true) est obsolete) */
   var base = window.location.pathname;
@@ -7404,6 +7448,65 @@ function buildShareData(outcome){
   };
 }
 
+/* ===== V30 : stats de fin de duel + titre automatique =====
+   Tout est calcule depuis squad/paid : aucune regle du jeu ne change. */
+function buildEndStats(mePl){
+  if (!mePl || !mePl.squad || !mePl.squad.length) return null;
+  var stats = { count: mePl.squad.length, spent: 0, mvp: null, bestDeal: null, worstDeal: null, biggestBid: 0 };
+  var bestDelta = -1e9, worstDelta = 1e9;
+  for (var i = 0; i < mePl.squad.length; i++){
+    var idx = mePl.squad[i];
+    var price = (mePl.paid && typeof mePl.paid[i] === "number") ? mePl.paid[i] : 0;
+    var note = PLAYERS[idx][2];
+    stats.spent += price;
+    if (price > stats.biggestBid) stats.biggestBid = price;
+    if (!stats.mvp || note > PLAYERS[stats.mvp.idx][2]) stats.mvp = { idx: idx, price: price };
+    var delta = aiValue(note) - price;   /* + = bonne affaire, - = surpaye */
+    if (delta > bestDelta){ bestDelta = delta; stats.bestDeal = { idx: idx, price: price, delta: delta }; }
+    if (delta < worstDelta){ worstDelta = delta; stats.worstDeal = { idx: idx, price: price, delta: delta }; }
+  }
+  return stats;
+}
+function endBadgeFor(stats, outcome, mePl){
+  if (!stats) return null;
+  if (mePl && mePl.out) return t("bg_out");
+  if (stats.biggestBid >= 70) return t("bg_flambeur");
+  if (stats.bestDeal && stats.bestDeal.delta >= 25) return t("bg_negociateur");
+  if (stats.worstDeal && stats.worstDeal.delta <= -25) return t("bg_panic");
+  if (stats.mvp && PLAYERS[stats.mvp.idx][2] >= 90 && stats.mvp.price <= aiValue(PLAYERS[stats.mvp.idx][2])) return t("bg_sniper");
+  if (outcome === "win" && stats.count >= 11 && stats.spent <= 200) return t("bg_econome");
+  if (outcome === "win") return t("bg_patron");
+  if (outcome === "tie") return t("bg_solide");
+  return t("bg_battant");
+}
+function renderEndWow(mePl, outcome){
+  var wow = qs("end-wow");
+  var stats = buildEndStats(mePl);
+  if (!stats || stats.count < 3){ wow.classList.add("hidden"); return null; }
+  var badge = endBadgeFor(stats, outcome, mePl);
+  qs("end-badge").innerHTML = "";
+  var bs = el("span", "", badge);
+  qs("end-badge").appendChild(bs);
+  var box = qs("end-stats");
+  clear(box);
+  function row(lbl, val, extra){
+    var r = el("div","end-stat");
+    r.appendChild(el("span","end-stat-lbl", lbl));
+    var v = el("span","end-stat-val", val);
+    if (extra){ var sm = document.createElement("small"); sm.textContent = extra; v.appendChild(sm); }
+    r.appendChild(v);
+    return r;
+  }
+  if (stats.mvp) box.appendChild(row(t("st_mvp"), PLAYERS[stats.mvp.idx][0], PLAYERS[stats.mvp.idx][2] + " · " + stats.mvp.price + "M"));
+  if (stats.bestDeal && stats.bestDeal.delta > 0)
+    box.appendChild(row(t("st_deal"), PLAYERS[stats.bestDeal.idx][0], "-" + stats.bestDeal.delta + "M 💎"));
+  if (stats.worstDeal && stats.worstDeal.delta < -5)
+    box.appendChild(row(t("st_overpay"), PLAYERS[stats.worstDeal.idx][0], "+" + (-stats.worstDeal.delta) + "M 🔥"));
+  box.appendChild(row(t("st_biggest"), stats.biggestBid + "M"));
+  box.appendChild(row(t("st_spent"), stats.spent + "M", "/ 250M"));
+  wow.classList.remove("hidden");
+  return badge;
+}
 function shareTitleFor(o){
   if (o === "perfect") return t("sh_pe");
   if (o === "win") return t("sh_win");
@@ -7517,7 +7620,15 @@ function drawShareCanvas(cb){
       c.font = "800 52px -apple-system, Helvetica, Arial";
       c.fillText(t("sh_vs") + " " + d.oppScore.toFixed(2) + (d.oppName ? " · " + d.oppName : ""), cx, y);
     }
-    y += 130;
+    if (d.badge){
+      y += 86;
+      c.fillStyle = "#E8B23A";
+      c.font = "800 46px -apple-system, Helvetica, Arial";
+      c.fillText(d.badge.toUpperCase(), cx, y);
+      y += 44;
+    } else {
+      y += 130;
+    }
 
     /* mon top 3 : uniquement s'il y a vraiment des joueurs */
     if (d.top3.length){

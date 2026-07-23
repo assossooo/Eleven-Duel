@@ -1385,6 +1385,24 @@ body.theme-genesis .player-card::after {
   font-size:19px; color:var(--ink); font-variant-numeric:tabular-nums;
 }
 .end-stat-val small { font-size:13px; color:var(--ink-3); font-weight:700; margin-left:4px; }
+
+/* ===== V31 : le onze en un coup d'oeil (retour utilisateur) ===== */
+.squad-slots { margin:0 0 14px; }
+.slots-row { display:flex; gap:5px; justify-content:center; }
+.slot {
+  width:24px; height:30px; border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Barlow Condensed','Arial Narrow',sans-serif; font-weight:800; font-size:13px;
+  border:1.5px dashed var(--line); color:transparent;
+}
+.slot.filled {
+  border:1.5px solid var(--ink-3); background:var(--surface-2); color:var(--ink);
+}
+.slots-count {
+  display:flex; gap:14px; justify-content:center; margin-top:6px;
+  font-size:11px; font-weight:700; color:var(--ink-3);
+  font-variant-numeric:tabular-nums; letter-spacing:0.04em;
+}
 </style>
 </head>
 <body>
@@ -1537,6 +1555,7 @@ body.theme-genesis .player-card::after {
     <div id="timer-sec">15s</div>
   </div>
   <div id="hud-grid" class="hud-grid"></div>
+  <div id="squad-slots" class="squad-slots"></div>
 
   <div id="player-card" class="player-card tier-grey">
     <div id="pc-note" class="pc-note">88</div>
@@ -1594,6 +1613,19 @@ body.theme-genesis .player-card::after {
 </div>
 
 <!-- ================= OVERLAY RULES ================= -->
+<div id="overlay-pe-intro" class="overlay hidden">
+  <div class="overlay-box">
+    <div class="brush rules-title" data-i18n="pei_title"></div>
+    <ul class="rules-body">
+      <li data-i18n="pei_1"></li>
+      <li data-i18n="pei_2"></li>
+      <li data-i18n="pei_3"></li>
+      <li data-i18n="pei_4"></li>
+    </ul>
+    <button id="btn-pe-intro-go" class="rv-next" style="margin-top:14px;" data-i18n="pei_go"></button>
+  </div>
+</div>
+
 <div id="overlay-rules" class="overlay hidden">
   <div class="overlay-box">
     <div class="brush rules-title" data-i18n="rules_title"></div>
@@ -1823,6 +1855,7 @@ body.theme-genesis .player-card::after {
     <div class="pe-hud-cell"><span class="pe-hud-lbl" data-i18n="pe_slots"></span><span id="pe-slots" class="pe-hud-val">0/11</span></div>
     <div class="pe-hud-cell"><span class="pe-hud-lbl" data-i18n="pe_left"></span><span id="pe-left" class="pe-hud-val">40</span></div>
   </div>
+  <div id="pe-squad-slots" class="squad-slots"></div>
 
   <div id="pe-card" class="player-card">
     <div id="pe-note" class="pc-note">88</div>
@@ -2035,6 +2068,12 @@ var FIREBASE_CONFIG = {
 var I18N = {
 fr: {
   hk1:"250M.", hk2:"Onze joueurs.", hk3:"Un gagnant.", wm_season:"Saison Genesis", season_soon:"Prochainement",
+  pei_title:"Perfect Eleven — comment ça marche",
+  pei_1:"150M de budget seulement — deux fois moins qu'en duel. Chaque million compte.",
+  pei_2:"Le marché te propose 40 joueurs maximum, un par un. Tu achètes au prix affiché ou tu passes — sans retour en arrière.",
+  pei_3:"Objectif : un onze complet avant la fermeture du marché. Équipe incomplète = non classée.",
+  pei_4:"+0.5 sur ta note finale si ton onze forme un vrai dispositif (1 gardien + une compo valide).",
+  pei_go:"C'est parti ⭐",
 bid_lbl:"Ta mise à l'aveugle", bid_after:"Reste après mise : {a}M",
 tagline:"Des enchères à l'aveugle sur les stars du foot. Personne ne voit ta mise avant la révélation.",
   opponent:"Ton adversaire : Ali", prof_random:"Aléatoire", prof_prudent:"Prudent", prof_agressif:"Agressif", prof_malin:"Malin",
@@ -2221,6 +2260,12 @@ tagline:"Des enchères à l'aveugle sur les stars du foot. Personne ne voit ta m
 },
 en: {
   hk1:"250M.", hk2:"Eleven players.", hk3:"One winner.", wm_season:"Genesis Season", season_soon:"Coming soon",
+  pei_title:"Perfect Eleven — how it works",
+  pei_1:"Only a 150M budget — half of a duel. Every million counts.",
+  pei_2:"The market shows you up to 40 players, one at a time. Buy at the listed price or pass — no going back.",
+  pei_3:"Goal: a full eleven before the market closes. Incomplete squad = unranked.",
+  pei_4:"+0.5 on your final rating if your XI forms a real shape (1 keeper + a valid formation).",
+  pei_go:"Let's go ⭐",
 bid_lbl:"Your blind bid", bid_after:"Left after bid: {a}M",
 tagline:"Blind auctions on football stars. Nobody sees your bid before the reveal.",
   opponent:"Your opponent: Ali", prof_random:"Random", prof_prudent:"Cautious", prof_agressif:"Aggressive", prof_malin:"Smart",
@@ -2408,6 +2453,12 @@ tagline:"Blind auctions on football stars. Nobody sees your bid before the revea
 },
 es: {
   hk1:"250M.", hk2:"Once jugadores.", hk3:"Un ganador.", wm_season:"Temporada Genesis", season_soon:"Próximamente",
+  pei_title:"Perfect Eleven — cómo funciona",
+  pei_1:"Solo 150M de presupuesto — la mitad que en un duelo. Cada millón cuenta.",
+  pei_2:"El mercado te ofrece hasta 40 jugadores, uno a uno. Compras al precio mostrado o pasas — sin vuelta atrás.",
+  pei_3:"Objetivo: un once completo antes del cierre del mercado. Equipo incompleto = sin clasificar.",
+  pei_4:"+0.5 en tu nota final si tu once forma un esquema real (1 portero + una formación válida).",
+  pei_go:"¡Vamos! ⭐",
 bid_lbl:"Tu puja a ciegas", bid_after:"Restante tras la puja: {a}M",
 tagline:"Subastas a ciegas sobre las estrellas del fútbol. Nadie ve tu puja antes de la revelación.",
   opponent:"Tu rival: Ali", prof_random:"Aleatorio", prof_prudent:"Prudente", prof_agressif:"Agresivo", prof_malin:"Astuto",
@@ -2851,7 +2902,7 @@ var ANIMS = [
 /* ---------- STORAGE ---------- */
 var memStore = null;
 function loadStore(){
-  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none", ownedKits:[], equippedKit:"classic", ownedCdm:[], perfectBest:0, gamesPlayed:0, botsSeen:[] };
+  var def = { coins:100, owned:["confetti"], equipped:"confetti", pseudo:"", lang:"fr", account:null, duelgold:0, skinsPack:false, triondaOwned:false, equippedSkin:"none", ownedKits:[], equippedKit:"classic", ownedCdm:[], perfectBest:0, gamesPlayed:0, botsSeen:[], peIntroSeen:false };
   try {
     var raw = window.localStorage.getItem("elevenduel_store");
     if (raw){
@@ -2866,6 +2917,7 @@ function loadStore(){
         if (typeof s.equippedKit !== "string") s.equippedKit = "classic";
         if (!Array.isArray(s.ownedCdm)) s.ownedCdm = [];
         if (typeof s.perfectBest !== "number") s.perfectBest = 0;
+        if (s.peIntroSeen === undefined) s.peIntroSeen = false;
         if (typeof s.gamesPlayed !== "number") s.gamesPlayed = 0;
         if (!Array.isArray(s.botsSeen)) s.botsSeen = [];
         if (s.equippedSkin === undefined) s.equippedSkin = s.skinsPack ? "tierpack" : "none";
@@ -3279,8 +3331,34 @@ function renderBonusBar(){}
 
 function useBonus(id){}
 
+/* V31 : les 11 pastilles du onze, triees G > D > M > A (retour utilisateur :
+   "voir visuellement le 11 pour voir les postes deja pris/manquants") */
+function renderSquadSlots(containerId, squad){
+  var box = qs(containerId);
+  if (!box) return;
+  clear(box);
+  var order = { G:0, D:1, M:2, A:3 };
+  var pos = [];
+  for (var i=0;i<squad.length;i++) pos.push(PLAYERS[squad[i]][1]);
+  pos.sort(function(a,b){ return (a in order ? order[a] : 9) - (b in order ? order[b] : 9); });
+  var row = el("div","slots-row");
+  for (var k=0;k<11;k++){
+    var sl = el("div","slot" + (k < pos.length ? " filled" : ""), k < pos.length ? pos[k] : "\u00b7");
+    row.appendChild(sl);
+  }
+  box.appendChild(row);
+  var counts = { G:0, D:0, M:0, A:0 };
+  for (var j=0;j<pos.length;j++) if (counts[pos[j]] !== undefined) counts[pos[j]]++;
+  var cnt = el("div","slots-count");
+  cnt.appendChild(el("span","", "G " + counts.G));
+  cnt.appendChild(el("span","", "D " + counts.D));
+  cnt.appendChild(el("span","", "M " + counts.M));
+  cnt.appendChild(el("span","", "A " + counts.A));
+  box.appendChild(cnt);
+}
 function renderRound(){
   renderHUD();
+  renderSquadSlots("squad-slots", me().squad);
   hide("overlay-reveal");
   var p = PLAYERS[state.current];
   var cardEl = qs("player-card");
@@ -4847,6 +4925,12 @@ function init(){
   qs("btn-pe-share-x").addEventListener("click", shareX);
   qs("btn-pe-share-wa").addEventListener("click", shareWhatsApp);
   qs("btn-pe-share-copy").addEventListener("click", copyShare);
+  qs("btn-pe-intro-go").addEventListener("click", function(){
+    store.peIntroSeen = true;
+    saveStore(store);
+    hide("overlay-pe-intro");
+    doStartPerfect();
+  });
   qs("btn-pe-again").addEventListener("click", startPerfect);
   qs("btn-pe-home").addEventListener("click", function(){ hideAllScreens(); show("screen-home"); });
   qs("btn-friends").addEventListener("click", function(){ openFriendsScreen("requests"); });
@@ -6704,7 +6788,7 @@ var BOT_WAIT_MS = 12000;
    GitHub Pages met le HTML en cache (et l'icone PWA iOS bien plus longtemps),
    donc des joueurs tournent sur d'anciennes versions -> le multi casse.
    ========================================================= */
-var APP_VERSION = 30;
+var APP_VERSION = 31;
 function forceReload(){
   /* on change l'URL pour contourner le cache (reload(true) est obsolete) */
   var base = window.location.pathname;
@@ -7218,6 +7302,14 @@ function peNextPlayer(){
 }
 
 function startPerfect(){
+  /* V31 : premiere partie -> les 4 regles cles d'abord (onboarding) */
+  if (!store.peIntroSeen){
+    show("overlay-pe-intro");
+    return;
+  }
+  doStartPerfect();
+}
+function doStartPerfect(){
   MODE = "perfect";
   pe = { budget: PE_BUDGET, squad: [], paid: [], used: [], current: -1, price: 0, seen: 0 };
   hideAllScreens();
@@ -7226,6 +7318,7 @@ function startPerfect(){
 }
 
 function renderPerfect(){
+  renderSquadSlots("pe-squad-slots", pe.squad);
   var p = PLAYERS[pe.current];
   var tier = tierClass(p[2]);
 

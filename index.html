@@ -1403,6 +1403,12 @@ body.theme-genesis .player-card::after {
   font-size:11px; font-weight:700; color:var(--ink-3);
   font-variant-numeric:tabular-nums; letter-spacing:0.04em;
 }
+
+/* ===== V32 : CTA de creation de compte en bas du multijoueur ===== */
+.online-cta-acc { margin-top:10px; }
+.online-cta-sub {
+  text-align:center; margin-top:7px; font-size:12px; font-weight:600; color:var(--ink-3);
+}
 </style>
 </head>
 <body>
@@ -1768,6 +1774,10 @@ body.theme-genesis .player-card::after {
   </div>
 
   <div id="online-status" class="online-status"></div>
+  <div id="online-cta-acc" class="online-cta-acc hidden">
+    <button id="btn-online-create-acc" class="big-btn" data-i18n="acc_cta"></button>
+    <div class="online-cta-sub" data-i18n="acc_cta_sub"></div>
+  </div>
   <div class="end-btns">
     <button id="btn-online-back" class="big-btn ghost" data-i18n="back"></button>
   </div>
@@ -2139,7 +2149,7 @@ tagline:"Des enchères à l'aveugle sur les stars du foot. Personne ne voit ta m
   acc_register:"Créer mon compte", acc_login:"Se connecter", acc_or:"— ou —",
   acc_logged:"Connecté : {p}", acc_logout:"Se déconnecter",
   acc_taken:"Pseudo déjà pris.", acc_bad:"Pseudo ou code incorrect.", acc_short:"Code trop court (4 min).",
-  acc_badpseudo:"Pseudo invalide (3-14 caractères).", acc_need:"Crée ton compte pour jouer en ligne 👇",
+  acc_badpseudo:"Pseudo invalide (3-14 caractères).", acc_need:"Crée ton compte pour jouer en ligne 👇", acc_cta:"Créer mon compte", acc_cta_sub:"Gratuit · pseudo + code secret · 20 secondes",
   acc_ok:"Compte créé !", acc_hello:"Bienvenue {p} !", acc_keep:"Note bien ton code secret : il permet de récupérer ton compte sur un autre appareil.",
   pf_title:"Profil", pf_games:"Duels joués", pf_wins:"Victoires", pf_rate:"Taux de victoire",
   pf_streak:"Série en cours", pf_best:"Meilleure série", pf_most:"Joueur le plus acheté",
@@ -2331,7 +2341,7 @@ tagline:"Blind auctions on football stars. Nobody sees your bid before the revea
   acc_register:"Create my account", acc_login:"Log in", acc_or:"— or —",
   acc_logged:"Logged in: {p}", acc_logout:"Log out",
   acc_taken:"Nickname already taken.", acc_bad:"Wrong nickname or code.", acc_short:"Code too short (4 min).",
-  acc_badpseudo:"Invalid nickname (3-14 characters).", acc_need:"Create your account to play online 👇",
+  acc_badpseudo:"Invalid nickname (3-14 characters).", acc_need:"Create your account to play online 👇", acc_cta:"Create my account", acc_cta_sub:"Free · nickname + secret code · 20 seconds",
   acc_ok:"Account created!", acc_hello:"Welcome {p}!", acc_keep:"Write down your secret code: it lets you recover your account on another device.",
   pf_title:"Profile", pf_games:"Duels played", pf_wins:"Wins", pf_rate:"Win rate",
   pf_streak:"Current streak", pf_best:"Best streak", pf_most:"Most bought player",
@@ -2524,7 +2534,7 @@ tagline:"Subastas a ciegas sobre las estrellas del fútbol. Nadie ve tu puja ant
   acc_register:"Crear mi cuenta", acc_login:"Iniciar sesión", acc_or:"— o —",
   acc_logged:"Conectado: {p}", acc_logout:"Cerrar sesión",
   acc_taken:"Apodo ya en uso.", acc_bad:"Apodo o código incorrecto.", acc_short:"Código demasiado corto (4 mín).",
-  acc_badpseudo:"Apodo inválido (3-14 caracteres).", acc_need:"Crea tu cuenta para jugar online 👇",
+  acc_badpseudo:"Apodo inválido (3-14 caracteres).", acc_need:"Crea tu cuenta para jugar online 👇", acc_cta:"Crear mi cuenta", acc_cta_sub:"Gratis · apodo + código secreto · 20 segundos",
   acc_ok:"¡Cuenta creada!", acc_hello:"¡Bienvenido {p}!", acc_keep:"Apunta tu código secreto: te permite recuperar tu cuenta en otro dispositivo.",
   pf_title:"Perfil", pf_games:"Duelos jugados", pf_wins:"Victorias", pf_rate:"Tasa de victorias",
   pf_streak:"Racha actual", pf_best:"Mejor racha", pf_most:"Jugador más comprado",
@@ -2748,7 +2758,26 @@ var PLAYERS = [
   ["Balogun","A",82,"Monaco"],["Gouiri","A",82,"OM"],["Mikautadze","A",82,"Lyon"],
   ["Morata","A",81,"Côme"],["João Félix","A",81,"Al-Nassr"],["Aubameyang","A",81,"OM"],
   ["Emegha","A",81,"Strasbourg"],["Thauvin","A",80,"Lens"],["Moffi","A",80,"Nice"],
-  ["Giroud","A",78,"Lille"]
+  ["Giroud","A",78,"Lille"],
+
+  /* ---- Ajout v32 ---- */
+  ["Lunin","G",82,"Real Madrid"],["Meret","G",83,"Napoli"],["Vicario","G",83,"Tottenham"],
+  ["Pickford","G",84,"Everton"],["R. Sánchez","G",82,"Chelsea"],["Verbruggen","G",82,"Brighton"],
+  ["Sels","G",82,"Nottingham"],["Provedel","G",82,"Lazio"],["Ramsdale","G",81,"Southampton"],
+  ["Lafont","G",82,"Nantes"],["Grbić","G",81,"Lille"],["Peretz","G",80,"Bayern"],
+  ["Kepa","G",81,"Arsenal"],["Restes","G",81,"Lyon"],["Balde","D",83,"Barcelone"],
+  ["Christensen","D",83,"Barcelone"],["Gatti","D",83,"Juventus"],["Cambiaso","D",83,"Juventus"],
+  ["Rrahmani","D",84,"Napoli"],["Timber","D",84,"Arsenal"],["White","D",84,"Arsenal"],
+  ["Stones","D",84,"Man City"],["Aké","D",83,"Man City"],["Trippier","D",83,"Newcastle"],
+  ["Konsa","D",83,"Aston Villa"],["Xhaka","M",85,"Leverkusen"],["Mkhitaryan","M",83,"Inter"],
+  ["Reijnders","M",85,"Milan"],["Y. Fofana","M",84,"Milan"],["Partey","M",83,"Arsenal"],
+  ["Casemiro","M",83,"Man United"],["Kovačić","M",84,"Man City"],["Maddison","M",84,"Tottenham"],
+  ["Ferran Torres","A",83,"Barcelone"],["Coman","A",84,"Bayern"],["Taremi","A",82,"Inter"],
+  ["Neres","A",84,"Napoli"],["Martinelli","A",84,"Arsenal"],["Havertz","A",85,"Arsenal"],
+  ["Trossard","A",83,"Arsenal"],["N. Jackson","A",83,"Chelsea"],["Gakpo","A",84,"Liverpool"],
+  ["Rashford","A",84,"Man United"],["Garnacho","A",83,"Man United"],["Doku","A",84,"Man City"],
+  ["Marmoush","A",85,"Man City"],["Solanke","A",84,"Tottenham"],["Cunha","A",84,"Wolves"],
+  ["Eze","A",84,"Crystal Palace"]
 ];
 
 var CLUB_LEAGUE = {
@@ -4878,6 +4907,7 @@ function init(){
     updateRankedButtonState();
     setOnlineStatus(fbConfigured() ? "" : t("st_noconfig"), !fbConfigured());
   });
+  qs("btn-online-create-acc").addEventListener("click", openProfile);
   qs("btn-online-back").addEventListener("click", function(){
     leaveOnline();
     hideAllScreens();
@@ -5645,6 +5675,9 @@ function renderOnlineAccount(){
     box.appendChild(need);
     qs("game-league-row").classList.add("hidden");
   }
+  /* V32 : le CTA du bas n'apparait que pour les visiteurs sans compte */
+  var cta = qs("online-cta-acc");
+  if (cta) cta.classList.toggle("hidden", !!store.account);
 }
 function fillGameLeagueSelect(){
   var row = qs("game-league-row");
@@ -6788,7 +6821,7 @@ var BOT_WAIT_MS = 12000;
    GitHub Pages met le HTML en cache (et l'icone PWA iOS bien plus longtemps),
    donc des joueurs tournent sur d'anciennes versions -> le multi casse.
    ========================================================= */
-var APP_VERSION = 31;
+var APP_VERSION = 32;
 function forceReload(){
   /* on change l'URL pour contourner le cache (reload(true) est obsolete) */
   var base = window.location.pathname;
